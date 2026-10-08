@@ -52,11 +52,11 @@
         <p>${escapeHtml(program[language].description)}</p>
         <div class="program-meta">
           <span class="program-level">${escapeHtml(program.level === 'EDUCATORS' ? localized('filters.educators') : program.level)}</span>
-          <span class="program-status${program.status === 'active' ? ' is-active' : ''}">${escapeHtml(misc(program.status === 'active' ? 'active' : 'planned'))}</span>
+          <span class="program-status${program.status === 'active' ? ' is-active' : ''}">${escapeHtml(program.statusText?.[language] || misc(program.status === 'active' ? 'active' : 'planned'))}</span>
         </div>
-        <button class="program-link" type="button" data-program="${program.id}" aria-label="${escapeHtml(misc('interest') + ': ' + program[language].title)}">
-          <span>${escapeHtml(misc('interest'))}</span><span aria-hidden="true">&nearr;</span>
-        </button>
+        ${program.href
+          ? `<a class="program-link" href="${escapeHtml(program.href)}" aria-label="${escapeHtml(program[language].title)}"><span>${escapeHtml(language === 'tr' ? 'Sayfay\u0131 a\u00e7' : 'Open page')}</span><span aria-hidden="true">&nearr;</span></a>`
+          : `<button class="program-link" type="button" data-program="${program.id}" aria-label="${escapeHtml(misc('interest') + ': ' + program[language].title)}"><span>${escapeHtml(misc('interest'))}</span><span aria-hidden="true">&nearr;</span></button>`}
       </article>`;
     }).join('');
     document.getElementById('program-count').textContent = misc('count')(visible.length);

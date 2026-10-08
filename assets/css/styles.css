@@ -424,3 +424,19 @@ p { line-height: 1.75; }
   .community-art-mark { width: 58px; height: 58px; top: 18px; right: 18px; }
   .club-cta { max-width: 100%; white-space: normal; text-align: center; }
 }
+
+/* Academy 2026: real learning workspaces */
+.portal-section{background:linear-gradient(135deg,#f0f4fb,#ffffff)}
+.portal-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.portal-card{border:1px solid #dbe4f1;border-radius:21px;background:#fff;padding:30px 25px;display:flex;flex-direction:column;min-height:345px;transition:transform .2s,box-shadow .2s}
+.portal-card:hover{transform:translateY(-4px);box-shadow:0 16px 38px #19305f12}
+.portal-index{font:800 .68rem Manrope,sans-serif;letter-spacing:.16em;color:#7b88a1}
+.portal-icon{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;margin-top:27px;margin-bottom:23px;font-size:1.65rem;background:#fce7e5;color:#e4514e}
+.portal-student .portal-icon,.portal-path .portal-icon{background:#e9effb;color:#19305f}
+.portal-card h3{font-size:1.34rem;letter-spacing:-.035em;margin-bottom:12px}
+.portal-card p{font-size:.84rem;color:#67738a;line-height:1.7;flex:1}
+.portal-open{font:800 .8rem Manrope,sans-serif;border-top:1px solid #e9edf3;padding-top:16px;color:#19305f}
+.portal-open:hover{color:#e4514e}
+.educator-quick-links{display:flex;gap:11px;flex-wrap:wrap}
+@media(max-width:1040px){.portal-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.portal-card{min-height:300px}}
+@media(max-width:600px){.portal-grid{grid-template-columns:1fr}.portal-card{min-height:0}.educator-quick-links .button{width:100%}.portal-section{padding-block:65px}}

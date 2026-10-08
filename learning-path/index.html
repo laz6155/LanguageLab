@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#19305f">
+  <meta name="description" content="LanguageLab Akademi: öğrenci, eğitmen ve kurumlar için uluslararası CEFR odaklı, adım adım dil öğrenme ve öğretme yol haritası.">
+  <meta property="og:title" content="Yol Haritası | LanguageLab Akademi">
+  <meta property="og:image" content="../assets/icons/brand-icon.svg">
+  <link rel="icon" href="../assets/icons/brand-icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./path.css">
+  <title>Öğrenme ve Öğretme Yol Haritası | LanguageLab Akademi</title>
+  <script src="./path.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Ana içeriğe geç</a>
+<header class="site-head">
+  <div class="shell head-inner">
+    <a href="../" class="brand" aria-label="LanguageLab Akademi ana sayfa"><img src="../assets/icons/brand-icon.svg" alt=""><span>language<b>lab</b><small>AKADEMİ</small></span></a>
+    <nav class="head-nav" aria-label="Ana bağlantılar"><a href="../educators/" data-i18n="navTeacher">Eğitmen Platformu</a><a href="../join/" data-i18n="navStudent">Öğrenci Paneli</a><a href="../ozel-dersler/" data-i18n="navPrivate">Özel Dersler</a></nav>
+    <div class="language" aria-label="Language"><button type="button" data-language="tr" aria-pressed="true">TR</button><button type="button" data-language="en" aria-pressed="false">EN</button></div>
+  </div>
+</header>
+<main id="main">
+<section class="hero"><div class="shell hero-grid"><div><div class="eyebrow"><span class="dot"></span><span data-i18n="eyebrow">ULUSLARARASI ÖĞRENME & ÖĞRETME REHBERİ</span></div><h1 data-i18n-html="heroTitle">Ne yapacağını bil.<br><span>Doğru sırayla ilerle.</span></h1><p class="hero-lead" data-i18n="heroText">Dil öğrenimi, ders hazırlama ve kurumsal eğitim yönetimi için anlaşılır, adım adım yol haritaları. CEFR seviyelerini ortak referans olarak kullan; yerel müfredatını ayrıca değerlendir.</p><a class="primary" href="#path-selector" data-i18n="heroAction">Kendi yolunu seç ↘</a></div><div class="hero-diagram" aria-hidden="true"><span class="diagram-circle one"></span><span class="diagram-circle two"></span><div class="diagram-card"><div class="diagram-icon">01</div><span data-i18n="diagram1">Hedefini belirle</span></div><div class="diagram-line"></div><div class="diagram-card shifted"><div class="diagram-icon">02</div><span data-i18n="diagram2">Adım adım uygula</span></div><div class="diagram-line"></div><div class="diagram-card"><div class="diagram-icon">03</div><span data-i18n="diagram3">Gelişimini kontrol et</span></div></div></div></section>
+<section class="workflows" id="path-selector"><div class="shell"><p class="kicker" data-i18n="pathKicker">SENİN ROLÜN NEDİR?</p><div class="section-title"><h2 data-i18n-html="pathTitle">Bir hedef seç.<br><span>Yol haritanı gör.</span></h2><p data-i18n="pathInfo">Bir eğitimci, öğrenci veya kurum olarak ihtiyacına göre ilerle. Burada işaretlediğin adımlar yalnızca bu tarayıcıda saklanır.</p></div>
+<div class="role-tabs" role="tablist" aria-label="Roadmap roles"><button type="button" class="active" id="tab-student" role="tab" aria-controls="role-panel" data-role="student" aria-selected="true" data-i18n="student">Öğrenciyim</button><button type="button" id="tab-teacher" role="tab" aria-controls="role-panel" data-role="teacher" aria-selected="false" data-i18n="teacher">Eğitmenim</button><button type="button" id="tab-school" role="tab" aria-controls="role-panel" data-role="school" aria-selected="false" data-i18n="school">Kurum / Okul</button></div>
+<div class="workflow-layout" role="tabpanel" id="role-panel" aria-labelledby="tab-student"><div class="workflow-main"><div class="workflow-heading"><div><span class="eyebrow-inline" id="role-overline"></span><h3 id="role-heading"></h3><p id="role-intro"></p></div><div class="progress-ring" aria-live="polite"><strong id="progress-percent">0%</strong><small data-i18n="progress">TAMAMLANDI</small></div></div><div id="step-list" class="step-list"></div><div class="workflow-bottom"><button class="reset" id="clear-progress" type="button" data-i18n="clear">Bu cihazdaki işaretleri sıfırla</button><p data-i18n="saved">İşaretler yalnızca tarayıcına kaydedilir; öğrenci veya öğretmen hesabına aktarılmaz.</p></div></div><aside class="workflow-side"><div class="side-panel"><h4 data-i18n="doTitle">Yapılacaklar</h4><ul id="do-list"></ul></div><div class="side-panel warning"><h4 data-i18n="dontTitle">Kaçınılacaklar</h4><ul id="dont-list"></ul></div><div class="cefr-note"><span>CEFR · A1 → C2</span><p data-i18n="cefrNote">Ortak Avrupa Dil Referans Çerçevesi (CEFR) seviye belirlemek için yol gösterir; tek başına sertifika veya resmi akreditasyon anlamına gelmez.</p></div></aside></div>
+</div></section>
+<section class="quick-launch"><div class="shell"><div class="launch-title"><p class="kicker" data-i18n="quickKicker">DOĞRUDAN BAŞLA</p><h2 data-i18n-html="quickTitle">Yol haritasından<br><span>uygulamaya geç.</span></h2></div><div class="launch-grid"><a class="launch-card" href="../educators/"><span>01 / TEACH</span><b data-i18n="navTeacher">Eğitmen Platformu</b><small data-i18n="teacherTools">Ders, sınıf, ödev ve etkinlik araçları</small><em>↗</em></a><a class="launch-card" href="../join/"><span>02 / LEARN</span><b data-i18n="navStudent">Öğrenci Paneli</b><small data-i18n="studentTools">Sınıf koduyla katılım, ders ve ödevler</small><em>↗</em></a><a class="launch-card" href="../ozel-dersler/"><span>03 / GROW</span><b data-i18n="navPrivate">Özel Dersler</b><small data-i18n="privateTools">Birebir online İngilizce ders başvurusu</small><em>↗</em></a></div></div></section>
+</main>
+<footer><div class="shell footer-inner"><a href="../" class="brand"><img src="../assets/icons/brand-icon.svg" alt=""><span>language<b>lab</b><small>AKADEMİ</small></span></a><p data-i18n="foot">Dil eğitimi, konuşma pratiği ve eğitimci araçları aynı akademide.</p><a href="../" data-i18n="back">Ana sayfaya dön ↗</a></div></footer>
+</body>
+</html>

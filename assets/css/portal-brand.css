@@ -1,0 +1,21 @@
+/* LanguageLab Akademi — shared visual identity for the migrated teaching pages. */
+:root{--navy:#19305f;--navy2:#11264a;--blue:#274c89;--teal:#ea5a56;--coral:#ea5a56;--orange:#dd6a61;--ink:#19305f;--muted:#687894}
+.esc-brand{display:inline-flex!important;align-items:center!important;gap:11px!important;text-decoration:none!important;min-width:0;color:#19305f!important;flex-shrink:0}
+.esc-brand-mark{width:51px;height:51px;flex:0 0 51px;display:grid;place-items:center;overflow:hidden;border-radius:50%;box-shadow:0 5px 17px rgba(25,48,95,.11);background:#fff}
+.esc-brand-mark img{width:100%;height:100%;object-fit:contain;display:block}
+.esc-brand-title{display:inline-block;color:#19305f!important;line-height:1.18!important;font-weight:850!important;letter-spacing:-.025em!important}
+.esc-brand-title small{display:block;color:#667c9f!important;font-weight:700!important;letter-spacing:.025em;font-size:.69em}
+.lesson-footer .esc-brand-title,footer .esc-brand-title{color:#19305f!important}
+.edu-topbar,.join-header,.lesson-nav{box-shadow:0 1px 0 rgba(25,48,95,.07)}
+.edu-hero{background:radial-gradient(circle at 18% 20%,rgba(25,48,95,.08),transparent 27%),radial-gradient(circle at 86% 20%,rgba(234,90,86,.11),transparent 28%),linear-gradient(180deg,#fbfcff,#f0f4fc)!important}
+.edu-hero h1 em,.edu-hero .section-kicker{color:#ea5a56!important}
+.primary-link,.hero-primary{background:#19305f!important;color:#fff!important}
+.primary-link:hover,.hero-primary:hover{background:#274a87!important}
+.lesson-nav .nav-contact,.lesson-form button[type=submit]{background:#19305f!important;color:#fff!important}
+.lesson-hero .hero-badge,.join-kicker{color:#db5250!important}
+.language-lab-routebar{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:14px;padding:11px 20px;background:#19305f;color:#fff;font:750 12px 'DM Sans',Arial,sans-serif;position:relative;z-index:3}
+.language-lab-routebar a{color:#fff;text-decoration:none;padding:5px 8px;border-radius:6px;white-space:nowrap}
+.language-lab-routebar a:hover,.language-lab-routebar a:focus-visible{background:#ffffff22}
+.language-lab-routebar a[aria-current=page]{background:#ffffff26}
+.language-lab-routebar .brand-route{font-weight:900;color:#ffc1bd;letter-spacing:.015em}
+@media(max-width:640px){.language-lab-routebar{gap:5px 9px;justify-content:flex-start;padding:8px 13px;font-size:11px}.esc-brand-mark{width:41px;height:41px;flex-basis:41px}.esc-brand-title{font-size:clamp(11px,3.4vw,15px)!important}}
