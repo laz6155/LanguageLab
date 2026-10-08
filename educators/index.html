@@ -1,0 +1,1345 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#081f3b">
+  <meta name="description" content="İngilizce öğretmenleri için ders planlama, CEFR ve MEB uyumlu içerik, sınıf yönetimi, ödev, speaking oyunları, materyal ve rapor araçları.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="https://laz6155.github.io/LanguageLab/educators/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="LanguageLab Akademi">
+  <meta property="og:title" content="İngilizce Öğretmen Platformu | Ders Planlama, CEFR ve Sınıf Araçları">
+  <meta property="og:description" content="İngilizce öğretmenleri için ders planı, sınıf yönetimi, ödev, oyun, materyal ve raporlama araçları.">
+  <meta property="og:url" content="https://laz6155.github.io/LanguageLab/educators/">
+  <meta property="og:image" content="https://laz6155.github.io/LanguageLab/assets/icons/brand-icon.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>İngilizce Öğretmen Platformu | Ders Planlama, CEFR ve Sınıf Araçları</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/icons/brand-icon.svg">
+  <link rel="stylesheet" href="../assets/css/portal-brand.css">
+  <link rel="stylesheet" href="./educators.css?v=20261005-games-audit3">
+  <link rel="stylesheet" href="./educators-guide.css?v=20261004-fullqa4">
+  <link rel="stylesheet" href="./educators-flex.css?v=20261004-fullqa4">
+  <link rel="stylesheet" href="./educators-platform.css?v=20261005-context-help1">
+<link rel="stylesheet" href="../assets/css/academy-portals.css">
+</head>
+<body>
+  <div class="edu-noise" aria-hidden="true"></div>
+
+  <header class="edu-topbar">
+    <a class="esc-brand" href="../" aria-label="LanguageLab Akademi ana sayfa">
+      <span class="esc-brand-mark"><img src="../assets/icons/brand-icon.svg" alt=""></span>
+      <span class="esc-brand-title educator-brand-title"><b>LanguageLab Educator Platform</b><small>by LanguageLab Akademi</small></span>
+    </a>
+    <nav class="edu-topnav" aria-label="Educators menü">
+      <a href="#teacher-demo">Öğretmen Platformu</a>
+      <a href="#why-platform">Neden?</a>
+      <a href="#how">Nasıl çalışır?</a>
+      <a href="#student-demo">Öğrenci girişi</a>
+    </nav>
+    <div class="edu-top-actions">
+      <div class="edu-lang-switch" aria-label="Language">
+        <button class="active" type="button" data-edu-lang="tr">Türkçe</button>
+        <button type="button" data-edu-lang="en">English</button>
+      </div>
+      <a class="text-link" href="../games/">Oyunlar</a>
+      <button class="primary-link primary-button" type="button" data-teacher-login>Platforma gir <span>→</span></button>
+    </div>
+  </header>
+<nav class="language-lab-routebar" aria-label="LanguageLab Akademi navigation"><a class="brand-route" href="../">LanguageLab Akademi</a><a href="../educators/">Eğitmen / Educator</a><a href="../join/">Öğrenci / Student</a><a href="../ozel-dersler/">Özel Ders / Private</a><a href="../learning-path/">Yol Haritası / Roadmap</a></nav>
+
+  
+  <div class="edu-auth-layer" id="eduAuthLayer" hidden>
+    <div class="edu-auth-card">
+      <button class="edu-auth-close" id="eduAuthClose" type="button" aria-label="Kapat">×</button>
+      <a class="esc-brand" href="../"><span class="esc-brand-mark"><img src="../assets/icons/brand-icon.svg" alt=""></span><span class="esc-brand-title">LanguageLab Educator Platform</span></a>
+      <span class="edu-auth-kicker">TEACHER ACCOUNT</span>
+      <h2 id="eduAuthTitle">Öğretmen hesabına giriş yap</h2>
+      <p id="eduAuthIntro">Sınıflarınız, öğrenci kodlarınız ve dersleriniz hesabınıza kaydedilir.</p>
+      <div class="edu-auth-tabs"><button class="active" type="button" data-auth-mode="login">Giriş</button><button type="button" data-auth-mode="signup">Hesap oluştur</button></div>
+      <form id="eduAuthForm">
+        <label id="teacherNameWrap" hidden>Adınız<input id="teacherName" type="text" maxlength="80" autocomplete="name" placeholder="Örn. Ayşe Yılmaz"></label>
+        <label>E-posta<input id="teacherEmail" type="email" autocomplete="email" required placeholder="teacher@example.com"></label>
+        <label>Şifre<input id="teacherPassword" type="password" minlength="8" autocomplete="current-password" required placeholder="En az 8 karakter"></label>
+        <button type="submit" id="eduAuthSubmit">Giriş yap →</button>
+      </form>
+      <p class="edu-auth-message" id="eduAuthMessage" hidden></p>
+      <button class="edu-forgot" id="eduForgotPassword" type="button">Şifremi unuttum</button>
+    </div>
+  </div>
+
+  <div class="edu-class-layer" id="eduClassLayer" hidden>
+    <form class="edu-class-card" id="eduClassForm">
+      <button class="edu-auth-close" id="eduClassClose" type="button" aria-label="Kapat">×</button>
+      <span class="edu-auth-kicker">NEW CLASS</span>
+      <h2>Yeni sınıf oluştur</h2>
+      <p>Bu bilgiler soru zorluğunu, kelime seçimini ve etkinlik tipini belirler.</p>
+      <label>Sınıf adı<input id="newClassName" type="text" maxlength="80" required placeholder="Örn. 6-B / Junior Speaking"></label>
+      <div class="edu-class-two"><label>Yaş grubu<select id="newClassAge"><option value="6-8">6–8 · Kids</option><option value="9-11">9–11 · Junior</option><option value="12-14" selected>12–14 · Pre-Teen</option><option value="15-17">15–17 · Teen</option><option value="18+">18+ · Adult</option></select></label><label>Seviye<select id="newClassLevel"><option>Pre-A1</option><option>A1</option><option selected>A2</option><option>B1</option><option>B2</option></select></label></div>
+      <div class="edu-class-two"><label>Ana hedef<select id="newClassFocus"><option value="speaking">Speaking</option><option value="vocabulary">Vocabulary</option><option value="grammar">Grammar</option><option value="mixed">Mixed</option></select></label><label>Maks. öğrenci<input id="newClassMax" type="number" min="1" max="100" value="40"></label></div>
+      <button class="generate-button" type="submit">Sınıfı oluştur →</button>
+      <p class="edu-auth-message" id="eduClassMessage" hidden></p>
+    </form>
+  </div>
+
+  <div class="edu-class-layer" id="eduClassManageLayer" hidden>
+    <div class="edu-class-card class-manage-card">
+      <button class="edu-auth-close" id="eduClassManageClose" type="button" aria-label="Kapat">×</button>
+      <span class="edu-auth-kicker">CLASS MANAGEMENT</span>
+      <div class="class-manage-head">
+        <div><h2 id="manageClassHeading">Sınıfı yönet</h2><p id="manageClassMeta">Sınıf bilgileri ve öğrenci listesi</p></div>
+        <span class="class-status-pill" id="manageClassStatus">AKTİF</span>
+      </div>
+
+      <form id="eduClassManageForm">
+        <input id="manageClassId" type="hidden">
+        <label>Sınıf adı<input id="manageClassName" type="text" maxlength="80" required></label>
+        <div class="edu-class-two">
+          <label>Yaş grubu<select id="manageClassAge"><option value="6-8">6–8 · Kids</option><option value="9-11">9–11 · Junior</option><option value="12-14">12–14 · Pre-Teen</option><option value="15-17">15–17 · Teen</option><option value="18+">18+ · Adult</option></select></label>
+          <label>Seviye<select id="manageClassLevel"><option>Pre-A1</option><option>A1</option><option>A2</option><option>B1</option><option>B2</option></select></label>
+        </div>
+        <div class="edu-class-two">
+          <label>Ana hedef<select id="manageClassFocus"><option value="speaking">Speaking</option><option value="vocabulary">Vocabulary</option><option value="grammar">Grammar</option><option value="mixed">Mixed</option></select></label>
+          <label>Maks. öğrenci<input id="manageClassMax" type="number" min="1" max="100" value="40"></label>
+        </div>
+        <div class="class-manage-code">
+          <div><small>CLASS CODE</small><strong id="manageClassCode">------</strong></div>
+          <button type="button" id="manageCopyCode">Kodu kopyala</button>
+          <button type="button" id="manageCopyLink">Katılım linkini kopyala</button>
+        </div>
+        <div class="class-manage-actions">
+          <button class="generate-button" id="manageClassSave" type="submit">Değişiklikleri kaydet →</button>
+          <button class="class-status-toggle" id="manageClassToggle" type="button">Sınıfı kapat</button>
+        </div>
+        <p class="edu-auth-message" id="eduClassManageMessage" hidden></p>
+      </form>
+
+      <div class="class-roster-section">
+        <div class="class-roster-head">
+          <div><small>STUDENT ROSTER</small><strong>Öğrenciler</strong><span id="manageRosterCount">0 aktif</span></div>
+          <button type="button" id="manageRosterRefresh">↻ Yenile</button>
+        </div>
+        <div class="class-roster-list" id="manageRosterList"></div>
+        <p class="class-roster-note">Öğrenciyi çıkarmak geçmiş sonuçlarını silmez. İstersen daha sonra yeniden aktif edebilirsin.</p>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <section class="edu-hero">
+      <div class="hero-glow glow-one" aria-hidden="true"></div>
+      <div class="hero-glow glow-two" aria-hidden="true"></div>
+      <div class="edu-hero-copy">
+        <span class="pilot-badge"><i></i> EĞİTİMCİ PLATFORMU · TEACHER PLATFORM</span>
+        <h1>Her İngilizce öğretmeni için<br><em>tam çalışma alanı.</em></h1>
+        <p>LanguageLab Akademi Educators, İngilizce öğretmenleri için MEB, CEFR ve özel ders akışlarını tek çalışma alanında birleştiren bir öğretmen platformudur. Sınıfını, ders planını, materyallerini, speaking oyunlarını ve öğrenci katılımını Türkçe veya English yönet.</p>
+        <div class="hero-actions">
+          <button class="hero-primary hero-button" type="button" data-teacher-login>Öğretmen platformunu aç <span>↘</span></button>
+          <a class="hero-secondary" href="../join/">Öğrenci olarak katıl</a>
+        </div>
+        <div class="hero-proof">
+          <span><b>GLOBAL</b> CEFR · A1–B2</span>
+          <span><b>TÜRKİYE</b> MEB 2026–27 · TYMM</span>
+          <span><b>TEACHER</b> School · Private · Speaking</span>
+          <span><b>DEVICE</b> Phone · Tablet · Laptop · Smartboard</span>
+        </div>
+      </div>
+
+      <div class="hero-product-card platform-launch-card" aria-label="Educators hızlı giriş">
+        <span class="platform-launch-kicker">HER ÖĞRETMEN İÇİN</span>
+        <h2>Ne yapmak istiyorsunuz?</h2>
+        <p>Platformu Türkçe veya English kullan. MEB, CEFR, private tutoring ve serbest ders akışlarından ihtiyacına uygun olanı seç.</p>
+        <div class="platform-launch-actions">
+          <button type="button" data-teacher-login><span>Öğretmen platformuna gir</span><b>→</b></button>
+          <a href="../join/"><span>Öğrenci koduyla katıl</span><b>→</b></a>
+          <a href="../games/"><span>Oyun kütüphanesini aç</span><b>→</b></a>
+        </div>
+        <div class="platform-launch-notes">
+          <span>Türkçe + English</span>
+          <span>MEB + CEFR + Private Tutor</span>
+          <span>Telefon · tablet · bilgisayar</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="edu-strip" aria-label="Özellikler">
+      <div><span>01</span><b>MEB + CEFR akışı</b><small>2026–27 sınıf ve tema seçimiyle başla.</small></div>
+      <div><span>02</span><b>Seviyeye göre görev</b><small>Pre-A1’den B2’ye kademeli zorluk.</small></div>
+      <div><span>03</span><b>Hazır ders akışı</b><small>20–60 dakikalık sınıf planı.</small></div>
+      <div><span>04</span><b>Kaydet + tekrar kullan</b><small>Derslerin hesabında kalsın, yeniden aç ve yazdır.</small></div>
+    </section>
+
+    <section class="edu-value-section" id="why-platform">
+      <div class="edu-value-head">
+        <div><span class="section-kicker">NEDEN HER GÜN AÇILSIN?</span><h2>Hazırlıktan geri bildirime<br>tek öğretmen çalışma akışı.</h2></div>
+        <p>Hedefimiz yeni bir oyun sitesi olmak değil. Ders hazırlama, müfredat, materyal, canlı sınıf, ödev, geri bildirim ve ekip paylaşımını aynı öğretmen hesabında birleştirmek.</p>
+      </div>
+      <div class="edu-value-grid">
+        <article><span>01</span><strong>MEB’den doğrudan derse</strong><p>2026–27 TYMM akışında 5–7 ve 9–11. sınıflardan tema ve beceriyi seç; Lesson Builder’a geç.</p><small>Türkiye’ye göre başlangıç</small></article>
+        <article><span>02</span><strong>Bir kez hazırla, tekrar kullan</strong><p>Kaydettiğin dersler My Library’de kalır. Sonraki sınıfta yeniden aç, düzenle veya yazdır.</p><small>Hazırlık emeğini kaybetme</small></article>
+        <article><span>03</span><strong>Sınıfta sekme değiştirme</strong><p>Ders akışı, speaking prompt, oyun, sınıf kodu ve canlı kontrol aynı platform içinde ilerler.</p><small>Tek öğretmen çalışma alanı</small></article>
+        <article><span>04</span><strong>Sonraki dersi veriye göre planla</strong><p>Öğrenci sonuçları, ödev puanı ve öğretmen feedback'i aynı akışta kalsın; rapor ekranı tekrar edilmesi gereken alanı göstersin.</p><small>Rapor → feedback → yeni ders</small></article>
+        <article><span>05</span><strong>Bir brief'ten ders paketi çıkar</strong><p>Teacher Assistant Beta ile konu, seviye ve hedefi yaz; lesson flow, speaking, worksheet, homework ve oyun taslağını tek yerde oluştur.</p><small>Teacher Assistant · Beta</small></article>
+        <article><span>06</span><strong>Ekip bilgisini ortak kütüphaneye taşı</strong><p>School Workspace ile öğretmenleri kodla ekibe al, iyi dersleri paylaş ve ekip arkadaşlarının kendi sınıflarına kopyalamasını sağla.</p><small>School Workspace · Beta</small></article>
+      </div>
+      <div class="edu-value-cta">
+        <div><small>ÖĞRETMEN HESABI</small><strong>İlk sınıfını oluştur ve kendi ders kütüphaneni başlat.</strong><span>Öğrenciler sınıf koduyla katılır; öğretmen tarafındaki içerikler hesabına bağlı kalır.</span></div>
+        <div class="edu-value-actions">
+          <button type="button" data-teacher-signup>Ücretsiz hesap oluştur →</button>
+          <a href="#teacher-demo">Platformu incele</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-section" id="how">
+      <div class="section-heading">
+        <div>
+          <span class="section-kicker">NASIL ÇALIŞACAK?</span>
+          <h2>Dört adım. Tek ekran.</h2>
+        </div>
+        <p>İlk sürümün odağı öğretmenin hazırlık süresini azaltmak. İçerik, sınıf profilinden otomatik türetilir; öğretmen isterse düzenler.</p>
+      </div>
+      <div class="how-grid">
+        <article><span>1</span><div class="how-icon">◎</div><h3>Sınıfını tanımla</h3><p>Yaş, seviye, öğrenci sayısı ve ders hedefini seç.</p></article>
+        <article><span>2</span><div class="how-icon">✦</div><h3>Dersi oluştur</h3><p>Konu ve süreye göre warm-up, vocabulary, speaking ve oyun akışı gelsin.</p></article>
+        <article><span>3</span><div class="how-icon">▶</div><h3>Sınıfta başlat</h3><p>Öğrenciler kodla girsin; öğretmen tahtadan akışı yönetsin.</p></article>
+        <article><span>4</span><div class="how-icon">↗</div><h3>Sonucu gör</h3><p>Zorlanan kelimeler, katılım ve aktivite sonucu tek raporda toplansın.</p></article>
+      </div>
+    </section>
+
+
+    <section class="edu-guide-section" id="teacher-guide">
+      <div class="edu-guide-shell">
+        <div class="edu-guide-copy">
+          <span class="section-kicker">İLK KEZ Mİ KULLANIYORSUN?</span>
+          <h2>Öğretmen ne yapacağını ilk bakışta görsün.</h2>
+          <p>Educators'ın mantığı basit: sınıfını veya öğrencini seç, ders akışını oluştur, gerekiyorsa kısa bir oyun aç ve öğrenciyi konuştur. Takım ve puan sistemi zorunlu değil; yalnızca öğretmen istediğinde açılır.</p>
+          <div class="edu-guide-actions">
+            <button type="button" data-open-guide id="startGuideTour">▶ İnteraktif tanıtımı oynat</button>
+            <a href="#teacher-demo">Doğrudan panele git →</a>
+          </div>
+          <div class="edu-guide-keypoints">
+            <div><span>01</span><p><b>Ders planla</b><small>MEB, CEFR veya özel ders öğrencisinden başla.</small></p></div>
+            <div><span>02</span><p><b>Materyali seç</b><small>Vocabulary, grammar, speaking, worksheet veya homework.</small></p></div>
+            <div><span>03</span><p><b>Oyunu gerektiğinde kullan</b><small>Oyun dersin tamamı değil; kısa practice aşamasıdır.</small></p></div>
+            <div><span>04</span><p><b>Takım modu opsiyonel</b><small>Puan istemiyorsan Takımsız modda sadece Next ile ilerle.</small></p></div>
+          </div>
+        </div>
+
+        <div class="guide-demo-window" aria-label="Educators interaktif tanıtım">
+          <div class="guide-demo-toolbar">
+            <div><i></i><small>SESLİ · HAREKETLİ ÜRÜN TURU</small></div>
+            <div class="guide-player-actions">
+              <button type="button" id="guideSoundToggle" aria-pressed="true">🔊 Doğal ses</button>
+              <button type="button" id="guideReplay">↻ Baştan</button>
+              <button type="button" id="guideAutoPlay">▶ Oynat</button>
+            </div>
+          </div>
+          <div class="guide-voice-status" id="guideVoiceStatus" role="status" aria-live="polite">Ses motoru hazırlanıyor…</div>
+          <div class="guide-demo-stage scene-1" id="guideDemoStage">
+            <div class="guide-demo-cursor" id="guideDemoCursor" aria-hidden="true"><span></span></div>
+            <div class="guide-sound-wave" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+            <div class="guide-caption" id="guideCaption" aria-live="polite">Sınıfını seçerek başla.</div>
+            <article class="guide-tour-slide active">
+              <small>1 / 4 · BAŞLANGIÇ</small>
+              <h3>Önce kimin için ders hazırladığını seç.</h3>
+              <p>Okul öğretmeni, özel ders öğretmeni ve speaking öğretmeni aynı paneli farklı yollarla kullanabilir.</p>
+              <div class="guide-mock">
+                <div class="guide-mock-row"><span class="active">MEB · 7. Sınıf</span><span>Private Student</span><span>General CEFR</span></div>
+                <div class="guide-mock-question"><small>TEACHING CONTEXT</small><strong>Grade 7 · Personal Life & Well-Being · Speaking</strong></div>
+              </div>
+            </article>
+
+            <article class="guide-tour-slide">
+              <small>2 / 4 · LESSON BUILDER</small>
+              <h3>Dersin iskeleti otomatik gelir.</h3>
+              <p>Warm-up, vocabulary, practice game, speaking ve exit. Öğretmen neyin neden orada olduğunu açıkça görür.</p>
+              <div class="guide-mock">
+                <div class="guide-mock-flow">
+                  <span>5 min <b>Warm-up</b><i>Konuyu aç</i></span>
+                  <span>8 min <b>Vocabulary</b><i>Hedef kelimeler</i></span>
+                  <span>10 min <b>Practice Game</b><i>İsteğe bağlı</i></span>
+                  <span>12 min <b>Speaking</b><i>Ana üretim</i></span>
+                  <span>5 min <b>Exit</b><i>Hızlı kontrol</i></span>
+                </div>
+              </div>
+            </article>
+
+            <article class="guide-tour-slide">
+              <small>3 / 4 · GAMES</small>
+              <h3>Oyun açınca önce nasıl oynanacağı görülür.</h3>
+              <p>Her oyunda amaç, yaklaşık süre ve oyun şekli gösterilir. Takım modu yalnızca istenirse açılır.</p>
+              <div class="guide-mode-demo">
+                <div><strong>✓ Takımsız</strong><span>Bireysel, çift veya tüm sınıf. Puan yok; sadece sorular ilerler.</span></div>
+                <div><strong>2 Takım</strong><span>Sınıf iki gruba ayrılır; öğretmen doğru cevaplarda puan ekler.</span></div>
+              </div>
+            </article>
+
+            <article class="guide-tour-slide">
+              <small>4 / 4 · LIVE CLASS</small>
+              <h3>Dersi tahtadan yönet.</h3>
+              <p>Soruyu göster, öğrenciyi konuştur, Next ile sonraki aşamaya geç. Takım puanı kullanıyorsan aynı ekranda tut.</p>
+              <div class="guide-mock">
+                <div class="guide-mock-question"><small>SPEAKING</small><strong>What food do you enjoy most? Give a reason.</strong></div>
+                <div class="guide-mock-row" style="margin-top:9px"><span class="active">Next question →</span><span>Takımsız</span><span>2 Takım</span></div>
+              </div>
+            </article>
+          </div>
+          <div class="guide-progress">
+            <button class="active" type="button" data-guide-dot aria-label="Adım 1"></button>
+            <button type="button" data-guide-dot aria-label="Adım 2"></button>
+            <button type="button" data-guide-dot aria-label="Adım 3"></button>
+            <button type="button" data-guide-dot aria-label="Adım 4"></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="teacher-demo-section" id="teacher-demo">
+      <div class="teacher-demo-intro">
+        <span class="section-kicker light">TEACHER WORKSPACE</span>
+        <h2>Öğretmen Platformu</h2>
+        <p>Burası artık küçük bir demo alanı değil. Sınıflarını, öğrencilerini, müfredatı, ders oluşturucuyu, materyalleri, oyunları ve raporları tam ekran çalışma alanından yönet.</p>
+      </div>
+
+      <div class="teacher-app" id="teacherApp">
+        <aside class="teacher-sidebar">
+          <div class="sidebar-brand">
+            <img src="../assets/icons/brand-icon.svg" alt="">
+            <div><b>LanguageLab Akademi Educators</b><span>Teacher workspace</span></div>
+          </div>
+          <nav>
+            <button class="side-item active" data-panel="overview"><span>⌂</span> Bugün</button>
+            <button class="side-item" data-panel="planner"><span>◷</span> Planlayıcı</button>
+            <button class="side-item" data-panel="curriculum"><span>◎</span> Müfredat</button>
+            <button class="side-item" data-panel="classes"><span>▦</span> Sınıflarım</button>
+            <button class="side-item" data-panel="private"><span>●</span> Özel Öğrenciler</button>
+            <button class="side-item" data-panel="assistant"><span>✦</span> Teacher Assistant <em class="side-beta">BETA</em></button>
+            <button class="side-item" data-panel="builder"><span>＋</span> Ders Oluşturucu</button>
+            <button class="side-item" data-panel="library"><span>▣</span> Derslerim</button>
+            <button class="side-item" data-panel="assignments"><span>✓</span> Ödevler</button>
+            <button class="side-item" data-panel="resources"><span>▤</span> Materyal Stüdyosu</button>
+            <button class="side-item" data-panel="games"><span>◫</span> Oyun Kütüphanesi</button>
+            <button class="side-item" data-panel="tools"><span>⚙</span> Sınıf Araçları</button>
+            <button class="side-item" data-panel="reports"><span>↗</span> Raporlar</button>
+            <button class="side-item" data-panel="school"><span>◇</span> School Workspace <em class="side-beta">BETA</em></button>
+            <button class="side-item" data-panel="settings"><span>⚙</span> Ayarlar</button>
+          </nav>
+          <div class="sidebar-plan">
+            <small>TEACHER ACCOUNT</small>
+            <b>LanguageLab Akademi Educators</b>
+            <span>Sınıflarınız ve dersleriniz hesabınıza bağlıdır.</span>
+          </div>
+        </aside>
+
+        <div class="teacher-workspace">
+          <div class="workspace-top">
+            <div>
+              <small id="workspaceDateLabel">TEACHER SPACE</small>
+              <strong id="workspaceTitle">Good morning, Teacher 👋</strong>
+            </div>
+            <div class="workspace-actions">
+              <button class="ghost-button" type="button" id="openTeacherGuide" data-open-guide>Nasıl kullanılır?</button>
+              <button class="ghost-button" type="button" data-open-student>Student view</button>
+              <button class="solid-button" type="button" data-panel-target="builder">+ Ders oluştur</button>
+            </div>
+          </div>
+
+          <div class="mobile-workspace-tabs" aria-label="Teacher panel navigation">
+            <button class="active" data-panel="overview">Bugün</button>
+            <button data-panel="planner">Planlayıcı</button>
+            <button data-panel="curriculum">Müfredat</button>
+            <button data-panel="classes">Sınıflarım</button>
+            <button data-panel="private">Özel Öğrenciler</button>
+            <button data-panel="assistant">Teacher Assistant</button>
+            <button data-panel="builder">Ders Oluşturucu</button>
+            <button data-panel="library">Derslerim</button>
+            <button data-panel="assignments">Ödevler</button>
+            <button data-panel="resources">Materyaller</button>
+            <button data-panel="games">Oyunlar</button>
+            <button data-panel="tools">Araçlar</button>
+            <button data-panel="reports">Raporlar</button>
+            <button data-panel="school">School Workspace</button>
+            <button data-panel="settings">Ayarlar</button>
+          </div>
+
+          <section class="workspace-panel active" data-panel-view="overview">
+            <div class="edu-os-intro">
+              <div><small>ÖĞRETMEN ÇALIŞMA ALANI</small><h3>Bugün ne öğreteceksin?</h3></div>
+              <p>Okul sınıfı, özel ders veya speaking dersi. Akışı seç; panel seni müfredat, ders planı, materyal ve oyuna götürsün.</p>
+            </div>
+            <div class="first-use-banner" id="firstUseBanner">
+              <div><i>?</i><p><strong>İlk kez mi kullanıyorsun?</strong><span>2 dakikalık tur, ders planlama ve oyun modlarını gösterir.</span></p></div>
+              <div class="guide-banner-actions"><button type="button" id="bannerOpenGuide">Turu göster</button><button type="button" id="closeGuideBanner">Kapat</button></div>
+            </div>
+            <div class="edu-workflow-grid">
+              <button class="edu-workflow-card assistant-workflow-card" type="button" data-workflow="assistant"><small>TEACHER ASSISTANT · BETA</small><strong>Bir brief ver, ders paketini hazırla</strong><span>Ders planı + speaking + worksheet + ödev + oyun önerisi.</span></button>
+              <button class="edu-workflow-card" type="button" data-workflow="curriculum"><small>MEB 2026–27</small><strong>Okul dersi hazırla</strong><span>Sınıf → tema → beceri → ders akışı.</span></button>
+              <button class="edu-workflow-card" type="button" data-workflow="builder"><small>QUICK BUILD</small><strong>Dakikalar içinde ders oluştur</strong><span>Yaş, seviye, konu ve süreyi seç; akışı hazırla.</span></button>
+              <button class="edu-workflow-card" type="button" data-workflow="library"><small>REUSE</small><strong>Kaydettiğim dersi aç</strong><span>Hazırladığın dersi tekrar kullan, düzenle veya yazdır.</span></button>
+              <button class="edu-workflow-card" type="button" data-workflow="games"><small>INSTANT CLASS</small><strong>Şimdi bir oyun aç</strong><span>Speaking, vocabulary, grammar veya takım oyunu.</span></button>
+            </div>
+
+            <div class="teacher-retention-grid">
+              <article class="teacher-onboarding-card">
+                <div class="retention-card-head"><div><small>İLK KURULUM</small><strong>Platformu 4 adımda kendi çalışma alanın yap.</strong></div><span id="teacherSetupPercent">0%</span></div>
+                <div class="setup-progress"><i id="teacherSetupProgress"></i></div>
+                <div class="setup-steps" id="teacherSetupSteps">
+                  <button type="button" class="done" data-setup-step="account"><b>1</b><span><strong>Öğretmen hesabı</strong><small>Giriş yapıldı</small></span><em>✓</em></button>
+                  <button type="button" data-setup-step="class"><b>2</b><span><strong>İlk sınıfını oluştur</strong><small>Yaş ve seviyeyi bir kez tanımla</small></span><em>→</em></button>
+                  <button type="button" data-setup-step="lesson"><b>3</b><span><strong>İlk dersini kaydet</strong><small>Sonra tek tıkla yeniden kullan</small></span><em>→</em></button>
+                  <button type="button" data-setup-step="live"><b>4</b><span><strong>Sınıfta başlat</strong><small>Kodla öğrenci al ve canlı akışı dene</small></span><em>→</em></button>
+                </div>
+              </article>
+
+              <article class="recent-lessons-home">
+                <div class="retention-card-head"><div><small>DERSLERİM</small><strong>Son kaydettiğin dersler</strong></div><button type="button" data-panel-target="library">Tümünü aç →</button></div>
+                <div class="recent-lesson-list" id="recentLessonList"><p>Kaydedilmiş dersler yükleniyor…</p></div>
+              </article>
+            </div>
+            <div class="today-planner-strip" id="todayPlannerStrip">
+              <div class="today-planner-head"><div><small>BUGÜNÜN PLANI</small><strong>Yaklaşan derslerin</strong></div><button type="button" data-panel-target="planner">Planlayıcıyı aç →</button></div>
+              <div class="today-planner-list" id="todayPlannerList"><p>Plan yükleniyor…</p></div>
+            </div>
+            <div class="metric-grid">
+              <article><span>AKTİF SINIF</span><strong>0</strong><small>Hesabındaki sınıflar</small></article>
+              <article><span>ÖĞRENCİ</span><strong>0</strong><small>Tüm sınıflarda</small></article>
+              <article><span>CANLI DERS</span><strong>0</strong><small>Şu anda aktif</small></article>
+              <article><span>SEÇİLİ SINIF</span><strong>—</strong><small>Çalışma alanı</small></article>
+            </div>
+            <div class="overview-grid">
+              <article class="next-lesson-card">
+                <div class="card-head"><span>SONRAKİ DERS</span><b>Plan yok</b></div>
+                <h3>Henüz sınıf yok</h3>
+                <p>İlk sınıfını oluşturduğunda ders planın burada görünecek.</p>
+                <div class="lesson-parts"><span>Warm-up</span><span>Vocabulary</span><span>Practice Game</span><span>Speaking</span></div>
+                <button type="button" data-panel-target="classes">Sınıf oluştur <span>→</span></button>
+              </article>
+              <article class="class-code-card">
+                <span>CANLI SINIF KODU</span>
+                <strong>------</strong>
+                <p>Önce bir sınıf oluşturun.</p>
+                <div class="class-code-actions"><button type="button" data-copy-code>Kodu kopyala</button><button type="button" data-copy-join-link>Katılım linkini kopyala</button></div>
+              </article>
+            </div>
+            <div class="recent-table">
+              <div class="table-title"><strong>Sınıflarım</strong><span>0 sınıf</span></div>
+              <div class="table-row table-head"><span>Sınıf</span><span>Profil</span><span>Öğrenci</span><span>Durum</span></div>
+            </div>
+          </section>
+
+
+          <section class="workspace-panel" data-panel-view="planner" id="teacher-planner">
+            <div class="panel-header">
+              <div><small>TEACHER PLANNER</small><h3>Ders gününü platformdan yönet.</h3></div>
+              <span class="adaptive-badge">TODAY + UPCOMING</span>
+            </div>
+            <div class="planner-layout">
+              <form class="planner-form" id="plannerForm">
+                <div class="planner-form-head"><small>YENİ PLAN</small><strong>Takvime ders ekle</strong><p>Sınıf, özel öğrenci veya serbest bir ders için tarih ve saat belirle.</p></div>
+                <label>Bağlantı
+                  <select id="plannerTarget"><option value="">Serbest ders / bağlantısız</option></select>
+                </label>
+                <label>Ders başlığı
+                  <input id="plannerTitle" type="text" maxlength="120" required placeholder="Örn. 6-B · Travel Speaking">
+                </label>
+                <div class="planner-two">
+                  <label>Tarih ve saat<input id="plannerStart" type="datetime-local" required></label>
+                  <label>Süre (dk)<input id="plannerDuration" type="number" min="5" max="300" value="40"></label>
+                </div>
+                <label>Not
+                  <textarea id="plannerNotes" rows="4" maxlength="2000" placeholder="Hazırlanacak materyal, hedef veya kısa not…"></textarea>
+                </label>
+                <button class="generate-button" type="submit" id="plannerSubmit">Takvime ekle →</button>
+              </form>
+              <div class="planner-agenda">
+                <div class="planner-agenda-head"><div><small>YAKLAŞAN</small><strong>Önündeki dersler</strong></div><button type="button" id="refreshPlanner">↻ Yenile</button></div>
+                <div class="planner-list" id="plannerList" aria-live="polite"><p>Plan yükleniyor…</p></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="workspace-panel" data-panel-view="curriculum" id="curriculum-hub">
+            <div class="panel-header">
+              <div><small>MÜFREDAT MERKEZİ</small><h3>Türkiye'deki öğretmen akışından başla.</h3></div>
+              <span class="adaptive-badge">MEB 2026–27 + CEFR</span>
+            </div>
+            <div class="curriculum-layout">
+              <div class="curriculum-filter-card">
+                <div class="teaching-path-picker" role="radiogroup" aria-label="Teaching path">
+                  <button class="teaching-path-card active" type="button" data-track-choice="meb"><small>MEB 2026–27</small><strong>Okul müfredatı</strong><span>Sınıf ve resmî tema üzerinden ilerle.</span></button>
+                  <button class="teaching-path-card" type="button" data-track-choice="private"><small>1-TO-1</small><strong>Private Tutor</strong><span>Öğrenci hedefi ve seviyesine göre planla.</span></button>
+                  <button class="teaching-path-card" type="button" data-track-choice="cefr"><small>A1–B2</small><strong>General English</strong><span>CEFR ve beceri odaklı serbest akış.</span></button>
+                  <button class="teaching-path-card" type="button" data-track-choice="custom"><small>FREE MODE</small><strong>Serbest / Özel</strong><span>Müfredat zorunlu değil; öğretmen karar verir.</span></button>
+                </div>
+                <select id="curriculumTrack" class="visually-hidden-select" aria-label="Teaching path">
+                  <option value="meb">MEB English · Türkiye</option>
+                  <option value="private">Private Tutor</option>
+                  <option value="cefr">General English · CEFR</option>
+                  <option value="custom">Custom / Free</option>
+                </select>
+                <div class="curriculum-fields">
+                  <label data-curriculum-grade>Grade
+                    <select id="curriculumGrade">
+                      <option value="5">5. Sınıf</option>
+                      <option value="6">6. Sınıf</option>
+                      <option value="7" selected>7. Sınıf</option>
+                      <option value="8">8. Sınıf</option>
+                      <option value="9">9. Sınıf</option>
+                      <option value="10">10. Sınıf</option>
+                      <option value="11">11. Sınıf</option>
+                      <option value="12">12. Sınıf</option>
+                    </select>
+                  </label>
+                  <label data-upper-program hidden>Lise programı
+                    <select id="curriculumUpperProgram">
+                      <option value="regular" selected>9–12 Regular Program</option>
+                      <option value="prep">Hazırlık sonrası program</option>
+                    </select>
+                  </label>
+                  <label>English level
+                    <select id="curriculumLevel">
+                      <option>Pre-A1</option><option>A1</option><option selected>A2</option><option>B1</option><option>B2</option>
+                    </select>
+                  </label>
+                  <label class="full">Theme / unit<select id="curriculumTheme"></select></label>
+                  <label class="full">Main skill
+                    <select id="curriculumSkill">
+                      <option>Speaking</option>
+                      <option>Vocabulary</option>
+                      <option>Grammar</option>
+                      <option>Listening</option>
+                      <option>Reading</option>
+                      <option>Writing</option>
+                      <option>Mixed Skills</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="curriculum-filter-note">2026–27 döneminde 5–7 ve 9–11. sınıflarda TYMM uygulanır; 8. ve 12. sınıflar önceki programı sürdürür.</div>
+                <div class="curriculum-verification"><i>✓</i><span>Resmî tema adları MEB kaynağına göre gösterilir; lisede Regular ve Hazırlık sonrası program ayrımı yapılır. <a href="https://tymm.meb.gov.tr/ogretim-programlari/" target="_blank" rel="noreferrer">MEB kaynağı ↗</a></span></div>
+              </div>
+              <article class="curriculum-result-card">
+                <small>YOUR TEACHING CONTEXT</small>
+                <h4 id="curriculumSummaryTitle">Personal Life & Well-Being</h4>
+                <p id="curriculumSummaryMeta">MEB 2026-27 · Grade 7 · CEFR A2 · Speaking</p>
+                <div class="curriculum-summary-tags" id="curriculumSummaryTags"></div>
+                <div class="teacher-freedom-note"><b>Öğretmen kontrolü:</b> Bu seçimler öneri üretir; Lesson Builder'da yaş, seviye, süre, konu ve ders aşamalarının tamamını değiştirebilirsin.</div>
+                <div class="curriculum-actions">
+                  <button type="button" id="curriculumBuildLesson">Build this lesson →</button>
+                  <button type="button" id="curriculumOpenResources">Create resources</button>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="workspace-panel" data-panel-view="classes">
+            <div class="panel-header">
+              <div><small>SINIFLARIM</small><h3>Sınıflarını tek yerde yönet.</h3></div>
+              <button class="solid-button" type="button" id="newClassButton">+ New class</button>
+            </div>
+            <div class="class-card-grid" id="classCardGrid" aria-live="polite">
+              <article><div><span>5-A</span><small>9–11 · A1</small></div><strong>24 students</strong><p>Food · School · Daily Life</p><button data-use-class="5-A" data-age="9-11" data-level="A1">Use class →</button></article>
+              <article><div><span>6-B</span><small>11–12 · A2</small></div><strong>22 students</strong><p>Travel · Hobbies · Past Simple</p><button data-use-class="6-B" data-age="12-14" data-level="A2">Use class →</button></article>
+              <article><div><span>Teen Speaking</span><small>15–17 · B1</small></div><strong>21 students</strong><p>Technology · Opinions · Real life</p><button data-use-class="Teen Speaking" data-age="15-17" data-level="B1">Use class →</button></article>
+            </div>
+          </section>
+
+
+          <section class="workspace-panel" data-panel-view="private" id="private-teaching">
+            <div class="panel-header">
+              <div><small>ÖZEL DERS ALANI</small><h3>Özel ders öğrencisini dersten derse taşı.</h3></div>
+              <button class="solid-button" type="button" id="addPrivateStudent">+ Add student</button>
+            </div>
+            <div class="private-top">
+              <article class="private-overview-card">
+                <small>PRIVATE TEACHER FLOW</small>
+                <h4>Profil → ders → ödev → tekrar → ilerleme</h4>
+                <p>Özel ders öğretmeni ayrı Excel, not uygulaması ve oyun sekmeleri kullanmak yerine öğrencinin hedefini ve sonraki dersi aynı çalışma alanında tutar.</p>
+                <button type="button" data-workflow="builder">Plan a lesson →</button>
+              </article>
+              <div class="private-checklist">
+                <strong>Her öğrenci için</strong>
+                <span>✓ CEFR seviyesi + okul sınıfı</span>
+                <span>✓ Hedefler ve zorlandığı konular</span>
+                <span>✓ Son ders / sonraki ders</span>
+                <span>✓ Homework + revision list</span>
+                <span>✓ Speaking / vocabulary / grammar notları</span>
+              </div>
+            </div>
+            <div class="private-student-grid" id="privateStudentGrid"></div>
+            <div class="edu-local-note"><b>BETA</b><span>Sınıflar, kaydedilmiş dersler ve özel öğrenci profilleri öğretmen hesabına bağlıdır. Aynı hesapla farklı cihazlardan kaldığın yerden devam edebilirsin.</span></div>
+          </section>
+
+
+          <section class="workspace-panel" data-panel-view="assistant" id="teacher-assistant">
+            <div class="panel-header">
+              <div><small>TEACHER ASSISTANT · BETA</small><h3>Bir brief ver. Hazır ders paketi al.</h3></div>
+              <span class="adaptive-badge">ACCOUNT-SYNCED · PRIVATE</span>
+            </div>
+            <div class="assistant-value-strip">
+              <div><b>1 brief</b><span>Konu, seviye ve hedefi yaz.</span></div>
+              <div><b>5 çıktı</b><span>Plan, speaking, worksheet, ödev, oyun.</span></div>
+              <div><b>1 tık</b><span>Lesson Builder'a aktar ve düzenle.</span></div>
+            </div>
+            <div class="assistant-layout">
+              <form class="assistant-form" id="assistantForm">
+                <div class="assistant-form-head">
+                  <small>LESSON BRIEF</small>
+                  <strong>Bugünkü ders için neye ihtiyacın var?</strong>
+                  <p>Kısa yazman yeterli. Çıktı İngilizce dersi için hazırlanır; panel dili Türkçe veya İngilizce olabilir.</p>
+                </div>
+                <label>Konu / unit
+                  <input id="assistantTopic" type="text" maxlength="100" required placeholder="Örn. Travel, Food, Present Perfect, Job Interviews">
+                </label>
+                <div class="form-two">
+                  <label>Yaş grubu
+                    <select id="assistantAge">
+                      <option value="6-8">6–8</option><option value="9-11">9–11</option>
+                      <option value="12-14" selected>12–14</option><option value="15-17">15–17</option><option value="18+">18+</option>
+                    </select>
+                  </label>
+                  <label>Seviye
+                    <select id="assistantLevel">
+                      <option>Pre-A1</option><option>A1</option><option selected>A2</option><option>B1</option><option>B2</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="form-two">
+                  <label>Ders süresi
+                    <select id="assistantDuration">
+                      <option value="20">20 dk</option><option value="30">30 dk</option><option value="40" selected>40 dk</option>
+                      <option value="50">50 dk</option><option value="60">60 dk</option><option value="90">90 dk</option>
+                    </select>
+                  </label>
+                  <label>Öğrenci sayısı
+                    <input id="assistantClassSize" type="number" min="1" max="80" value="8">
+                  </label>
+                </div>
+                <label>Ana hedef
+                  <select id="assistantGoal">
+                    <option value="speaking" selected>Speaking</option>
+                    <option value="vocabulary">Vocabulary</option>
+                    <option value="grammar">Grammar</option>
+                    <option value="mixed">Mixed</option>
+                  </select>
+                </label>
+                <label>Ek not <span>opsiyonel</span>
+                  <textarea id="assistantContext" rows="5" maxlength="500" placeholder="Örn. Öğrenciler konuşmaktan çekiniyor. Pair-work ağırlıklı olsun. Yarın sınavları var."></textarea>
+                </label>
+                <button class="generate-button assistant-generate" id="assistantGenerate" type="submit">Ders paketini hazırla <span>✦</span></button>
+                <div class="lesson-generate-status" id="assistantStatus" hidden aria-live="polite"></div>
+                <p class="form-note">Bu beta sürüm yapılandırılmış öğretim kurallarıyla çalışır. Çıktıyı öğretmen kontrolüyle düzenleyip kullan.</p>
+              </form>
+
+              <div class="assistant-output" id="assistantOutput">
+                <div class="assistant-empty" id="assistantEmpty">
+                  <span>✦</span>
+                  <strong>Hazır olduğunda brief'i gönder.</strong>
+                  <p>Burada tam ders paketi görünecek. İstersen Lesson Builder'a aktarabilir, istersen metni kopyalayabilirsin.</p>
+                </div>
+                <div id="assistantResult" hidden>
+                  <div class="assistant-result-head">
+                    <div><small>READY-TO-TEACH PACK</small><h4 id="assistantResultTitle">Lesson pack</h4></div>
+                    <span id="assistantResultMeta">A2 · 40 min</span>
+                  </div>
+                  <p class="assistant-objective" id="assistantObjective"></p>
+                  <div class="assistant-chip-row" id="assistantVocab"></div>
+                  <div class="assistant-result-grid">
+                    <article class="assistant-plan-card">
+                      <small>LESSON FLOW</small>
+                      <div id="assistantPlan"></div>
+                    </article>
+                    <article>
+                      <small>SPEAKING QUESTIONS</small>
+                      <ol id="assistantSpeaking"></ol>
+                    </article>
+                    <article>
+                      <small>WORKSHEET BLUEPRINT</small>
+                      <ol id="assistantWorksheet"></ol>
+                    </article>
+                    <article>
+                      <small>HOMEWORK</small>
+                      <ol id="assistantHomework"></ol>
+                    </article>
+                  </div>
+                  <article class="assistant-game-card">
+                    <div><small>GAME SUGGESTION</small><strong id="assistantGameName">Speaking Wheel</strong></div>
+                    <p id="assistantGameText"></p>
+                  </article>
+                  <div class="assistant-actions">
+                    <button type="button" class="solid-button" id="assistantApplyBuilder">Lesson Builder'a aktar →</button>
+                    <button type="button" class="outline-button" id="assistantCopyPack">Paketi kopyala</button>
+                  </div>
+                  <div class="edu-local-note assistant-engine-note"><b>BETA</b><span>Üretim motoru: yapılandırılmış öğretim kuralları. Harici bir model yanıtı değildir; öğretmen düzenlemesi önerilir.</span></div>
+                </div>
+              </div>
+            </div>
+
+            <section class="assistant-history-shell" aria-label="Teacher Assistant history">
+              <div class="assistant-history-head">
+                <div><small>SON OLUŞTURULANLAR</small><strong>Önceki ders paketlerin</strong><p>Son paketleri tekrar aç, Builder'a aktar veya geçmişten kaldır.</p></div>
+                <button type="button" id="assistantHistoryRefresh">↻ Yenile</button>
+              </div>
+              <div class="assistant-history-list" id="assistantHistoryList">
+                <div class="assistant-history-empty">Geçmiş yükleniyor…</div>
+              </div>
+            </section>
+          </section>
+
+          <section class="workspace-panel" data-panel-view="builder">
+            <div class="panel-header">
+              <div><small>LESSON BUILDER</small><h3>Sınıfına uygun dersi oluştur.</h3></div>
+              <span class="adaptive-badge">AGE + CEFR ADAPTIVE</span>
+            </div>
+
+            <div class="builder-layout">
+              <form class="lesson-form" id="lessonForm">
+                <div class="builder-form-head">
+                  <div><small>CLASS PROFILE</small><h4>Set the class, then build.</h4></div>
+                  <span>Smart setup</span>
+                  <p>Age, CEFR level, topic, duration and class size work together to shape the prompt and lesson flow.</p>
+                  <div class="builder-form-points"><b>✓ 5 age groups</b><b>✓ Pre-A1–B2</b><b>✓ 20–60 min</b></div>
+                </div>
+                <label>Class name
+                  <input id="className" type="text" value="6-B" maxlength="40">
+                </label>
+                <div class="form-two">
+                  <label>Age group
+                    <select id="ageGroup">
+                      <option value="6-8">6–8 · Kids</option>
+                      <option value="9-11">9–11 · Junior</option>
+                      <option value="12-14" selected>12–14 · Pre-Teen</option>
+                      <option value="15-17">15–17 · Teen</option>
+                      <option value="18+">18+ · Adult</option>
+                    </select>
+                  </label>
+                  <label>English level
+                    <select id="level">
+                      <option>Pre-A1</option>
+                      <option>A1</option>
+                      <option selected>A2</option>
+                      <option>B1</option>
+                      <option>B2</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="form-two">
+                  <label>Topic
+                    <select id="topic">
+                      <option value="travel" selected>Travel</option>
+                      <option value="food">Food</option>
+                      <option value="school">School</option>
+                      <option value="hobbies">Hobbies</option>
+                      <option value="technology">Technology</option>
+                      <option value="daily-life">Daily Life</option>
+                      <option value="custom">Custom topic</option>
+                    </select>
+                    <span class="custom-topic-wrap" id="customTopicWrap" hidden><input id="customTopic" type="text" maxlength="70" placeholder="Kendi konunu yaz"></span>
+                  </label>
+                  <label>Duration
+                    <select id="duration">
+                      <option value="20">20 min</option>
+                      <option value="30">30 min</option>
+                      <option value="40" selected>40 min</option>
+                      <option value="50">50 min</option>
+                      <option value="60">60 min</option>
+                      <option value="90">90 min</option>
+                      <option value="120">120 min</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="form-two">
+                  <label>Primary goal
+                    <select id="goal">
+                      <option value="speaking" selected>Speaking confidence</option>
+                      <option value="vocabulary">Vocabulary practice</option>
+                      <option value="grammar">Grammar in context</option>
+                      <option value="mixed">Mixed lesson</option>
+                    </select>
+                  </label>
+                  <label>Student count
+                    <input id="studentCount" type="number" min="1" max="60" value="22">
+                  </label>
+                </div>
+                <div class="lesson-free-controls">
+                  <small>Ders yapısı · istediğini kullan, istediğini çıkar</small>
+                  <div class="lesson-presets" id="lessonPresets">
+                    <button class="active" type="button" data-lesson-preset="balanced">Dengeli</button>
+                    <button type="button" data-lesson-preset="speaking">Speaking ağırlıklı</button>
+                    <button type="button" data-lesson-preset="vocabulary">Vocabulary ağırlıklı</button>
+                    <button type="button" data-lesson-preset="grammar">Grammar ağırlıklı</button>
+                    <button type="button" data-lesson-preset="custom">Özel</button>
+                  </div>
+                  <div class="lesson-stage-picker" id="lessonStagePicker">
+                    <label><input type="checkbox" data-lesson-stage="warmup" checked> Warm-up</label>
+                    <label><input type="checkbox" data-lesson-stage="vocabulary" checked> Vocabulary</label>
+                    <label><input type="checkbox" data-lesson-stage="game" checked> Practice Game</label>
+                    <label><input type="checkbox" data-lesson-stage="speaking" checked> Speaking</label>
+                    <label><input type="checkbox" data-lesson-stage="exit" checked> Exit</label>
+                  </div>
+                </div>
+                <button class="generate-button" type="submit">Dersi oluştur <span>✦</span></button>
+                <div class="lesson-generate-status" id="lessonGenerateStatus" hidden aria-live="polite"></div>
+                <p class="form-note">Aynı ayarlarla tekrar bastığında yeni soru ve yeni ders varyasyonu hazırlanır. Seçimleri değiştirerek farklı sınıf profilleri oluşturabilirsin.</p>
+              </form>
+
+              <div class="lesson-output" id="lessonOutput">
+                <div class="output-head">
+                  <div><small>LIVE PREVIEW</small><strong id="previewClass">6-B · A2</strong></div>
+                  <span id="previewDuration">40 min</span>
+                </div>
+                <article class="question-preview">
+                  <div class="question-meta"><span id="previewAge">12–14 YEARS</span><span id="previewTopic">TRAVEL</span></div>
+                  <small>ADAPTED SPEAKING PROMPT</small>
+                  <h4 id="adaptiveQuestion">If you could travel anywhere next weekend, where would you go and why?</h4>
+                  <p id="adaptiveSupport">Answer in 3–4 sentences. Ask one follow-up question to a classmate.</p>
+                  <button type="button" id="newQuestion">↻ Another question</button>
+                </article>
+                <div class="generated-plan" id="generatedPlan"></div>
+                <div class="phase-guide" aria-label="Ders aşamalarının açıklaması">
+                  <div><b>Warm-up</b><span>Konuyu açar.</span></div>
+                  <div><b>Vocabulary</b><span>Hedef kelimeleri hazırlar.</span></div>
+                  <div><b>Practice Game</b><span>Kısa uygulama; takım şart değil.</span></div>
+                  <div><b>Speaking</b><span>Öğrenci dili üretir.</span></div>
+                  <div><b>Exit</b><span>Dersi hızlıca kontrol eder.</span></div>
+                </div>
+                <div class="output-actions">
+                  <button type="button" class="outline-button" id="saveDemoClass">Ders planını kaydet</button>
+                  <button type="button" class="solid-button" id="startDemoLesson">Dersi başlat ▶</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+
+          <section class="workspace-panel" data-panel-view="library" id="lesson-library">
+            <div class="panel-header">
+              <div><small>DERSLERİM</small><h3>Bir kez hazırla. Her sınıfta yeniden kullan.</h3></div>
+              <button class="solid-button" type="button" data-panel-target="builder">+ Yeni ders oluştur</button>
+            </div>
+            <div class="library-value-strip">
+              <div><b>Kaydet</b><span>Ders planlarını hesabında tut.</span></div>
+              <div><b>Yeniden kullan</b><span>Aynı yapıyı başka sınıfa uyarla.</span></div>
+              <div><b>Yazdır</b><span>Öğretmen planını tek tıkla çıktı al.</span></div>
+            </div>
+            <div class="lesson-library-toolbar">
+              <label><span>Derslerde ara</span><input id="lessonLibrarySearch" type="search" placeholder="Başlık, konu veya hedef ara…"></label>
+              <select id="lessonLibraryGoal" aria-label="Ders hedefi filtresi">
+                <option value="all">Tüm hedefler</option>
+                <option value="speaking">Speaking</option>
+                <option value="vocabulary">Vocabulary</option>
+                <option value="grammar">Grammar</option>
+                <option value="mixed">Mixed</option>
+              </select>
+              <button type="button" id="refreshLessonLibrary">↻ Yenile</button>
+            </div>
+            <div class="lesson-library-grid" id="lessonLibraryGrid" aria-live="polite">
+              <div class="library-empty"><strong>Derslerin yükleniyor…</strong><span>Kaydettiğin dersler burada görünecek.</span></div>
+            </div>
+          </section>
+
+          <section class="workspace-panel" data-panel-view="assignments" id="assignment-center">
+            <div class="panel-header">
+              <div><small>ÖDEVLER</small><h3>Ders bittikten sonra öğrenme devam etsin.</h3></div>
+              <span class="adaptive-badge">CLASS ASSIGNMENTS</span>
+            </div>
+            <div class="assignment-layout">
+              <form class="assignment-builder" id="assignmentForm">
+                <div class="assignment-builder-head">
+                  <small>YENİ ÖDEV</small>
+                  <strong>Sınıfa görev gönder</strong>
+                  <p>Kaydettiğin bir dersi ödeve dönüştür veya sıfırdan kısa bir görev oluştur.</p>
+                </div>
+                <label>Sınıf
+                  <select id="assignmentClass" required><option value="">Önce sınıf seç</option></select>
+                </label>
+                <label>Kaydedilmiş ders <span>opsiyonel</span>
+                  <select id="assignmentLesson"><option value="">Ders seçmeden devam et</option></select>
+                </label>
+                <label>Başlık
+                  <input id="assignmentTitle" type="text" maxlength="120" required placeholder="Örn. Travel speaking practice">
+                </label>
+                <label>Öğrenci yönergesi
+                  <textarea id="assignmentInstructions" rows="5" maxlength="3000" placeholder="Ne yapmasını istediğini kısa ve net yaz."></textarea>
+                </label>
+                <div class="assignment-two">
+                  <label>Son teslim
+                    <input id="assignmentDue" type="datetime-local">
+                  </label>
+                  <label>Durum
+                    <select id="assignmentStatus"><option value="published">Hemen yayınla</option><option value="draft">Taslak kaydet</option></select>
+                  </label>
+                </div>
+                <button class="generate-button" type="submit" id="assignmentSubmit">Ödevi oluştur →</button>
+                <p class="form-note">Yayınlanan ödev, sınıf koduyla giriş yapan öğrencilerin ekranında otomatik görünür.</p>
+              </form>
+              <div class="assignment-list-shell">
+                <div class="assignment-list-head"><div><small>SINIF ÖDEVLERİ</small><strong>Yayınlanan ve taslak ödevler</strong></div><button type="button" id="refreshAssignments">↻ Yenile</button></div>
+                <div class="assignment-list" id="assignmentList" aria-live="polite"><p>Ödevler yükleniyor…</p></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="workspace-panel" data-panel-view="resources">
+            <div class="panel-header">
+              <div><small>RESOURCE STUDIO</small><h3>Bir ders konusunu altı farklı materyale çevir.</h3></div>
+              <span class="adaptive-badge">TEACH ON ANY DEVICE</span>
+            </div>
+            <div class="resource-layout">
+              <div class="resource-builder">
+                <label>Lesson / unit<input id="resourceSource" type="text" value="Grade 7 · Personal Life & Well-Being"></label>
+                <label>Student level
+                  <select><option>A1</option><option selected>A2</option><option>B1</option><option>B2</option></select>
+                </label>
+                <div class="resource-type-buttons" id="resourceTypeButtons">
+                  <button class="active" type="button" data-resource-kind="worksheet">Worksheet</button>
+                  <button type="button" data-resource-kind="vocab">Vocabulary</button>
+                  <button type="button" data-resource-kind="grammar">Grammar</button>
+                  <button type="button" data-resource-kind="speaking">Speaking cards</button>
+                  <button type="button" data-resource-kind="quiz">Mini quiz</button>
+                  <button type="button" data-resource-kind="homework">Homework</button>
+                </div>
+              </div>
+              <article class="resource-preview">
+                <small>RESOURCE BLUEPRINT</small>
+                <h4 id="resourcePreviewTitle">Printable Worksheet</h4>
+                <p id="resourcePreviewLead">Tek sayfada öğretmenin kullanacağı hızlı çalışma kâğıdı.</p>
+                <ul id="resourcePreviewItems"></ul>
+                <div class="resource-preview-actions"><button type="button" id="copyResourcePlan">Planı kopyala</button><button type="button" id="printResourcePlan">Yazdır / PDF</button></div>
+              </article>
+            </div>
+          </section>
+
+          <section class="workspace-panel" data-panel-view="games">
+            <div class="panel-header">
+              <div><small>ADAPTIVE GAME LIBRARY</small><h3>Sınıf profiline göre çalışan oyunlar.</h3></div>
+              <a class="panel-link" href="../games/">Public Game Hub ↗</a>
+            </div>
+            <div class="game-quick-guide">
+              <div><span>1</span><b>Oyunu seç</b><small>Hedef beceriye göre filtrele.</small></div>
+              <div><span>2</span><b>Nasıl oynanır?</b><small>Oyunu açınca kısa yönergeyi oku.</small></div>
+              <div><span>3</span><b>Modu seç</b><small>Takımsız veya 2 Takım.</small></div>
+              <div><span>4</span><b>Next ile ilerle</b><small>Puan yalnızca istersen kullanılır.</small></div>
+            </div>
+            <div class="game-library-toolbar">
+              <input id="gameSearch" type="search" placeholder="Oyun ara: vocabulary, speaking, team..." aria-label="Oyun ara">
+              <div class="game-filter-row">
+                <button class="active" type="button" data-game-filter="all">All</button>
+                <button type="button" data-game-filter="vocab">Vocabulary</button>
+                <button type="button" data-game-filter="speaking">Speaking</button>
+                <button type="button" data-game-filter="grammar">Grammar</button>
+                <button type="button" data-game-filter="team">Takım destekli</button>
+              </div>
+            </div>
+            <div class="edu-game-grid" id="adaptiveGameGrid">
+              <article data-kind="vocab team"><span>🗣️</span><small>VOCAB · TEAM</small><h4>Taboo</h4><p>Hedef kelimeyi seviyeye uygun yasaklı kelimeleri kullanmadan anlat.</p><b>Adaptive vocabulary</b><button type="button" data-launch-game="taboo">Launch →</button></article>
+              <article data-kind="speaking"><span>⚖️</span><small>SPEAKING</small><h4>Would You Rather?</h4><p>Yaşa göre somut seçimden gerekçeli tartışmaya kadar ölçeklenir.</p><b>Reason + follow-up</b><button type="button" data-launch-game="rather">Launch →</button></article>
+              <article data-kind="grammar"><span>🧩</span><small>GRAMMAR</small><h4>Sentence Builder</h4><p>Karışık kelimeleri doğru cümleye dönüştür.</p><b>Grammar in context</b><button type="button" data-launch-game="sentence">Launch →</button></article>
+              <article data-kind="speaking"><span>🎡</span><small>SPEAKING</small><h4>Speaking Wheel</h4><p>Konuya ve seviyeye uygun rastgele speaking prompt getirir.</p><b>Live classroom</b><button type="button" data-launch-game="wheel">Launch →</button></article>
+              <article data-kind="vocab"><span>🧠</span><small>VOCAB</small><h4>Memory Match</h4><p>Kelimeyi tanımı, örneği veya eş anlamlısı ile eşleştir.</p><b>Vocabulary recall</b><button type="button" data-launch-game="memory">Launch →</button></article>
+              <article data-kind="team vocab"><span>🏁</span><small>TEAM · QUIZ</small><h4>Team Quiz</h4><p>Takımlar sırayla soruya cevap verir ve puan toplar.</p><b>Class scoreboard</b><button type="button" data-launch-game="quiz">Launch →</button></article>
+              <article data-kind="vocab"><span>🔀</span><small>VOCAB</small><h4>Word Scramble</h4><p>Karışmış harfleri süre dolmadan doğru kelimeye çevir.</p><b>Fast recall</b><button type="button" data-launch-game="scramble">Launch →</button></article>
+              <article data-kind="grammar vocab"><span>◌</span><small>LANGUAGE</small><h4>Missing Word</h4><p>Cümledeki boşluğu bağlama uygun doğru kelimeyle tamamla.</p><b>Context clues</b><button type="button" data-launch-game="missing">Launch →</button></article>
+              <article data-kind="speaking team"><span>🔥</span><small>SPEAKING · TEAM</small><h4>Hot Seat</h4><p>Bir öğrenci kısa sürede art arda gelen soruları cevaplar.</p><b>Fluency sprint</b><button type="button" data-launch-game="hotseat">Launch →</button></article>
+              <article data-kind="vocab team"><span>⚡</span><small>VOCAB · TEAM</small><h4>Category Race</h4><p>Belirlenen kategoride süre içinde olabildiğince çok kelime üret.</p><b>Timed challenge</b><button type="button" data-launch-game="category">Launch →</button></article>
+              <article data-kind="speaking"><span>🎭</span><small>SPEAKING</small><h4>Role Play</h4><p>Yaşa uygun gerçek hayat senaryosunda iki öğrenci rol alır.</p><b>Functional English</b><button type="button" data-launch-game="roleplay">Launch →</button></article>
+              <article data-kind="speaking grammar"><span>📚</span><small>STORY</small><h4>Story Chain</h4><p>Her öğrenci hikâyeye bir cümle ekler; hedef yapı korunur.</p><b>Creative fluency</b><button type="button" data-launch-game="story">Launch →</button></article>
+              <article data-kind="grammar"><span>🔎</span><small>GRAMMAR</small><h4>Error Hunter</h4><p>Yanlış cümleyi bul, düzelt ve nedenini açıkla.</p><b>Notice the form</b><button type="button" data-launch-game="error">Launch →</button></article>
+              <article data-kind="vocab team"><span>✏️</span><small>VOCAB · TEAM</small><h4>Pictionary Prompt</h4><p>Kelimeyi söylemeden çiz; takımın hedef kelimeyi tahmin etsin.</p><b>Visual vocabulary</b><button type="button" data-launch-game="pictionary">Launch →</button></article>
+              <article data-kind="speaking"><span>👥</span><small>SPEAKING</small><h4>Find Someone Who</h4><p>Sınıfta dolaş, hedef ifadeye uyan birini bul ve follow-up sor.</p><b>Movement + speaking</b><button type="button" data-launch-game="findsomeone">Launch →</button></article>
+            </div>
+          </section>
+
+          <section class="workspace-panel" data-panel-view="tools">
+            <div class="panel-header">
+              <div><small>CLASSROOM TOOLS</small><h3>Ders sırasında gereken küçük araçlar.</h3></div>
+              <span class="adaptive-badge">NO EXTRA TAB NEEDED</span>
+            </div>
+            <div class="tools-grid">
+              <article class="tool-card timer-tool">
+                <small>CLASS TIMER</small>
+                <h4 id="timerDisplay">02:00</h4>
+                <div class="tool-button-row">
+                  <button type="button" data-timer-min="1">1 min</button>
+                  <button type="button" data-timer-min="2">2 min</button>
+                  <button type="button" data-timer-min="5">5 min</button>
+                </div>
+                <div class="tool-button-row">
+                  <button type="button" id="timerStart">Start</button>
+                  <button type="button" id="timerReset">Reset</button>
+                </div>
+              </article>
+              <article class="tool-card student-tool">
+                <small>STUDENT LIST</small>
+                <h4>Random student</h4>
+                <textarea id="studentListInput" rows="5" placeholder="Ali, Ece, Mert, Deniz...">Ali, Ece, Mert, Deniz, Ayşe, Efe, Can, Elif</textarea>
+                <div class="picked-student" id="pickedStudent">?</div>
+                <button type="button" id="pickStudent">Pick a student</button>
+              </article>
+              <article class="tool-card teams-tool">
+                <small>TEAM MAKER</small>
+                <h4>Grupları karıştır.</h4>
+                <label>Team count
+                  <select id="teamCount"><option value="2">2 teams</option><option value="3">3 teams</option><option value="4">4 teams</option></select>
+                </label>
+                <button type="button" id="makeTeams">Create teams</button>
+                <div class="made-teams" id="madeTeams"></div>
+              </article>
+              <article class="tool-card prompt-tool">
+                <small>QUICK PROMPT</small>
+                <h4>Bir sonraki konuşmayı başlat.</h4>
+                <div class="quick-prompt" id="quickPrompt">What was the best part of your week?</div>
+                <button type="button" id="newQuickPrompt">New prompt ↻</button>
+              </article>
+            </div>
+          </section>
+
+          <section class="workspace-panel" data-panel-view="reports">
+            <div class="panel-header">
+              <div><small>RAPORLAR</small><h3>Öğretmene karar aldıran gerçek sınıf verisi.</h3></div>
+              <span class="adaptive-badge muted">CANLI SINIF VERİSİ</span>
+            </div>
+            <div class="report-toolbar">
+              <label><span>Sınıf</span><select id="reportClassFilter"><option value="all">Tüm sınıflar</option></select></label>
+              <button type="button" id="refreshReports">↻ Veriyi yenile</button>
+            </div>
+            <div class="report-kpi-grid">
+              <article><small>SONUÇ KAYDI</small><strong id="reportAttemptCount">—</strong><span>Öğrenci etkinlikleri</span></article>
+              <article><small>ORTALAMA</small><strong id="reportAverageScore">—</strong><span>Puanlı etkinliklerde</span></article>
+              <article><small>AKTİF ÖĞRENCİ</small><strong id="reportStudentCount">—</strong><span>Sonuç gönderen</span></article>
+              <article><small>EN ÇOK ÇALIŞILAN</small><strong id="reportTopActivity">—</strong><span>Etkinlik türü</span></article>
+            </div>
+            <div class="report-grid">
+              <article class="report-main">
+                <span id="reportScopeLabel">SINIF VERİSİ</span>
+                <strong id="reportHeadline">Henüz yeterli veri yok</strong>
+                <small id="reportSubline">Öğrenciler etkinlik tamamladıkça sonuçlar burada gerçek zamanlı özetlenir.</small>
+                <div class="bars" id="reportActivityBars"></div>
+              </article>
+              <article class="report-insight" id="reportInsightCard">
+                <small>SONRAKİ DERS ÖNERİSİ</small>
+                <h4 id="reportInsightTitle">Önce bir canlı etkinlik çalıştır.</h4>
+                <div id="reportInsightTags"></div>
+                <p id="reportInsightText">Platform, sonuçlar geldikçe hangi beceriyi tekrar etmenin daha mantıklı olduğunu gösterecek.</p>
+              </article>
+            </div>
+          </section>
+
+
+          <section class="workspace-panel" data-panel-view="school" id="school-workspace">
+            <div class="panel-header">
+              <div><small>SCHOOL WORKSPACE · BETA</small><h3>Dersleri ekip içinde paylaş.</h3></div>
+              <span class="adaptive-badge">TEACHER TEAM · SHARED LIBRARY</span>
+            </div>
+
+            <div id="schoolEmptyState" class="school-empty-layout">
+              <article class="school-intro-card">
+                <span>◇</span>
+                <small>OKUL / KURS / ÖĞRETMEN EKİBİ</small>
+                <h4>Tek başına hazırlanan dersi ekip bilgisine dönüştür.</h4>
+                <p>Bir School Workspace oluştur veya ekip koduyla mevcut bir alana katıl. İlk beta sürümde öğretmen listesi ve paylaşılan ders kütüphanesi çalışır.</p>
+                <div><b>✓ Kodla öğretmen katılımı</b><b>✓ Paylaşılan ders kütüphanesi</b><b>✓ Dersi kendi sınıfına kopyalama</b></div>
+              </article>
+              <div class="school-entry-grid">
+                <form class="school-entry-card" id="schoolCreateForm">
+                  <small>YENİ WORKSPACE</small>
+                  <strong>Okul / ekip oluştur</strong>
+                  <p>Ekip için tek bir paylaşım alanı aç.</p>
+                  <label>Okul / ekip adı<input id="schoolCreateName" type="text" maxlength="120" required placeholder="Örn. ABC English Department"></label>
+                  <button type="submit">Workspace oluştur →</button>
+                </form>
+                <form class="school-entry-card" id="schoolJoinForm">
+                  <small>EKİBE KATIL</small>
+                  <strong>Kodla workspace'e gir</strong>
+                  <p>Yöneticinin verdiği 8 karakterli kodu kullan.</p>
+                  <label>Ekip kodu<input id="schoolJoinCode" type="text" maxlength="8" required placeholder="AB12CD34"></label>
+                  <button type="submit">Ekibe katıl →</button>
+                </form>
+              </div>
+              <div class="lesson-generate-status" id="schoolEntryStatus" hidden aria-live="polite"></div>
+            </div>
+
+            <div id="schoolActiveState" hidden>
+              <div class="school-hero-card">
+                <div>
+                  <small>SCHOOL WORKSPACE</small>
+                  <h4 id="schoolName">English Department</h4>
+                  <p><span id="schoolRole">Teacher</span> · <span id="schoolSeatCount">1 / 20</span></p>
+                </div>
+                <div class="school-code-box">
+                  <small>TEACHER JOIN CODE</small>
+                  <strong id="schoolJoinCodeDisplay">--------</strong>
+                  <button type="button" id="schoolCopyCode">Kodu kopyala</button>
+                </div>
+              </div>
+
+              <div class="school-grid">
+                <article class="school-members-card">
+                  <div class="school-card-head"><div><small>EKİP</small><strong>Öğretmenler</strong></div><span id="schoolMemberBadge">0</span></div>
+                  <div id="schoolMemberList" class="school-member-list"></div>
+                  <button class="danger-lite school-leave" type="button" id="schoolLeave">Workspace'ten ayrıl</button>
+                </article>
+
+                <article class="school-share-card">
+                  <div class="school-card-head"><div><small>PAYLAŞ</small><strong>Kendi dersini ekip kütüphanesine ekle</strong></div></div>
+                  <label>Ders
+                    <select id="schoolOwnLesson"><option value="">Kaydedilmiş ders seç</option></select>
+                  </label>
+                  <button type="button" id="schoolShareLesson">Dersi ekiple paylaş →</button>
+                  <p>Paylaşım orijinal dersini değiştirmez. Ekipteki öğretmenler kendi sınıflarına bir kopya alır.</p>
+                </article>
+              </div>
+
+              <div class="school-library-shell">
+                <div class="school-library-head">
+                  <div><small>SHARED LIBRARY</small><strong>Ekip dersleri</strong><p>Bir dersi seçili sınıfına kopyala; kendi hesabında bağımsız olarak düzenle.</p></div>
+                  <label>Hedef sınıf<select id="schoolTargetClass"><option value="">Önce sınıf seç</option></select></label>
+                </div>
+                <div id="schoolSharedLessons" class="school-shared-lessons"></div>
+              </div>
+              <div class="lesson-generate-status" id="schoolStatus" hidden aria-live="polite"></div>
+            </div>
+          </section>
+
+          <section class="workspace-panel" data-panel-view="settings" id="teacher-settings">
+            <div class="panel-header">
+              <div><small>TEACHING PREFERENCES</small><h3>Bir kez ayarla. Her derste hazır gelsin.</h3></div>
+              <span class="adaptive-badge">ACCOUNT SYNCED</span>
+            </div>
+            <div class="settings-layout">
+              <form class="teacher-settings-form" id="teacherSettingsForm">
+                <div class="settings-form-head">
+                  <small>ÖĞRETMEN PROFİLİ</small>
+                  <strong>Varsayılan çalışma düzenin</strong>
+                  <p>Bu tercihler hesabına kaydedilir ve farklı cihazlarda da kullanılabilir.</p>
+                </div>
+                <label>Görünen ad
+                  <input id="settingsDisplayName" type="text" maxlength="80" required placeholder="Teacher">
+                </label>
+                <div class="form-two">
+                  <label>Panel dili
+                    <select id="settingsLanguage"><option value="tr">Türkçe</option><option value="en">English</option></select>
+                  </label>
+                  <label>Öğretim tipi
+                    <select id="settingsContext">
+                      <option value="mixed">Sınıf + özel ders</option>
+                      <option value="school">Okul / sınıf öğretmeni</option>
+                      <option value="private">Özel ders öğretmeni</option>
+                      <option value="general">General English / speaking</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="form-two">
+                  <label>Varsayılan yaş grubu
+                    <select id="settingsAge">
+                      <option value="6-8">6–8</option><option value="9-11">9–11</option>
+                      <option value="12-14">12–14</option><option value="15-17">15–17</option><option value="18+">18+</option>
+                    </select>
+                  </label>
+                  <label>Varsayılan seviye
+                    <select id="settingsLevel">
+                      <option>Pre-A1</option><option>A1</option><option>A2</option><option>B1</option><option>B2</option>
+                    </select>
+                  </label>
+                </div>
+                <label>Varsayılan ders süresi
+                  <select id="settingsDuration">
+                    <option value="20">20 dk</option><option value="30">30 dk</option><option value="40">40 dk</option>
+                    <option value="50">50 dk</option><option value="60">60 dk</option><option value="90">90 dk</option><option value="120">120 dk</option>
+                  </select>
+                </label>
+                <div class="form-two">
+                  <label>Ülke kodu <span>opsiyonel</span>
+                    <input id="settingsCountry" type="text" maxlength="2" placeholder="TR">
+                  </label>
+                  <label>Kurum / okul <span>opsiyonel</span>
+                    <input id="settingsInstitution" type="text" maxlength="120" placeholder="School / institution">
+                  </label>
+                </div>
+                <button class="generate-button" id="settingsSave" type="submit">Tercihleri kaydet →</button>
+                <div class="lesson-generate-status" id="settingsStatus" hidden aria-live="polite"></div>
+              </form>
+
+              <div class="settings-side">
+                <article class="settings-summary-card">
+                  <small>HESAP AYARLARI</small>
+                  <strong id="settingsSummaryName">Teacher</strong>
+                  <p id="settingsSummaryMeta">A2 · 12–14 · 40 dk</p>
+                  <div class="settings-summary-tags" id="settingsSummaryTags"></div>
+                </article>
+                <article class="settings-benefit-card">
+                  <small>BU AYARLAR NEREDE KULLANILIR?</small>
+                  <div><b>Teacher Assistant</b><span>Brief alanlarını varsayılanlarınla başlatır.</span></div>
+                  <div><b>Lesson Builder</b><span>Yeni derslerde seviye, yaş ve süreyi hazır getirir.</span></div>
+                  <div><b>Yeni sınıf</b><span>Sınıf oluştururken sık kullandığın profili önerir.</span></div>
+                </article>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section class="student-demo-section" id="student-demo">
+      <div class="student-copy">
+        <span class="section-kicker">ÖĞRENCİ TARAFI</span>
+        <h2>Çocuk için basit.<br>Öğretmen için kontrollü.</h2>
+        <p>Öğrenci karmaşık menüler görmez. Öğretmenin verdiği kodu girer, adını yazar ve aktif derse katılır.</p>
+        <div class="student-principles">
+          <span><b>01</b> Şifre zorunlu değil</span>
+          <span><b>02</b> Sadece sınıf kodu</span>
+          <span><b>03</b> Yaşa uygun arayüz</span>
+          <span><b>04</b> Takım modu isteğe bağlı</span>
+        </div>
+      </div>
+
+      <div class="student-device" id="studentDevice">
+        <div class="device-top"><span>9:41</span><i></i><b>Eryaman</b></div>
+        <div class="student-screen join-screen active" data-student-screen="join">
+          <img src="../assets/icons/brand-icon.svg" alt="">
+          <small>JOIN YOUR ENGLISH CLASS</small>
+          <h3>Ready to play?</h3>
+          <label>Class code<input id="studentCode" type="text" value="6B27" maxlength="8" autocomplete="off"></label>
+          <label>Your first name<input id="studentName" type="text" value="Efe" maxlength="20" autocomplete="off"></label>
+          <button type="button" id="joinDemoClass">Join class →</button>
+          <p id="studentJoinMessage">Hesap gerekmez. Öğretmeninizin verdiği sınıf kodunu girin.</p>
+        </div>
+        <div class="student-screen waiting-screen" data-student-screen="waiting">
+          <span class="student-avatar" id="studentAvatar">E</span>
+          <small>YOU'RE IN</small>
+          <h3 id="studentWelcome">Hi Efe 👋</h3>
+          <p>6-B · A2 English</p>
+          <div class="waiting-card">
+            <span>Teacher is starting...</span>
+            <strong>Travel Speaking</strong>
+            <small>Derse hazır · Player 4</small>
+          </div>
+          <button type="button" id="studentBack">← Back</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="roadmap-section" id="roadmap">
+      <div class="section-heading">
+        <div><span class="section-kicker">ÜRÜN DURUMU</span><h2>Platform yol haritası</h2></div>
+        <p>Hesap, sınıf, canlı ders, özel öğrenci, ders kütüphanesi, ödev, planlayıcı, raporlar ve Teacher Assistant beta çalışıyor. Sıradaki büyük katman okul çalışma alanı ve ekip lisanslama.</p>
+      </div>
+      <div class="roadmap-grid">
+        <article class="done"><span>V1</span><b>Teacher accounts & classes</b><p>Gerçek hesaplar, sınıf oluşturma, yaş + seviye profili ve öğrenci kodu.</p><em>LIVE</em></article>
+        <article class="done"><span>V2</span><b>Student join & live classroom</b><p>Kodla öğrenci katılımı, canlı ders durumu ve opsiyonel takım puanları.</p><em>LIVE</em></article>
+        <article class="done"><span>V3</span><b>Library & private students</b><p>Kaydedilmiş dersler, tekrar kullanım ve hesaba bağlı özel öğrenci profilleri.</p><em>LIVE</em></article>
+        <article class="done"><span>V4</span><b>Assignments, planner & reports</b><p>Ödev teslimi, yaklaşan ders planı ve gerçek öğrenci sonuçlarından rapor.</p><em>LIVE</em></article>
+        <article class="done"><span>V5</span><b>Teacher Assistant · Beta</b><p>Tek brief'ten ders, worksheet, speaking, homework ve oyun paketi; Lesson Builder'a tek tık aktarım.</p><em>LIVE</em></article>
+        <article class="done"><span>V6</span><b>School Workspace · Beta</b><p>Kodla ekip katılımı, öğretmen listesi, paylaşılan lesson library ve kendi sınıfına kopyalama.</p><em>LIVE</em></article>
+        <article><span>V7</span><b>Subscriptions & billing</b><p>Teacher Pro, okul lisansları, seat yönetimi ve ödeme altyapısı.</p><em>LATER</em></article>
+      </div>
+    </section>
+
+    <section class="final-edu-cta">
+      <small>ENGLISH TEACHER PLATFORM · BY ERYAMAN SPEAKING CLUB</small>
+      <h2>İngilizce öğretmeninin<br>ders araç kutusu.</h2>
+      <p>Planla → oynat → konuştur → takip et.</p>
+      <a href="#teacher-demo">Öğretmen paneline git <span>↑</span></a>
+    </section>
+  </main>
+
+
+  <div class="game-modal" id="gameModal" aria-hidden="true">
+    <div class="game-modal-card" id="gameModalCard">
+      <div class="game-modal-top-actions">
+        <button class="game-fullscreen-toggle" type="button" id="gameFullscreenToggle" aria-label="Tam ekran" title="Tam ekran">
+          <span aria-hidden="true">⛶</span><b id="gameFullscreenLabel">Tam ekran</b>
+        </button>
+        <button class="modal-close" type="button" id="closeGameModal" aria-label="Kapat">×</button>
+      </div>
+      <div class="game-modal-head">
+        <div><small id="gameModalType">ADAPTIVE GAME</small><h3 id="gameModalTitle">Taboo</h3></div>
+        <span id="gameProfileBadge">12–14 · A2 · Travel</span>
+      </div>
+      <div class="game-modal-help">
+        <div><small>NASIL OYNANIR?</small><strong id="gameHowText">Soruyu göster, öğrencinin cevap vermesine izin ver ve Next ile yeni tura geç.</strong></div>
+        <div><small>EN İYİ KULLANIM</small><strong id="gameBestFor">5–10 dk · Practice</strong></div>
+      </div>
+      <div class="mode-switch-row">
+        <div class="mode-switch-copy"><strong>Oyun modu</strong><span id="gameModeNote">Takımsız modda puan tutmak zorunda değilsin.</span></div>
+        <div class="mode-switch"><button class="active" type="button" data-game-mode="solo">Takımsız</button><button type="button" data-game-mode="team">2 Takım</button></div>
+      </div>
+      <div class="game-task-card">
+        <small id="gameTaskLabel">ROUND 1</small>
+        <strong id="gameTaskMain">PASSPORT</strong>
+        <p id="gameTaskSupport">Explain the target without using the forbidden words.</p>
+        <div id="gameTaskExtra" class="game-task-extra"></div>
+      </div>
+      <div class="game-timer" id="gameTimer" hidden>
+        <div><small>ROUND TIMER</small><strong id="gameTimerValue">1:00</strong></div>
+        <div class="game-timer-actions"><button type="button" id="gameTimerStart">Başlat</button><button type="button" id="gameTimerReset">Sıfırla</button></div>
+      </div>
+      <div class="game-modal-actions">
+        <button type="button" id="revealGameAnswer">Reveal / Hint</button>
+        <button type="button" id="nextGameRound">Next round →</button>
+      </div>
+      <div class="game-team-zone">
+        <div class="game-score-caption"><b>OPSİYONEL PUAN</b><span>Her doğru cevapta +1 kullanabilirsin.</span></div>
+        <div class="game-scorebar">
+          <button type="button" id="gameBlueMinus">−</button><span id="gameTeamOneLabel">TAKIM 1 <b id="gameBlueScore">0</b></span><button type="button" id="gameBluePlus">+</button>
+          <i></i>
+          <button type="button" id="gameOrangeMinus">−</button><span id="gameTeamTwoLabel">TAKIM 2 <b id="gameOrangeScore">0</b></span><button type="button" id="gameOrangePlus">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson-modal" id="lessonModal" aria-hidden="true">
+    <div class="lesson-modal-card">
+      <button class="modal-close" type="button" id="closeLessonModal" aria-label="Kapat">×</button>
+      <div class="modal-top">
+        <span>LIVE CLASS · <b id="modalClassName">6-B</b></span>
+        <strong id="modalStep">Aşama 1/5 · Soru 1/5</strong>
+      </div>
+      <div class="live-progress" aria-label="Ders ilerlemesi">
+        <div class="live-progress-copy"><span id="liveProgressStage">Aşama 1 / 5</span><span id="liveProgressQuestion">Soru 1 / 5</span></div>
+        <div class="live-progress-track"><i id="liveProgressFill"></i></div>
+      </div>
+      <div class="live-question-card">
+        <small id="liveStage">WARM-UP</small>
+        <h3 id="liveQuestion">Where would you like to travel?</h3>
+        <p id="liveInstruction">Answer in 2–3 sentences.</p>
+      </div>
+      <div class="mode-switch-row">
+        <div class="mode-switch-copy"><strong>Dersi nasıl yürüteceksin?</strong><span id="liveModeNote">Takımsız modda yalnızca Next ile ilerleyebilirsin.</span></div>
+        <div class="mode-switch"><button class="active" type="button" data-live-mode="solo">Takımsız</button><button type="button" data-live-mode="team">2 Takım</button></div>
+      </div>
+      <div class="live-mode-note">Puan sistemi bir ders zorunluluğu değildir. Speaking, pair-work veya bireysel etkinliklerde Takımsız seçili kalabilir.</div>
+      <div class="live-team-zone">
+        <div class="team-name-row">
+          <label>1. takımın adı<input id="teamOneName" type="text" value="Takım 1" maxlength="24"></label>
+          <label>2. takımın adı<input id="teamTwoName" type="text" value="Takım 2" maxlength="24"></label>
+        </div>
+        <div class="live-teams">
+          <div><span id="teamOneLabel">TAKIM 1</span><strong id="blueScore">0</strong></div>
+          <div><span id="teamTwoLabel">TAKIM 2</span><strong id="orangeScore">0</strong></div>
+        </div>
+      </div>
+      <div class="modal-controls">
+        <button type="button" id="addBlue">+10 Takım 1</button>
+        <button type="button" id="nextLiveQuestion">Sonraki soru →</button>
+        <button type="button" id="addOrange">+10 Takım 2</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../esc-supabase-config.js?v=20260923"></script>
+  <script src="../esc-supabase.js?v=20261006-seo1"></script>
+  
+  <script src="./educators.js?v=20261005-game-fullscreen1"></script>
+  <script src="./educators-core.js?v=20261004-fullqa4"></script>
+  <script src="./educators-workspace.js?v=20261004-fullqa4"></script>
+  <script src="./educators-guide.js?v=20261004-fullqa4"></script>
+  <script src="./educators-i18n.js?v=20261004-fullqa4"></script>
+  <script src="./educators-assistant.js?v=20261005-assistant-history1"></script>
+  <script src="./educators-settings.js?v=20261004-platform5"></script>
+  <script src="./educators-school.js?v=20261004-platform5"></script>
+  <script src="./educators-product.js?v=20261005-delete-direct1"></script>
+  <script src="./educators-help.js?v=20261005-context-help1"></script>
+</body>
+</html>

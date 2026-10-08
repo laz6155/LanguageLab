@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#081f3b">
+  <meta name="description" content="LanguageLab Akademi sınıfına kod ile katıl.">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Sınıfa Katıl · LanguageLab Akademi</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/icons/brand-icon.svg">
+  <link rel="stylesheet" href="../assets/css/portal-brand.css">
+  <link rel="stylesheet" href="./join.css?v=20261005-student-dashboard2">
+<link rel="stylesheet" href="../assets/css/academy-portals.css">
+</head>
+<body>
+  <div class="join-bg" aria-hidden="true"><i></i><i></i><i></i></div>
+  <header class="join-header">
+    <a class="esc-brand" href="../educators/"><span class="esc-brand-mark"><img src="../assets/icons/brand-icon.svg" alt=""></span><span class="esc-brand-title">LanguageLab Öğrenci Paneli</span></a>
+    <div class="join-header-actions">
+      <div class="join-lang-switch" aria-label="Language"><button class="active" type="button" data-join-lang="tr">Türkçe</button><button type="button" data-join-lang="en">English</button></div>
+      <a href="../educators/" class="teacher-link" data-jt="teacherLink">Öğretmen misiniz? <b>Öğretmen paneli →</b></a>
+    </div>
+  </header>
+<nav class="language-lab-routebar" aria-label="LanguageLab Akademi navigation"><a class="brand-route" href="../">LanguageLab Akademi</a><a href="../educators/">Eğitmen / Educator</a><a href="../join/">Öğrenci / Student</a><a href="../ozel-dersler/">Özel Ders / Private</a><a href="../learning-path/">Yol Haritası / Roadmap</a></nav>
+
+  <main class="join-shell">
+    <section class="join-card" id="joinView">
+      <span class="join-kicker">STUDENT JOIN</span>
+      <h1>Sınıfına katıl.</h1>
+      <p>Öğretmeninin ekranda gösterdiği sınıf kodunu ve adını gir. Öğrenci hesabı veya e-posta gerekmez.</p>
+      <form id="joinForm">
+        <label>Sınıf kodu
+          <input id="joinCode" type="text" minlength="6" maxlength="8" pattern="[A-Fa-f0-9]{6,8}" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Örn. A7C29F4B" required>
+        </label>
+        <label>Adın
+          <input id="joinName" type="text" maxlength="40" autocomplete="given-name" placeholder="Örn. Efe" required>
+        </label>
+        <button type="submit" id="joinButton">Sınıfa katıl <span>→</span></button>
+      </form>
+      <p class="join-message" id="joinMessage" hidden></p>
+      <div class="join-safe"><span>✓</span><div><b>Basit öğrenci girişi</b><small>Bu ekran için e-posta, telefon numarası veya şifre istemiyoruz.</small></div></div>
+    </section>
+
+    <section class="classroom-card" id="classroomView" hidden>
+      <div class="classroom-top">
+        <div><small id="classroomMeta">ENGLISH CLASSROOM</small><strong id="classroomName">English Class</strong></div>
+        <div class="connection-pill"><i></i><span id="connectionText">Connected</span></div>
+      </div>
+
+      <div class="student-identity">
+        <span class="avatar" id="studentAvatar">E</span>
+        <div><small data-jt="joinedAs">KATILAN</small><b id="studentDisplayName">Efe</b></div>
+        <button type="button" id="leaveClass" data-jt="leave">Ayrıl</button>
+      </div>
+
+      <section class="student-dashboard" id="studentDashboard">
+        <div class="student-dashboard-hero">
+          <div>
+            <small id="studentDashboardKicker">SINIFIM</small>
+            <h2 id="studentDashboardGreeting">Merhaba 👋</h2>
+            <p id="studentDashboardContext">Sınıf bilgilerin ve bugün yapman gerekenler burada.</p>
+          </div>
+          <div class="student-teacher-card"><small>ÖĞRETMEN</small><strong id="studentTeacherName">Teacher</strong><span id="studentClassSummary">A2 · Speaking</span></div>
+        </div>
+
+        <div class="student-dashboard-stats">
+          <article><small>YAPILACAK ÖDEV</small><strong id="studentTodoCount">0</strong><span>bekleyen görev</span></article>
+          <article><small>TAMAMLANDI</small><strong id="studentCompletedCount">0</strong><span>ödev</span></article>
+          <article><small>GERİ BİLDİRİM</small><strong id="studentFeedbackCount">0</strong><span>öğretmenden</span></article>
+        </div>
+
+        <div class="student-dashboard-grid">
+          <article class="student-now-card">
+            <small>ŞİMDİ NE YAPMALIYIM?</small>
+            <strong id="studentNowTitle">Sınıf durumun kontrol ediliyor…</strong>
+            <p id="studentNowText">Canlı ders, ödev veya yaklaşan ders bilgisi burada görünecek.</p>
+            <button type="button" id="studentNowAction" hidden>Devam et →</button>
+          </article>
+          <article class="student-upcoming-card">
+            <small>SIRADAKİ PLANLI DERS</small>
+            <strong id="studentUpcomingTitle">Henüz plan yok</strong>
+            <p id="studentUpcomingTime">Öğretmenin yeni bir ders planladığında burada görünecek.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="student-how-card" id="studentHowCard">
+        <div class="student-how-head"><div><small>BU EKRAN NASIL KULLANILIR?</small><strong>Öğrenci tarafında yapman gerekenler basit.</strong></div><button type="button" id="studentHowToggle" aria-expanded="false">?</button></div>
+        <div class="student-how-body" id="studentHowBody" hidden>
+          <div><b>1</b><span><strong>Ekranı açık tut</strong><small>Öğretmen aşamayı değiştirdiğinde ekran otomatik yenilenir.</small></span></div>
+          <div><b>2</b><span><strong>Ortadaki görevi yap</strong><small>O anda yalnızca ekrandaki soru veya etkinliğe odaklan.</small></span></div>
+          <div><b>3</b><span><strong>Cevap verdiysen işaretle</strong><small>“Cevap verdim” öğretmene katılım sinyali gönderir.</small></span></div>
+          <div><b>4</b><span><strong>Takıldıysan yardım iste</strong><small>“Yardıma ihtiyacım var” öğretmenin sonraki yönlendirmesine yardımcı olur.</small></span></div>
+        </div>
+      </section>
+
+      <section class="student-lesson-overview" id="studentLessonOverview" hidden>
+        <div class="student-overview-head">
+          <div><small id="studentLessonKicker">BUGÜNKÜ DERS</small><strong id="studentLessonTitle">English lesson</strong></div>
+          <span id="studentLessonProgressLabel">0 / 0</span>
+        </div>
+        <div class="student-overview-meta">
+          <span id="studentLessonTopic">—</span>
+          <span id="studentLessonDuration">—</span>
+          <span id="studentLessonGoal">—</span>
+        </div>
+        <div class="student-progress-track"><i id="studentProgressFill"></i></div>
+        <div class="student-stage-list" id="studentStageList"></div>
+        <div class="student-next-card" id="studentNextCard" hidden><small>SIRADA</small><strong id="studentNextTitle">—</strong><span id="studentNextMeta">—</span></div>
+      </section>
+
+      <div class="waiting-state" id="waitingState">
+        <div class="pulse-orbit"><i></i><i></i><i></i><span>EN</span></div>
+        <small>YOU'RE IN</small>
+        <h2>Öğretmenin dersi başlatmasını bekliyoruz.</h2>
+        <p>Bu ekran açık kalsın. Ders veya oyun başladığında otomatik olarak güncellenecek.</p>
+      </div>
+
+      <div class="live-state" id="liveState" hidden>
+        <div class="live-bar"><span><i></i> LIVE CLASS</span><b id="liveStage">WARM-UP</b></div>
+        <article class="live-task">
+          <small id="liveTitle">SPEAKING</small>
+          <h2 id="livePrompt">Where would you like to travel?</h2>
+          <p id="liveInstruction">Answer in 2–3 sentences.</p>
+        </article>
+        <div class="student-scoreboard" id="studentScoreboard" hidden>
+          <div><span>TEAM BLUE</span><strong id="studentBlueScore">0</strong></div>
+          <b>VS</b>
+          <div><span>TEAM ORANGE</span><strong id="studentOrangeScore">0</strong></div>
+        </div>
+        <div class="student-action" id="studentAction">
+          <button type="button" data-result="participated"><span>I answered ✓</span><small>Katıldığını öğretmene bildir</small></button>
+          <button type="button" data-result="need-help"><span>I need help</span><small>Bu aşamada desteğe ihtiyacın olduğunu bildir</small></button>
+        </div>
+        <div class="student-activity-summary">
+          <div><small>KATILIM</small><strong id="studentParticipatedCount">0</strong><span>işaretlenen aşama</span></div>
+          <div><small>YARDIM İSTEĞİ</small><strong id="studentHelpCount">0</strong><span>işaretlenen aşama</span></div>
+        </div>
+        <p class="sync-note">Teacher controls the class flow. Your screen updates automatically.</p>
+      </div>
+
+      <div class="completed-state" id="completedState" hidden>
+        <span>✓</span><small>CLASS COMPLETED</small><h2>Good work!</h2><p>Ders sona erdi. Öğretmeniniz yeni bir oturum başlatırsa bu ekran yeniden güncellenebilir.</p>
+      </div>
+
+      <section class="student-history-zone" id="studentHistoryZone" hidden>
+        <div class="student-history-head">
+          <div><small>GEÇMİŞ DERSLER</small><strong>Son derslerin</strong><p>Katıldığın dersleri ve kendi katılım işaretlerini burada görebilirsin.</p></div>
+          <span id="studentHistoryCount">0</span>
+        </div>
+        <div class="student-history-list" id="studentHistoryList"></div>
+      </section>
+
+      <section class="assignment-zone" id="assignmentZone" hidden>
+        <div class="assignment-zone-head"><div><small data-jt="assignmentsKicker">ÖDEVLER</small><strong data-jt="assignmentsTitle">Sınıf ödevlerin</strong><p>Canlı dersten ayrı çalışır. Yayınlanmış ödevlerin burada kalır.</p></div><span id="assignmentCount">0</span></div>
+        <div class="student-assignment-list" id="studentAssignmentList"></div>
+      </section>
+    </section>
+
+    <aside class="join-help">
+      <span>1</span><p><b>Kodu gir</b><small>Öğretmenin verdiği 6 karakterli sınıf kodunu kullan.</small></p>
+      <span>2</span><p><b>Adını yaz</b><small>Sınıfta görünecek kısa adını kullan.</small></p>
+      <span>3</span><p><b>Ekranı açık tut</b><small>Öğretmen soru değiştirdikçe ekranın otomatik yenilenir.</small></p>
+    </aside>
+  </main>
+
+  <script src="../esc-supabase-config.js?v=20260923"></script>
+  <script src="../esc-supabase.js?v=20261006-seo1"></script>
+  <script src="./join.js?v=20261005-student-dashboard2"></script>
+</body>
+</html>
