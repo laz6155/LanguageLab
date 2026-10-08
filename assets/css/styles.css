@@ -427,7 +427,7 @@ p { line-height: 1.75; }
 
 /* Academy 2026: real learning workspaces */
 .portal-section{background:linear-gradient(135deg,#f0f4fb,#ffffff)}
-.portal-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.portal-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
 .portal-card{border:1px solid #dbe4f1;border-radius:21px;background:#fff;padding:30px 25px;display:flex;flex-direction:column;min-height:345px;transition:transform .2s,box-shadow .2s}
 .portal-card:hover{transform:translateY(-4px);box-shadow:0 16px 38px #19305f12}
 .portal-index{font:800 .68rem Manrope,sans-serif;letter-spacing:.16em;color:#7b88a1}
@@ -440,3 +440,12 @@ p { line-height: 1.75; }
 .educator-quick-links{display:flex;gap:11px;flex-wrap:wrap}
 @media(max-width:1040px){.portal-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.portal-card{min-height:300px}}
 @media(max-width:600px){.portal-grid{grid-template-columns:1fr}.portal-card{min-height:0}.educator-quick-links .button{width:100%}.portal-section{padding-block:65px}}
+
+/* Academy platform public entrypoint */
+.portal-dashboard{background:linear-gradient(136deg,#19305f,#112347);border-color:#19305f;color:#fff}
+.portal-dashboard .portal-index{color:#b9c9e6}
+.portal-dashboard .portal-icon{color:#19305f;background:#fff}
+.portal-dashboard h3{color:#fff}
+.portal-dashboard p{color:#d2ddf0}
+.portal-dashboard .portal-open{color:#fff;border-color:#4c638c}
+.portal-dashboard .portal-open:hover{color:#ffc7c4}

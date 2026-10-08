@@ -1,0 +1,63 @@
+const test=require('node:test');
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const path=require('node:path');
+const vm=require('node:vm');
+const root=path.resolve(__dirname,'..');
+const source=(p)=>fs.readFileSync(path.join(root,p),'utf8');
+const html=source('platform/index.html'),css=source('platform/platform.css'),js=source('platform/platform.js'),sql=source('database/academy_schema.sql');
+
+test('academy dashboard ships branded real routes and accessible forms',()=>{
+  for(const p of ['platform/index.html','platform/platform.js','platform/platform.css','database/academy_schema.sql'])assert.ok(fs.existsSync(path.join(root,p)));
+  assert.match(html,/id="catalog-list"/);assert.match(html,/id="auth-form"/);assert.match(html,/id="workspace" hidden/);
+  assert.match(html,/id="admin-nav"/);assert.match(html,/id="view-mycourses"/);assert.match(html,/id="view-tasks"/);
+  assert.match(html,/id="view-sessions"/);assert.match(html,/id="admin-course-form"/);
+  assert.match(html,/src="\.\.\/assets\/icons\/brand-icon\.svg"/);
+  assert.match(html,/href="\.\.\/educators\/"/);assert.match(html,/href="\.\.\/learning-path\/"/);
+  assert.match(css,/#19305f/i);assert.match(css,/#ea5a56/i);
+  assert.doesNotMatch(html,/\bE\x53C\b/);
+});
+
+test('all new bilingual platform labels have TR and EN translations',()=>{
+  const sandbox={window:{},document:{readyState:'loading',addEventListener(){}},localStorage:{getItem(){return null}}};
+  const patched=js.replace("  document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init):init();","  globalThis.__labels={TR,EN};");
+  vm.runInNewContext(patched,sandbox,{timeout:2000});
+  const keys=[...html.matchAll(/data-i18n="([^"]+)"/g)].map(x=>x[1]);
+  for(const key of new Set(keys)){
+    assert.ok(typeof sandbox.__labels.TR[key]==='string',`Missing Turkish: ${key}`);
+    assert.ok(typeof sandbox.__labels.EN[key]==='string',`Missing English: ${key}`);
+  }
+});
+
+test('student and management state mutations always use Supabase client',()=>{
+  for(const table of ['academy_profiles','academy_courses','academy_enrollments','academy_modules','academy_lessons','academy_progress','academy_tasks','academy_announcements','academy_sessions','academy_staff']){
+    assert.match(js,new RegExp(table));assert.match(sql,new RegExp('enable row level security;'));
+  }
+  assert.match(js,/db\.auth\.getUser\(\)/);assert.match(js,/signInWithPassword/);assert.match(js,/auth\.signUp/);
+  assert.match(js,/\.from\('academy_progress'\)\.insert/);assert.match(js,/\.from\('academy_enrollments'\)\.insert/);
+  assert.match(js,/\.from\('academy_courses'\)\.insert/);
+  assert.doesNotMatch(js,/service_role|sb_secret_/);
+  assert.doesNotMatch(js,/localStorage\.setItem\([^)]*(?:password|user|role|progress|course)/i);
+});
+
+test('backend has isolated role-bound RLS for all new private tables',()=>{
+  for(const table of ['staff','profiles','courses','enrollments','modules','lessons','progress','tasks','announcements','sessions']){
+    assert.match(sql,new RegExp(`create table if not exists public\\.academy_${table} \\(`));
+    assert.match(sql,new RegExp(`alter table public\\.academy_${table} enable row level security;`));
+  }
+  assert.match(sql,/user_id\s*=\s*\(select auth\.uid\(\)\)/);
+  assert.match(sql,/academy_enrollment_own_join/);
+  assert.match(sql,/academy_progress_self_insert/);
+  assert.match(sql,/academy_staff_self_read/);
+  assert.match(sql,/academy_courses_manager/);
+  assert.doesNotMatch(sql,/create policy[^;]+using\s*\(true\)/is);
+  assert.match(sql,/from public\.esc_admins/);
+  assert.doesNotMatch(sql,/drop table|truncate\s+table|delete\s+from\s+public\.edu_/i);
+});
+
+test('user-entered and database-originated content uses textContent rather than HTML injection',()=>{
+  assert.match(js,/e\.textContent=String\(text\)/);
+  assert.doesNotMatch(js,/innerHTML\s*=\s*localized\(/);
+  assert.doesNotMatch(js,/eval\(/);
+  assert.match(sql,/meeting_url.*https:\/\//);
+});
