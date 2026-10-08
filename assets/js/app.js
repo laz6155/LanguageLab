@@ -52,7 +52,7 @@
         <p>${escapeHtml(program[language].description)}</p>
         <div class="program-meta">
           <span class="program-level">${escapeHtml(program.level === 'EDUCATORS' ? localized('filters.educators') : program.level)}</span>
-          <span class="program-status">${escapeHtml(misc('planned'))}</span>
+          <span class="program-status${program.status === 'active' ? ' is-active' : ''}">${escapeHtml(misc(program.status === 'active' ? 'active' : 'planned'))}</span>
         </div>
         <button class="program-link" type="button" data-program="${program.id}" aria-label="${escapeHtml(misc('interest') + ': ' + program[language].title)}">
           <span>${escapeHtml(misc('interest'))}</span><span aria-hidden="true">&nearr;</span>
@@ -150,6 +150,12 @@
   });
   document.querySelectorAll('[data-choose-role]').forEach((link) => {
     link.addEventListener('click', () => setRole(link.dataset.chooseRole));
+  });
+  document.querySelectorAll('[data-choose-program]').forEach((link) => {
+    link.addEventListener('click', () => {
+      setRole('student');
+      document.getElementById('program').value = link.dataset.chooseProgram;
+    });
   });
   document.getElementById('program-grid').addEventListener('click', (event) => {
     const button = event.target.closest('[data-program]');
