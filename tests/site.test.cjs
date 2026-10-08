@@ -87,7 +87,9 @@ test('speaking club status and interest flow are accurate', () => {
   assert.equal(speaking.status, 'active');
   assert.equal(speaking.en.title, 'Eryaman Speaking Club');
   assert.equal(speaking.tr.title, 'Eryaman Speaking Club');
-  assert.ok(content.programs.filter((program) => program.id !== 'speaking').every((program) => !program.status));
+  assert.deepEqual(content.programs.filter((program) => program.status).map((program) => program.id).sort(), ['personal','speaking','studio']);
+  assert.equal(content.programs.find((program) => program.id === 'studio').href, './educators/');
+  assert.equal(content.programs.find((program) => program.id === 'personal').href, './ozel-dersler/');
   assert.match(html, /data-choose-program="speaking"/);
   assert.match(app, /querySelectorAll\('\[data-choose-program\]'\)/);
   assert.ok(content.tr['club.note'].includes('e-posta'));

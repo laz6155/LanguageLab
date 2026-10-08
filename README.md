@@ -65,7 +65,7 @@ docs/ROADMAP.md            Architecture and implementation milestones
 
 ## Next steps
 
-Read [docs/ROADMAP.md](docs/ROADMAP.md). Authentication, student records, educator tools, admin CMS, payments and true application storage are **not** in the first release. Do not collect or process real student records in this repository or expose private API credentials in any committed frontend file.
+Read [docs/ROADMAP.md](docs/ROADMAP.md). The educator, student and private-lesson frontends are now replicated from the original club platform. Teacher/student screens currently use the **same existing Supabase backend** rather than a separate academy database. Admin CMS, full payments, independently owned user records and central private-lesson application storage are not included. Do not add private server credentials to publicly served files.
 
 ## Brand architecture
 
@@ -74,3 +74,14 @@ Read [docs/ROADMAP.md](docs/ROADMAP.md). Authentication, student records, educat
 - The existing speaking-club website remains operational during development, but is **not promoted as a separate sister brand** on the academy homepage. Its historic records are not automatically migrated or shared.
 - The user-supplied emblem is reproduced as a lightweight SVG, matching the existing community artwork, with the requested navy and coral colors.
 - Keep program availability honest: speaking club meetings are active; other academy programs and educator dashboard are still in development.
+
+
+## Education workspaces (October 2026)
+
+- [Educator platform](educators/) — teacher login, lesson planning, students, assignments, classroom games and school collaboration.
+- [Student classroom](join/) — join by teacher code, lesson progress, assignments and results.
+- [Private online English lessons](ozel-dersler/) — imported instructor profile and email application form.
+- [Learning roadmap](learning-path/) — step-by-step Turkish/English guide for students, educators and schools.
+- [Classroom game catalog](games/) — directs teachers to games embedded inside the educator platform.
+
+**Backend:** These educator and classroom frontends currently connect to the pre-existing club Supabase project. This preserves existing users/lessons while avoiding edits to the club repository, but means it is a **shared system**, not an independent copy of database contents. For the complete transfer checklist, limitations and next steps, see [docs/EDUCATION_PLATFORM_INVENTORY.md](docs/EDUCATION_PLATFORM_INVENTORY.md). Do not share real student codes or teacher credentials publicly.

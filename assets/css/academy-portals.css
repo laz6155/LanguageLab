@@ -1,0 +1,24 @@
+/* Final shared academy layer for educator, student and private-lesson screens.
+   Load after the original area stylesheet to avoid deleting existing functionality. */
+:root{--navy:#19305f;--navy2:#11264a;--blue:#274c89;--teal:#ea5a56;--coral:#ea5a56;--orange:#ea7469}
+html{scroll-behavior:smooth}
+:focus-visible{outline:3px solid #ea5a56!important;outline-offset:4px}
+.esc-brand,.lesson-brand{color:#19305f!important}
+.esc-brand-title small{display:block;color:#6a7792;font-weight:700}
+.esc-brand-mark{background:#fff;border-radius:50%;box-shadow:0 5px 14px #19305f21}
+.esc-brand-mark img{width:100%;height:100%;object-fit:contain}
+.edu-hero{background:radial-gradient(circle at 12% 21%,rgba(39,76,137,.11),transparent 30%),radial-gradient(circle at 90% 20%,rgba(234,90,86,.13),transparent 28%),linear-gradient(180deg,#fbfcff,#f4f7fd)!important}
+.edu-hero h1 em{color:#ea5a56!important}
+.edu-topbar a.text-link:hover,.edu-topnav a:hover,.lesson-links a:hover,.teacher-link:hover{color:#ea5a56!important}
+.edu-lang-switch button.active,.primary-link,.edu-hero .hero-primary{background:#19305f!important;color:#fff!important}
+.edu-lang-switch button.active:hover,.primary-link:hover,.edu-hero .hero-primary:hover{background:#274c89!important}
+.lesson-hero .hero-badge,.join-kicker{color:#d84f4c!important}
+.lesson-hero h1 em,.pain-section h2 em{color:#ea5a56!important}
+.lesson-nav .nav-contact{background:#19305f!important;color:#fff!important}
+.lesson-form button[type=submit],.join-card button[type=submit]{background:#19305f!important;color:#fff!important}
+.language-lab-routebar{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:11px 15px;padding:11px 18px;background:#19305f;color:#fff;font:750 .75rem 'DM Sans',Inter,Arial,sans-serif;position:relative;z-index:5;border-top:1px solid #ffffff22}
+.language-lab-routebar a{color:#fff!important;text-decoration:none!important;padding:5px 9px;border-radius:7px;white-space:nowrap}
+.language-lab-routebar a:hover,.language-lab-routebar a:focus-visible{background:#ffffff25;color:#fff!important}
+.language-lab-routebar .brand-route{font-weight:900;color:#ffcecc!important;letter-spacing:.02em}
+.language-lab-routebar a[aria-current=page]{background:#ffffff21}
+@media(max-width:680px){.language-lab-routebar{justify-content:flex-start;gap:4px 7px;padding:8px 13px;font-size:.69rem}.language-lab-routebar a{padding:7px 5px}.esc-brand-mark{width:39px;height:39px;flex-basis:39px}}
