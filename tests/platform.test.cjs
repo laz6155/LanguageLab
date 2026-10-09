@@ -20,7 +20,7 @@ test('academy dashboard ships branded real routes and accessible forms',()=>{
 
 test('all new bilingual platform labels have TR and EN translations',()=>{
   const sandbox={window:{},document:{readyState:'loading',addEventListener(){}},localStorage:{getItem(){return null}}};
-  const patched=js.replace("  document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init):init();","  globalThis.__labels={TR,EN};");
+  const patched=js.replace("  document.readyState==='loading'?document.addEventListener('DOMContentLoaded',start):start();","  globalThis.__labels={TR,EN};");
   vm.runInNewContext(patched,sandbox,{timeout:2000});
   const keys=[...html.matchAll(/data-i18n="([^"]+)"/g)].map(x=>x[1]);
   for(const key of new Set(keys)){
@@ -90,4 +90,11 @@ test('self-enrollment policy checks enrollment status, not course status',()=>{
   assert.match(policy,/academy_enrollments\.status='active'/);
   assert.match(policy,/academy_enrollments\.status='pending'/);
   assert.doesNotMatch(policy,/\band status='active'/);
+});
+
+test('startup uses querySelectorAll for list operations and reports initialization errors',()=>{
+  assert.match(js,/\$\$\('\[data-lang\]'\)\.forEach/);
+  assert.doesNotMatch(js,/(?<!\$)\$\('[^']+'\)\.forEach/);
+  assert.match(js,/LanguageLab startup failed/);
+  assert.match(js,/document\.addEventListener\('DOMContentLoaded',start\)/);
 });
