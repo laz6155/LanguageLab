@@ -81,3 +81,13 @@ test('student task reminders are sorted by date and cancelled sessions are marke
   assert.match(js,/session-cancelled/);
   assert.match(css,/\.due-tag\.overdue/);
 });
+
+
+test('self-enrollment policy checks enrollment status, not course status',()=>{
+  const start=sql.indexOf('create policy academy_enrollment_own_join');
+  const end=sql.indexOf(';',start);
+  const policy=sql.slice(start,end);
+  assert.match(policy,/academy_enrollments\.status='active'/);
+  assert.match(policy,/academy_enrollments\.status='pending'/);
+  assert.doesNotMatch(policy,/\band status='active'/);
+});

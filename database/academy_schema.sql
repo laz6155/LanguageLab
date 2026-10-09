@@ -155,8 +155,8 @@ create policy academy_enrollment_own_join on public.academy_enrollments for inse
     user_id=(select auth.uid()) and
     exists(select 1 from public.academy_courses c where c.id=course_id
       and (c.status='open' or c.status='waitlist')
-      and ((c.status='open' and c.access_mode='self_enroll' and status='active')
-        or (c.access_mode='approval' and status='pending')))
+      and ((c.status='open' and c.access_mode='self_enroll' and academy_enrollments.status='active')
+        or (c.access_mode='approval' and academy_enrollments.status='pending')))
   );
 create policy academy_enrollment_manager on public.academy_enrollments for all to authenticated
   using (exists(select 1 from public.academy_staff a where a.user_id=(select auth.uid()) and a.role in ('owner','manager')))
