@@ -41,6 +41,10 @@
           <button type="button" class="text-button" id="reset-password" data-i18n="reset">Şifremi unuttum</button><p class="small" data-i18n="authLegal">Üyelik ücretli bir programa otomatik kayıt veya ödeme anlamına gelmez.</p>
         </div>
       </section>
+      <section id="password-recovery-panel" class="auth-panel recovery-panel" hidden aria-labelledby="recovery-heading">
+        <div><p class="kicker" data-i18n="recoveryTag">HESAP GÜVENLİĞİ</p><h2 id="recovery-heading" data-i18n="recoveryHeading">Yeni şifreni belirle.</h2><p class="muted" data-i18n="recoveryDescription">E-postana gönderilen bağlantıyla hesabın için yeni bir şifre oluştur.</p></div>
+        <div class="form-card"><form id="password-recovery-form"><label><span data-i18n="newPassword">Yeni şifre</span><input id="new-password" type="password" autocomplete="new-password" minlength="10" maxlength="128" required></label><label><span data-i18n="confirmPassword">Yeni şifre (tekrar)</span><input id="confirm-password" type="password" autocomplete="new-password" minlength="10" maxlength="128" required></label><button type="submit" id="password-recovery-submit" class="button primary full" data-i18n="updatePassword">Şifreyi güncelle</button></form><button id="password-recovery-cancel" type="button" class="text-button" data-i18n="backToSignIn">Giriş ekranına dön</button></div>
+      </section>
       <section id="workspace" hidden aria-labelledby="workspace-title">
         <div class="workspace-head"><div><p class="kicker" data-i18n="workspaceTag">SENİN ALANIN</p><h2 id="workspace-title" data-i18n="workspaceTitle">Öğrenme panelim</h2><p id="member-name" class="muted"></p></div><div class="account-status"><span class="status-dot"></span><span data-i18n="signedIn">Hesap bağlı</span></div></div>
         <div class="workspace-grid"><nav class="side-nav" aria-label="Workspace sections">
