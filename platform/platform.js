@@ -45,7 +45,7 @@
   function publicCourses(){return publishedCourses.filter(c=>c.status==='open'||c.status==='waitlist').sort((a,b)=>a.position-b.position);}
   async function init(){
     recoveryMode=/(?:^|[?&#])type=recovery(?:&|$)/.test(location.search+location.hash);
-    $('[data-lang]').forEach(e=>e.addEventListener('click',()=>setLang(e.dataset.lang)));
+    $$('[data-lang]').forEach(e=>e.addEventListener('click',()=>setLang(e.dataset.lang)));
     $$('[data-auth-mode]').forEach(e=>e.addEventListener('click',()=>setAuthMode(e.dataset.authMode)));
     elem('#auth-form').addEventListener('submit',handleAuth);
     elem('#reset-password').addEventListener('click',handleReset);
@@ -230,5 +230,6 @@
   async function handleAnnouncementSave(event){event.preventDefault();if(!isManager())return;const payload={title_tr:elem('#announcement-title-tr').value.trim(),title_en:elem('#announcement-title-en').value.trim(),body_tr:elem('#announcement-body-tr').value.trim(),body_en:elem('#announcement-body-en').value.trim(),course_id:elem('#announcement-course').value||null,is_published:elem('#announcement-published').checked};await attempt(async()=>{await run(db.from('academy_announcements').insert(payload));elem('#announcement-form').reset();notify(tr('saved'));});}
   async function handleSessionSave(event){event.preventDefault();if(!isManager())return;const start=elem('#session-start').value;const meetingUrl=elem('#session-url').value.trim();if(meetingUrl&&!/^https:\/\//i.test(meetingUrl)){notify('https://',true);return;}const payload={course_id:elem('#session-course').value,title_tr:elem('#session-title-tr').value.trim(),title_en:elem('#session-title-en').value.trim(),starts_at:new Date(start).toISOString(),duration_minutes:Number(elem('#session-minutes').value),location_text:elem('#session-location').value.trim(),meeting_url:meetingUrl};await attempt(async()=>{await run(db.from('academy_sessions').insert(payload));elem('#session-form').reset();notify(tr('saved'));});}
 
-  document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init):init();
+  const start=()=>{init().catch(e=>{console.error('LanguageLab startup failed',e);notify(tr('loadError'),true);});};
+  document.readyState==='loading'?document.addEventListener('DOMContentLoaded',start):start();
 })();
