@@ -61,3 +61,23 @@ test('user-entered and database-originated content uses textContent rather than 
   assert.doesNotMatch(js,/eval\(/);
   assert.match(sql,/meeting_url.*https:\/\//);
 });
+
+test('password recovery has an accessible form and prevents cross-user stale dashboard data',()=>{
+  assert.match(html,/id="password-recovery-panel"[^>]*hidden/);
+  assert.match(html,/id="password-recovery-form"/);
+  assert.match(html,/id="confirm-password"/);
+  assert.match(js,/event==='PASSWORD_RECOVERY'/);
+  assert.match(js,/db\.auth\.updateUser\(\{password\}\)/);
+  assert.match(js,/password!==elem\('#confirm-password'\)\.value/);
+  assert.match(js,/if\(!user\|\|user\.id!==uid\)return/);
+  assert.match(js,/if\(loadingSession\)\{sessionRefreshQueued=true;return;\}/);
+  assert.match(js,/allCourses=\[\];adminEnrollments=\[\];profileMap=\{\}/);
+});
+
+test('student task reminders are sorted by date and cancelled sessions are marked',()=>{
+  assert.match(js,/localDateKey\(\)/);
+  assert.match(js,/dueSoon/);
+  assert.match(js,/due-today/);
+  assert.match(js,/session-cancelled/);
+  assert.match(css,/\.due-tag\.overdue/);
+});

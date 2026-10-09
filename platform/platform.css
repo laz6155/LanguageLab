@@ -3,3 +3,13 @@
 @media(max-width:850px){.topbar{padding:12px 22px}.topbar-actions>a{display:none}.intro{padding:70px 0}.intro-grid{grid-template-columns:1fr}.intro-visual{min-height:360px}.auth-panel{grid-template-columns:1fr;padding:30px}.workspace-grid{grid-template-columns:1fr}.side-nav{position:static;display:flex;overflow-x:auto;scrollbar-width:thin;white-space:nowrap}.side-nav button,.side-nav a{flex:0 0 auto}.metrics{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:600px){.inner{width:calc(100% - 32px)}.topbar{min-height:70px;padding:9px 15px}.brand img{width:39px;height:39px}.brand b{font-size:1.08rem}.brand small{font-size:.42rem}.topbar-actions{gap:7px}.language-switch button{padding:8px}.intro{padding:55px 0}.intro h1{font-size:2.8rem}.intro-visual{min-height:315px}.visual-inner{padding:24px}.visual-title{font-size:2.5rem}.intro-visual:before{max-width:calc(100% - 10px);height:350px}.auth-panel{padding:21px;margin-top:-20px}.form-card{padding:19px}.workspace-head{align-items:start;flex-direction:column}.workspace-head h2{font-size:2.25rem}.work-content{padding:18px}.metrics{grid-template-columns:1fr 1fr;gap:9px}.metric{padding:15px}.metric strong{font-size:1.7rem}.subgrid{grid-template-columns:1fr}.section-heading{gap:14px}.filters{flex-wrap:wrap}.filters label{flex:1;min-width:135px}.filters input,.filters select{width:100%}.catalog-grid{grid-template-columns:1fr}.profile-form{grid-template-columns:1fr}.profile-form .wide,.profile-form .form-actions{grid-column:1}.task-form{grid-template-columns:1fr}.bottom-cta{padding:31px 23px;display:block}.bottom-cta .button{margin-top:25px}.footer{gap:15px;font-size:.72rem}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.button{transition:none}}
+/* Academy account recovery and student task alerts */
+.recovery-panel{margin-top:-37px}
+.recovery-panel .text-button{margin-top:14px}
+.metrics{grid-template-columns:repeat(4,minmax(0,1fr))}
+.due-tag{font-weight:700}
+.due-tag.overdue{color:#a3333a}
+.due-tag.due-today{color:#996215}
+.session-cancelled{color:#a3333a;font-weight:750}
+@media(max-width:850px){.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.recovery-panel{padding:21px;margin-top:-20px}}
