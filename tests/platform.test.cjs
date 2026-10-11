@@ -247,7 +247,7 @@ test('date-only due dates respect local calendar day across timezones',()=>{
   const b=js.indexOf('\n  function notify(',a);
   assert.ok(a>0&&b>a);
   const code=js.slice(a,b);
-  const sandbox={lang:'en',Intl:{DateTimeFormat:(locale,options)=>new Intl.DateTimeFormat(locale,{...options,timeZone:'America/Los_Angeles'})}};
+  const sandbox={lang:'en',Intl:{DateTimeFormat:function(locale,options){return new Intl.DateTimeFormat(locale,{...options,timeZone:'America/Los_Angeles'});}}};
   vm.runInNewContext(code+';globalThis.displayDate=formatDate;',sandbox,{timeout:1500});
   assert.equal(sandbox.displayDate('2026-10-11'),'11 Oct 2026');
   assert.equal(sandbox.displayDate('2026-10-11T00:00:00Z'),'10 Oct 2026');
