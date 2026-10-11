@@ -98,3 +98,15 @@ test('startup uses querySelectorAll for list operations and reports initializati
   assert.match(js,/LanguageLab startup failed/);
   assert.match(js,/document\.addEventListener\('DOMContentLoaded',start\)/);
 });
+
+test('learner CEFR self-checks have private ownership policies and no anonymous write permission',()=>{
+  const checks=fs.readFileSync(path.join(root,'database/academy_skill_checks.sql'),'utf8');
+  assert.match(checks,/enable row level security/);
+  assert.match(checks,/revoke all on table public\.academy_skill_checks from anon/);
+  assert.match(checks,/using \(user_id = \(select auth\.uid\(\)\)\)/);
+  assert.match(checks,/with check \(user_id = \(select auth\.uid\(\)\)\)/);
+  assert.match(js,/db\.from\('academy_skill_checks'\)/);
+  assert.match(html,/id="skill-check-form"/);
+  assert.match(html,/id="skill-check-list"/);
+  assert.match(js,/skillChecks=\[\]/);
+});
