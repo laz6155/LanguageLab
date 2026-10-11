@@ -12,6 +12,13 @@ Status: **2026-10-11, editorial pilot**. The full lesson text is stored in the a
 
 **Important:** Course statuses remain unchanged. The two waitlist programmes are not advertised as instantly available paid classes. The 16 lesson drafts require human teaching review before publication. All newly drafted lessons include Turkish and English instructions, model responses and teacher observation prompts.
 
+
+### 2026-10-11: unpublished editorial expansions
+
+Four **additional, unpublished** expanded drafts now exist for the four short Foundation micro-lessons in an unpublished `Conversation Foundations - Editorial Drafts` module. This increases the underlying starter course to **16 lesson rows** without changing the **12 published lessons**. The two waitlist programmes still contain 16 unpublished drafts. Across the Academy there are now **32 lessons: 12 published + 20 unpublished**.
+
+See [STARTER_EDITORIAL_REVIEW_20261011.md](STARTER_EDITORIAL_REVIEW_20261011.md) for titles, review criteria and a publication/rollback plan. **Do not publish the draft module directly**, as it would duplicate the learner's first four foundation lessons.
+
 ### A1–A2 — Everyday Speaking Missions
 1. Meet someone new — introductions + follow-up questions
 2. Order at a café — polite requests + changes
