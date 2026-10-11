@@ -27,3 +27,12 @@
 
 /* Warn only when learner profile edits are still unsaved. */
 .profile-draft-status{grid-column:1 / -1;margin:0;padding:11px 14px;border-radius:10px;border:1px solid #ecd7a0;background:#fff9e8;color:#795414;font-size:.83rem;line-height:1.5}
+
+/* Accessible lesson-completion meter; progress is a count, not a CEFR score. */
+.course-progress-panel{margin:16px 0 22px;padding:17px 19px;border:1px solid var(--line);border-radius:13px;background:#f7f9fd;display:grid;gap:12px;align-items:start}
+.course-progress-heading{font-size:.9rem;color:var(--navy)}
+.course-progress-meter{display:block;width:100%;height:12px;accent-color:var(--coral);border-radius:9px;overflow:hidden}
+.course-progress-meter::-webkit-progress-bar{background:#dce4f0;border-radius:9px}
+.course-progress-meter::-webkit-progress-value{background:var(--coral);border-radius:9px}
+.course-progress-finished{font-size:.84rem;color:#245e45;margin:0}
+.course-progress-panel>.small-btn{justify-self:start}
