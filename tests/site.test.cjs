@@ -35,7 +35,7 @@ test('Turkish translation covers every localizable element', () => {
 });
 
 test('program filters map to real bilingual cards and roles', () => {
-  assert.equal(content.programs.length, 6);
+  assert.equal(content.programs.length, 7);
   const ids = content.programs.map((program) => program.id);
   assert.equal(new Set(ids).size, ids.length);
   for (const level of ['a1', 'b1', 'c1', 'educator']) {
@@ -87,7 +87,7 @@ test('speaking club status and interest flow are accurate', () => {
   assert.equal(speaking.status, 'active');
   assert.equal(speaking.en.title, 'Eryaman Speaking Club');
   assert.equal(speaking.tr.title, 'Eryaman Speaking Club');
-  assert.deepEqual(content.programs.filter((program) => program.status).map((program) => program.id).sort(), ['personal','speaking','studio']);
+  assert.deepEqual(content.programs.filter((program) => program.status).map((program) => program.id).sort(), ['personal','speaking','starter','studio']);
   assert.equal(content.programs.find((program) => program.id === 'studio').href, './educators/');
   assert.equal(content.programs.find((program) => program.id === 'personal').href, './ozel-dersler/');
   assert.match(html, /data-choose-program="speaking"/);
@@ -103,4 +103,17 @@ test('logo and navy-coral design are applied to academy chrome', () => {
   assert.match(css, /--accent: #d54849/);
   assert.ok((html.match(/src="\.\/assets\/icons\/brand-icon\.svg"/g) || []).length >= 3);
   assert.doesNotMatch(html, /brand-logo\.png/);
+});
+
+test('homepage includes real starter course without opening pending paid courses',()=>{
+  const starter=content.programs.find((program)=>program.id==='starter');
+  assert.ok(starter);
+  assert.equal(starter.role,'student');
+  assert.equal(starter.status,'active');
+  assert.equal(starter.href,'./platform/');
+  assert.ok(starter.en.description.includes('12'));
+  assert.ok(starter.tr.description.includes('12'));
+  for(const name of ['career','advanced','online']){
+    assert.notEqual(content.programs.find(p=>p.id===name).status,'active');
+  }
 });
