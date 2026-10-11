@@ -8,7 +8,7 @@ LanguageLab Akademi is the main educational brand. **Eryaman Speaking Club is it
 
 - Turkish / English switcher; language preference is retained locally.
 - Responsive main navigation, including accessible mobile menu.
-- Six editorial homepage program cards with A1-A2, B1-B2, C1-C2 and educator filters. The Academy database separately stores seven program records; these catalogs are not yet synchronized and must not imply all lessons are generally available.
+- Seven editorial homepage program cards including the free 12-lesson speaking starter (links to the existing Academy platform), with A1-A2, B1-B2, C1-C2 and educator filters. The Academy database separately stores seven program records; homepage programme IDs are still editorial and not yet dynamically synchronized.
 - Learning-method, educator-studio and dedicated **Eryaman Speaking Club** section within the academy.
 - Student / educator interest forms with role-specific questions, required-field validation and email draft handoff.
 - Clear disclosure of which programs are active vs waitlisted. Educator and student interfaces exist, but need live end-to-end QA before broad use.
