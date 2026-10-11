@@ -239,8 +239,8 @@
         });
         const result=await response.json().catch(()=>({ok:false}));
         if(!response.ok||!result.ok)throw new Error(response.status===429?'RATE_LIMIT':'SERVICE_UNAVAILABLE');
-        showFeedback(true,inquiryMessages[language].success);
         form.reset();setRole('student');
+        showFeedback(true,inquiryMessages[language].success);
       }catch(e){
         showFeedback(true,inquiryMessages[language][e.message==='RATE_LIMIT'?'rate':'error']);
       }finally{button.disabled=false;}
