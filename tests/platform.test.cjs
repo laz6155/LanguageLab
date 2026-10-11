@@ -158,7 +158,7 @@ test('profile edits survive unrelated rerenders and account switches reset draft
   assert.match(js,/profileDirty=true;profileRevision\+\+/);
   assert.match(js,/if\(profileDirty\)\{status\.hidden=false;/);
   assert.match(js,/if\(revision===profileRevision\)profileDirty=false/);
-  assert.match(js,/if\(changed\)\{profileDirty=false;profileRevision=0;profile=null;staff=null;elem\('#profile-form'\)\.reset\(\)/);
+  assert.match(js,/if\(changed\)\{(?:managerLoadSequence\+\+;)?profileDirty=false;profileRevision=0;profile=null;staff=null;elem\('#profile-form'\)\.reset\(\)/);
   assert.match(js,/user=null;staff=null;profile=null;profileDirty=false;profileRevision=0;/);
   assert.match(js,/if\(!user\|\|user\.id!==uid\)return;/);
 });
@@ -186,4 +186,57 @@ test('profile draft rendering preserves unsaved values while repainting language
   sandbox.exercise.renderProfile();
   assert.equal(fields['#profile-goal'].value,'Persisted');
   assert.equal(fields['#profile-draft-status'].hidden,true);
+});
+
+
+test('learner mutations retain initiating actor and do not write into a later session',()=>{
+  const portion=(start,end)=>js.slice(js.indexOf('  async function '+start+'('),js.indexOf('  '+end+'(',js.indexOf('  async function '+start+'(')));
+  const sections=[
+    portion('toggleLessonDone','function renderTasks'),
+    portion('handleTaskSave','async function updateTask'),
+    portion('updateTask','async function deleteTask'),
+    portion('deleteTask','function markProfileDirty'),
+    portion('joinCourse','function renderCatalog'),
+    portion('setEnrollmentStatus','function clearCourseForm')
+  ];
+  for(const fragment of sections){
+    assert.ok(fragment.length>180,'Missing mutation function under test');
+    assert.match(fragment,/user\.id!==uid/,'Must ignore stale response after account switch');
+    assert.doesNotMatch(fragment,/\.eq\('user_id',user\.id\)/,'Do not read mutable actor after awaiting');
+  }
+  assert.match(js,/pendingLessonWrites\.has\(key\)/);
+  assert.match(js,/pendingEnrollments\.has\(key\)/);
+  assert.match(js,/taskCreatePending=true/);
+  assert.match(js,/elem\('#task-form'\)\.reset\(\);elem\('#skill-check-form'\)\.reset\(\)/);
+  assert.match(js,/function markProfileDirty\(\)/,'Previous profile fix must survive');
+});
+
+test('manager async loading never leaks a previous account into the next dashboard',async()=>{
+  const start=js.indexOf('  async function loadManagerData(');
+  const end=js.indexOf('  function renderManager(',start);
+  assert.ok(start>0&&end>start);
+  const managers=js.slice(start,end);
+  const values={
+    academy_courses:[{id:'sample-course'}],
+    academy_enrollments:[{id:'sample-request',user_id:'student-1'}],
+    academy_profiles:[{user_id:'student-1',full_name:'Sample Learner'}]
+  };
+  const ctx={
+    user:{id:'manager-a'},staff:{role:'owner'},managerLoadSequence:0,
+    allCourses:[],adminEnrollments:[],profileMap:{},
+    db:{from(table){return {table,select(){return this;},order(){return this;},limit(){return this;},in(){return this;}};}},
+    run:async(query)=>values[query.table],
+    isManager:()=>ctx.staff?.role==='owner'
+  };
+  vm.runInNewContext(managers+';globalThis.loadManagerData=loadManagerData;',ctx,{timeout:2000});
+  const pending=ctx.loadManagerData();
+  ctx.user={id:'learner-b'};ctx.staff=null;
+  await pending;
+  assert.equal(ctx.allCourses.length,0,'Manager courses from other user must not be attached');
+  assert.equal(ctx.adminEnrollments.length,0);
+  ctx.user={id:'manager-a'};ctx.staff={role:'owner'};
+  await ctx.loadManagerData();
+  assert.equal(ctx.allCourses.length,1);
+  assert.equal(ctx.adminEnrollments.length,1);
+  assert.equal(ctx.profileMap['student-1'],'Sample Learner');
 });
