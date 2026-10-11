@@ -158,7 +158,7 @@ test('profile edits survive unrelated rerenders and account switches reset draft
   assert.match(js,/profileDirty=true;profileRevision\+\+/);
   assert.match(js,/if\(profileDirty\)\{status\.hidden=false;/);
   assert.match(js,/if\(revision===profileRevision\)profileDirty=false/);
-  assert.match(js,/if\(changed\)\{profileDirty=false;profileRevision=0;profile=null;staff=null;elem\('#profile-form'\)\.reset\(\)/);
+  assert.match(js,/if\(changed\)\{(?:managerLoadSequence\+\+;)?profileDirty=false;profileRevision=0;profile=null;staff=null;elem\('#profile-form'\)\.reset\(\)/);
   assert.match(js,/user=null;staff=null;profile=null;profileDirty=false;profileRevision=0;/);
   assert.match(js,/if\(!user\|\|user\.id!==uid\)return;/);
 });
