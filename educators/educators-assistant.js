@@ -105,7 +105,7 @@
       '</article>'
     ).join("");
 
-    $("[data-history-open]",wrap).forEach(btn=>btn.addEventListener("click",()=>{
+    $$("[data-history-open]",wrap).forEach(btn=>btn.addEventListener("click",()=>{
       const item=history.find(x=>x.id===btn.dataset.historyOpen);
       if(!item?.pack)return;
       pack=item.pack;
@@ -113,7 +113,7 @@
       $("#assistantOutput")?.scrollIntoView({behavior:"smooth",block:"start"});
       window.ESCAnalytics?.track?.("educator_assistant_history_opened","other");
     }));
-    $("[data-history-delete]",wrap).forEach(btn=>btn.addEventListener("click",()=>removeHistory(btn.dataset.historyDelete,btn)));
+    $$("[data-history-delete]",wrap).forEach(btn=>btn.addEventListener("click",()=>removeHistory(btn.dataset.historyDelete,btn)));
   }
 
   async function loadHistory(){

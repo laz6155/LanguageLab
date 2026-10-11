@@ -84,3 +84,11 @@ test('auditable P0 release criteria and the editorial pilot syllabus exist',()=>
   assert.match(readme,/12 published speaking-starter lessons/);
   assert.match(readme,/not yet connected to the Academy database/);
 });
+
+
+test('educator assistant history binds events using a collection selector',()=>{
+ const script=read('educators/educators-assistant.js');
+ assert.match(script,/\$\$\("\[data-history-open\]",wrap\)\.forEach/);
+ assert.match(script,/\$\$\("\[data-history-delete\]",wrap\)\.forEach/);
+ assert.doesNotMatch(script,/(?<!\$)\$\("\[data-history-(?:open|delete)\]",wrap\)\.forEach/);
+});
