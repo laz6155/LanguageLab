@@ -92,3 +92,20 @@ test('educator assistant history binds events using a collection selector',()=>{
  assert.match(script,/\$\$\("\[data-history-delete\]",wrap\)\.forEach/);
  assert.doesNotMatch(script,/(?<!\$)\$\("\[data-history-(?:open|delete)\]",wrap\)\.forEach/);
 });
+
+
+test('advanced teacher assistant is Academy-specific and honest about builder B2 limit',()=>{
+  const html=read('educators/index.html');
+  const client=read('esc-supabase.js');
+  const assistant=read('educators/educators-assistant.js');
+  const edge=read('supabase/functions/academy-lesson-assistant/index.ts');
+  assert.match(client,/invoke\('academy-lesson-assistant'/);
+  assert.match(html,/<option>C1<\/option><option>C2<\/option>/);
+  assert.match(assistant,/\['C1','C2'\]\.includes\(pack\.level\)/);
+  assert.match(assistant,/BAŞARI ÖLÇÜTLERİ/);
+  assert.match(assistant,/\$\$\("\[data-history-open\]",wrap\)\.forEach/);
+  assert.match(edge,/smart-rules-v2/);
+  assert.match(edge,/"C1"/);
+  assert.match(edge,/"C2"/);
+  assert.doesNotMatch(edge,/OPENAI_API_KEY|ANTHROPIC_API_KEY/);
+});
