@@ -2,6 +2,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const vm = require('node:vm');
 
 const root = path.join(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
@@ -116,4 +117,61 @@ test('homepage includes real starter course without opening pending paid courses
   for(const name of ['career','advanced','online']){
     assert.notEqual(content.programs.find(p=>p.id===name).status,'active');
   }
+});
+
+
+test('public Academy statuses sync safely from permitted course metadata',async()=>{
+  assert.match(html,/src="\.\/esc-supabase-config\.js" defer/);
+  const a=app.indexOf('  const PUBLIC_CATALOG_SLUGS=');
+  const b=app.indexOf('  function renderProgramChoices()',a);
+  assert.ok(a>0&&b>a);
+  const code=app.slice(a,b);
+  assert.match(code,/rest\/v1\/academy_courses/);
+  assert.doesNotMatch(code,/academy_profiles|academy_lessons|service_role|sb_secret_/);
+  let fetched='',updated=0;
+  const programmes=[
+    {id:'starter',status:'active',href:'./platform/',statusText:{en:'12 free lessons'}},
+    {id:'online',status:'planned'},
+    {id:'career',status:'planned'},
+    {id:'advanced',status:'planned'},
+    {id:'speaking',status:'active'},
+    {id:'studio',status:'active'}
+  ];
+  const sandbox={
+    window:{ESC_SUPABASE_CONFIG:{url:'https://example.supabase.co',anonKey:'public-demo-key'}},
+    URL,
+    source:{programs:programmes},
+    renderPrograms:()=>{updated++;},
+    fetch:async(url,opts)=>{
+      fetched=String(url);
+      assert.equal(opts.headers.apikey,'public-demo-key');
+      return {ok:true,json:async()=>[
+        {slug:'speaking-starter',status:'open'},
+        {slug:'online-speaking',status:'waitlist'},
+        {slug:'english-at-work',status:'open'}
+      ]};
+    }
+  };
+  vm.runInNewContext(code+';globalThis.syncCatalogStatuses=syncCatalogStatuses;',sandbox,{timeout:2000});
+  await sandbox.syncCatalogStatuses();
+  assert.ok(fetched.includes('/rest/v1/academy_courses'));
+  assert.equal(updated,1);
+  assert.equal(programmes.find(x=>x.id==='starter').status,'active');
+  assert.equal(programmes.find(x=>x.id==='online').status,'planned');
+  assert.equal(programmes.find(x=>x.id==='career').status,'active');
+  assert.equal(programmes.find(x=>x.id==='career').href,'./platform/');
+  assert.equal(programmes.find(x=>x.id==='advanced').status,'planned');
+  assert.equal(programmes.find(x=>x.id==='speaking').status,'active');
+  assert.equal(programmes.find(x=>x.id==='studio').status,'active');
+});
+
+test('public catalog sync falls back without blocking the static homepage',async()=>{
+  const a=app.indexOf('  const PUBLIC_CATALOG_SLUGS='),b=app.indexOf('  function renderProgramChoices()',a);
+  const programme={id:'career',status:'planned'};
+  const sandbox={window:{ESC_SUPABASE_CONFIG:{url:'https://example.supabase.co',anonKey:'demo'}},URL,
+    source:{programs:[programme]},renderPrograms:()=>{throw Error('Should not rerender on failure');},
+    fetch:async()=>{throw Error('Offline');}};
+  vm.runInNewContext(app.slice(a,b)+';globalThis.syncCatalogStatuses=syncCatalogStatuses;',sandbox,{timeout:2000});
+  await sandbox.syncCatalogStatuses();
+  assert.equal(programme.status,'planned');
 });
