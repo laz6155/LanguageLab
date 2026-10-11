@@ -36,3 +36,7 @@
 .course-progress-meter::-webkit-progress-value{background:var(--coral);border-radius:9px}
 .course-progress-finished{font-size:.84rem;color:#245e45;margin:0}
 .course-progress-panel>.small-btn{justify-self:start}
+
+/* Manager-only editorial overview: counts published and private draft lessons. */
+.content-review-summary{margin:14px 0;padding:11px 15px;background:#edf2fa;border:1px solid #d5e0f2;border-radius:10px;color:#19305f;font-weight:700;font-size:.82rem;line-height:1.55}
+#content-list .lesson-item>.status-tag{flex:0 0 auto}

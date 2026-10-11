@@ -251,8 +251,8 @@ test('date-only due dates respect local calendar day across timezones',()=>{
   vm.runInNewContext(code+';globalThis.displayDate=formatDate;',sandbox,{timeout:1500});
   assert.equal(sandbox.displayDate('2026-10-11'),'11 Oct 2026');
   assert.equal(sandbox.displayDate('2026-10-11T00:00:00Z'),'10 Oct 2026');
-  assert.match(html,/platform\.js\?v=20261011-qa3/);
-  assert.match(html,/platform\.css\?v=20261011-qa3/);
+  assert.match(html,/platform\.js\?v=20261011-review/);
+  assert.match(html,/platform\.css\?v=20261011-review/);
 });
 
 
@@ -309,4 +309,79 @@ test('course progress meter counts only lessons in selected course',()=>{
   const finished=collect(detail);
   assert.equal(finished.find(x=>x.tag==='progress').value,2);
   assert.ok(finished.some(x=>x.cls==='course-progress-finished'));
+});
+
+
+test('manager must consciously publish previously private lessons and modules',()=>{
+  const start=js.indexOf('  function confirmFirstPublication('),end=js.indexOf('  async function handleModuleSave(',start);
+  assert.ok(start>0&&end>start);
+  const decisions=[false,true],calls=[];
+  const ctx={tr:key=>key,confirm:text=>{calls.push(text);return decisions.shift();}};
+  vm.runInNewContext(js.slice(start,end)+';globalThis.check=confirmFirstPublication;',ctx,{timeout:1000});
+  assert.equal(ctx.check(false,false,'module'),true);
+  assert.equal(ctx.check(true,true,'lesson'),true);
+  assert.equal(calls.length,0);
+  assert.equal(ctx.check(false,true,'module'),false);
+  assert.equal(ctx.check(false,true,'lesson'),true);
+  assert.deepEqual(calls,['confirmPublishModule','confirmPublishLesson']);
+  assert.match(js,/confirmOpenCourse/);
+  assert.match(js,/if\(payload.is_published&&\(!payload.content_tr\|\|!payload.content_en\)\)/);
+});
+
+test('editor review summary counts truly visible lessons, not drafts hidden by module',()=>{
+  assert.match(html,/id="content-review-summary"/);
+  const a=js.indexOf('  function renderAdminContent('),b=js.indexOf('  function confirmFirstPublication(',a);
+  assert.ok(a>0&&b>a);
+  const summary={textContent:''},list={children:[],append(x){this.children.push(x);}};
+  const make=(name,clazz,text)=>({name,clazz,text,children:[],append(...items){this.children.push(...items);}});
+  const sandbox={
+    adminModules:[{id:'m1',is_published:true,title_en:'Visible'},{id:'m2',is_published:false,title_en:'Private'}],
+    adminLessons:[{id:'l1',module_id:'m1',is_published:true,title_en:'Published',estimated_minutes:10},
+      {id:'l2',module_id:'m2',is_published:true,title_en:'Still Private',estimated_minutes:10},
+      {id:'l3',module_id:'m1',is_published:false,title_en:'Draft',estimated_minutes:10}],
+    elem:selector=>selector==='#content-list'?list:summary,
+    clear:elem=>elem.children=[],
+    node:make,
+    localized:obj=>obj.title_en,
+    tr:key=>key==='reviewSummary'?'{total} total / {live} live / {draft} draft':key,
+    statPill:s=>make('span','status-tag',s),
+    button:(label,action)=>({...make('button','',label),action}),
+    empty:()=>{}
+  };
+  vm.runInNewContext(js.slice(a,b)+';globalThis.renderAdminContent=renderAdminContent;',sandbox,{timeout:1000});
+  sandbox.renderAdminContent();
+  assert.equal(summary.textContent,'3 total / 1 live / 2 draft');
+  assert.equal(list.children.length,2);
+});
+
+test('manager editor rejects stale cross-course items before any database write',async()=>{
+  const a=js.indexOf('  async function handleModuleSave('),b=js.indexOf('  async function handleAnnouncementSave(',a);
+  const code=js.slice(a,b);
+  assert.ok(a>0&&b>a);
+  assert.match(code,/existing\.course_id!==course_id/);
+  assert.match(code,/existing\.module_id!==module_id/);
+  assert.match(code,/\.eq\('course_id',course_id\)/);
+  assert.match(code,/\.eq\('module_id',module_id\)/);
+  let writes=0,notifications=[];
+  const values={
+    '#content-course':{value:'course-a'},'#content-module':{value:'module-other'},
+    '#module-title-tr':{value:'Title'},'#module-title-en':{value:'Title'},'#module-published':{checked:false},
+    '#lesson-title-tr':{value:'Lesson'},'#lesson-title-en':{value:'Lesson'},
+    '#lesson-body-tr':{value:'Body'},'#lesson-body-en':{value:'Body'},
+    '#lesson-published':{checked:false},'#lesson-minutes':{value:'20'}
+  };
+  const ctx={user:{id:'owner-a'},allCourses:[{id:'course-a'}],
+    adminModules:[{id:'module-other',course_id:'course-b'}],
+    adminLessons:[{id:'lesson-other',module_id:'module-other'}],
+    editModuleId:'module-other',editLessonId:'lesson-other',
+    isManager:()=>true,elem:selector=>values[selector],
+    notify:text=>notifications.push(text),tr:key=>key,
+    attempt:async()=>{writes++;},
+    confirmFirstPublication:()=>true
+  };
+  vm.runInNewContext(code+';globalThis.saveModule=handleModuleSave;globalThis.saveLesson=handleLessonSave;',ctx,{timeout:1000});
+  await ctx.saveModule({preventDefault(){}});
+  await ctx.saveLesson({preventDefault(){}});
+  assert.equal(writes,0);
+  assert.deepEqual(notifications,['editorSelectionChanged','editorSelectionChanged']);
 });
