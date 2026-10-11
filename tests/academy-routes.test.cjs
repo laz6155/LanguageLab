@@ -205,6 +205,7 @@ test('classroom keeps the visible page when previous join finishes after leaving
   };
   const ctx={
     token:'',classSessionVersion:1,refreshInFlight:false,
+    TOKEN_KEY:'token',NAME_KEY:'name',CLASS_CODE_KEY:'class',
     $:key=>controls[key],tx:(tr,en)=>en,showMessage:()=>{},
     safeStorageGet:()=>'',safeStorageSet:()=>{},randomToken:()=> 'session-token',
     window:{ESCSupabase:{joinEducatorClass:()=>new Promise(resolve=>{accept=resolve;}),
