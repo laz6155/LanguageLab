@@ -40,7 +40,7 @@ window.LanguageLabTranslations = {
     'programs.kicker': 'PROGRAMLARI KE\u015eFET',
     'programs.title': 'Her \u00f6\u011frenen i\u00e7in<br><span>bir yol var.</span>',
     'programs.description': 'E\u011fitim yollar\u0131n\u0131 ve Eryaman Speaking Club bulu\u015fmalar\u0131n\u0131 ke\u015ffet. Di\u011fer akademi programlar\u0131 geli\u015ftirilme a\u015famas\u0131nda.',
-    'programs.note': 'Eryaman Speaking Club bulu\u015fmalar\u0131 devam ediyor. 12 derslik \\u00fccretsiz konu\\u015fma ba\\u015flang\\u0131c\\u0131 haz\\u0131r. Di\\u011fer akademi programlar\\u0131 geli\\u015ftiriliyor; tarihler, fiyatlar ve kay\\u0131t ko\\u015fullar\\u0131 ayr\\u0131ca duyurulacak.',
+    'programs.note': 'Eryaman Speaking Club bulu\u015fmalar\u0131 devam ediyor. 12 derslik \u00fccretsiz konu\u015fma ba\u015flang\u0131c\u0131 haz\u0131r. Di\u011fer akademi programlar\u0131 geli\u015ftiriliyor; tarihler, fiyatlar ve kay\u0131t ko\u015fullar\u0131 ayr\u0131ca duyurulacak.',
     'filters.all': 'T\u00fcm programlar',
     'filters.educators': 'E\u011fitmenler',
     'method.kicker': 'NASIL \u0130\u015eLEYECEK?',
@@ -181,9 +181,9 @@ window.LanguageLabTranslations = {
   },
   programs: [
     {
-      id: 'starter', href: './platform/', status: 'active', statusText: {tr:'12 ücretsiz başlangıç dersi',en:'12 free starter lessons'}, group: ['a1'], level: 'A1 - A2', icon: '\\u25ce', theme: 'green', role: 'student',
+      id: 'starter', href: './platform/', status: 'active', statusText: {tr:'12 ücretsiz başlangıç dersi',en:'12 free starter lessons'}, group: ['a1'], level: 'A1 - A2', icon: '\u25ce', theme: 'green', role: 'student',
       en: {title: 'Free Speaking Starter', description: 'Practise everyday English with 12 bite-sized lessons, sample conversations and speaking tasks. Create a free learner account to save your progress.'},
-      tr: {title: '\\u00dccretsiz Konu\\u015fma Ba\\u015flang\\u0131c\\u0131', description: '12 k\\u0131sa ders, \\u00f6rnek diyaloglar ve konu\\u015fma g\\u00f6revleriyle g\\u00fcnl\\u00fck \\u0130ngilizce prati\\u011fi yap. Geli\\u015fimini saklamak i\\u00e7in \\u00fccretsiz \\u00f6\\u011frenci hesab\\u0131 olu\\u015ftur.'}
+      tr: {title: '\u00dccretsiz Konu\u015fma Ba\u015flang\u0131c\u0131', description: '12 k\u0131sa ders, \u00f6rnek diyaloglar ve konu\u015fma g\u00f6revleriyle g\u00fcnl\u00fck \u0130ngilizce prati\u011fi yap. Geli\u015fimini saklamak i\u00e7in \u00fccretsiz \u00f6\u011frenci hesab\u0131 olu\u015ftur.'}
     },
     {
       id: 'speaking', group: ['a1', 'b1'], level: 'A2 - B2', icon: '\u2727', theme: 'violet', role: 'student', status: 'active',
