@@ -167,6 +167,10 @@
     (pack.worksheet||[]).forEach((x,i)=>lines.push(`${i+1}. ${x}`));
     lines.push("",tx("ÖDEV","HOMEWORK"));
     (pack.homework||[]).forEach((x,i)=>lines.push(`${i+1}. ${x}`));
+    if(pack.success_criteria?.length){
+      lines.push("",tx("BAŞARI ÖLÇÜTLERİ","SUCCESS CRITERIA"));
+      pack.success_criteria.forEach((x,i)=>lines.push(`${i+1}. ${x}`));
+    }
     lines.push("",tx("OYUN","GAME")+": "+(pack.game?.name||""));
     lines.push(pack.game?.instructions||"",pack.game?.prompt||"");
     return lines.join("\n");
@@ -203,6 +207,12 @@
 
   function applyToBuilder(){
     if(!pack)return;
+    // The inherited classroom builder/database currently stop at B2.
+    // Never silently downgrade a C1/C2 pack to B2.
+    if(['C1','C2'].includes(pack.level)){
+      status(tx("C1–C2 paketi hazır. Sınıf oluşturucu şu anda en çok B2 destekliyor; yanlış seviye kaydetmemek için bu paketi 'Kopyala' ile kullan.","C1–C2 pack ready. The classroom builder currently supports up to B2; use 'Copy' to avoid saving an incorrect level."));
+      return;
+    }
     const form=$("#lessonForm");
     if(form)delete form.dataset.editingLessonId;
 
