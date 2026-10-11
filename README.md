@@ -8,13 +8,20 @@ LanguageLab Akademi is the main educational brand. **Eryaman Speaking Club is it
 
 - Turkish / English switcher; language preference is retained locally.
 - Responsive main navigation, including accessible mobile menu.
-- Six program cards with A1-A2, B1-B2, C1-C2 and educator filters. The speaking club is active; other academy programs are proposed.
+- Six editorial homepage program cards with A1-A2, B1-B2, C1-C2 and educator filters. The Academy database separately stores seven program records; these catalogs are not yet synchronized and must not imply all lessons are generally available.
 - Learning-method, educator-studio and dedicated **Eryaman Speaking Club** section within the academy.
 - Student / educator interest forms with role-specific questions, required-field validation and email draft handoff.
-- Clear disclosure that programs and the educator dashboard are **planned**, not live services.
+- Clear disclosure of which programs are active vs waitlisted. Educator and student interfaces exist, but need live end-to-end QA before broad use.
 - Native accessibility controls, keyboard focus indicators and reduced-motion support.
 
-**Important:** The contact form opens the visitor's email application. It does **not** store the form on GitHub Pages or send the message automatically. A draft is not considered submitted until the visitor presses Send in their email application. Supabase has **not** yet been connected.
+**Important:** The contact form opens the visitor's email application. It does **not** store the form on GitHub Pages or send the message automatically. A draft is not considered submitted until the visitor presses Send in their email application. **The public homepage interest form is not yet connected to the Academy database:** it opens an email draft. The Academy course platform (`/platform/`) and inherited educator/student modules **do** connect to the existing shared Supabase project. This is not an independently owned Academy backend.
+
+## October 2026 production status
+
+- Learner portal: `/platform/` with Supabase course enrollment, personal tasks, lesson completion, and private CEFR skill self-check history (subjective self-report, not accredited testing).
+- Educational content: 12 published speaking-starter lessons; eight English-at-Work and eight Advanced Discussion lesson drafts awaiting instructor review. See [Pilot curriculum quality gate](docs/PILOT_CURRICULUM.md).
+- The Homepage interest form still opens a local email client; private tutoring uses an external form service. No central lead CRM is live.
+- Full signup, SMTP confirmation, reset redirects, cross-user access and mobile behavior still require real-world QA. See [Release gate and required owner decisions](docs/RELEASE_GATE.md).
 
 ## Publish on GitHub Pages
 

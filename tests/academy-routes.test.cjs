@@ -70,3 +70,17 @@ test('learning path supplies separate learner, teacher and school flows with loc
   assert.match(script,/CEFR/);
   assert.match(html,/href="\.\/path\.css"/); // local stylesheet is linked
 });
+
+test('auditable P0 release criteria and the editorial pilot syllabus exist',()=>{
+  const gate=read('docs/RELEASE_GATE.md');
+  const syllabus=read('docs/PILOT_CURRICULUM.md');
+  const readme=read('README.md');
+  assert.match(gate,/Negative authorization tests/);
+  assert.match(gate,/Auth/);
+  assert.match(gate,/Legal notice/);
+  assert.match(syllabus,/Everyday Speaking Missions/);
+  assert.match(syllabus,/English at Work/);
+  assert.match(syllabus,/Advanced Discussion/);
+  assert.match(readme,/12 published speaking-starter lessons/);
+  assert.match(readme,/not yet connected to the Academy database/);
+});
