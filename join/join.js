@@ -14,6 +14,10 @@
     return [...a].map(x=>x.toString(16).padStart(2,'0')).join('');
   }
   function showMessage(text,ok=false){const el=$('#joinMessage');el.textContent=text;el.hidden=!text;el.classList.toggle('ok',ok);}
+  function showClassroomMessage(text,error=false){
+    const el=$('#classroomMessage');if(!el)return;
+    el.textContent=text||'';el.hidden=!text;el.classList.toggle('is-error',Boolean(error));
+  }
   function friendly(err){
     const s=String(err?.message||err||tx('Katılım tamamlanamadı.','Could not join the class.'));
     if(s.includes('CLASS_NOT_FOUND'))return tx('Bu sınıf kodu bulunamadı veya sınıf kapalı.','This class code was not found or the class is closed.');
@@ -250,8 +254,9 @@
       const ok=await window.ESCSupabase.submitStudentResult(token,null,'assignment',null,{assignment_id:id,response});
       if(!ok)throw new Error('SUBMIT_FAILED');
       button.textContent=tx('Teslim edildi ✓','Submitted ✓');
+      showClassroomMessage('',false);
       await refresh();
-    }catch{button.textContent=tx('Tekrar dene','Try again');setTimeout(()=>button.textContent=old,1400);}
+    }catch(err){showClassroomMessage(tx('Ödev gönderilemedi. Bağlantını kontrol edip yeniden dene.','Assignment was not submitted. Check your connection and try again.'),true);button.textContent=tx('Tekrar dene','Try again');setTimeout(()=>button.textContent=old,1400);}
     finally{button.disabled=false;}
   }
   function paint(d){
@@ -322,17 +327,31 @@
   function leave(reload=true){if(poll)clearInterval(poll);poll=null;token='';state=null;lastSignature='';localStorage.removeItem(TOKEN_KEY);localStorage.removeItem(CLASS_CODE_KEY);if(reload)location.href='./';}
   async function result(kind){
     if(!token||!state?.session?.id)return;
-    const button=document.querySelector(`[data-result="${kind}"]`);if(button)button.disabled=true;
-    const payload=state.session?.current_payload||{};
+    const button=document.querySelector(`[data-result="${kind}"]`);
+    if(button)button.disabled=true;
+    const payload=state.session.current_payload||{};
     const activityKey=[
-      state.session?.current_stage||'',
+      state.session.current_stage||'',
       payload.stage_key||payload.kind||'',
       payload.question_index ?? '',
       String(payload.prompt||'').slice(0,80)
     ].join('|').slice(0,180);
-    try{await window.ESCSupabase.submitStudentResult(token,state.session.id,kind,kind==='participated'?100:0,{stage:state.session.current_stage||'',activity_key:activityKey});if(button){const old=button.textContent;button.textContent=tx('Gönderildi ✓','Sent ✓');setTimeout(()=>button.textContent=old,1200);}}
-    catch{}
-    finally{if(button)button.disabled=false;}
+    try{
+      const accepted=await window.ESCSupabase.submitStudentResult(token,state.session.id,kind,kind==='participated'?100:0,{
+        stage:state.session.current_stage||'',activity_key:activityKey
+      });
+      if(accepted!==true)throw new Error('RESULT_NOT_SAVED');
+      showClassroomMessage('',false);
+      if(button){
+        const old=button.textContent;
+        button.textContent=tx('Gönderildi ✓','Sent ✓');
+        setTimeout(()=>button.textContent=old,1200);
+      }
+    }catch(err){
+      showClassroomMessage(tx('Yanıtın kaydedilemedi. Bağlantını kontrol edip tekrar dene.','Your response was not saved. Check your connection and try again.'),true);
+    }finally{
+      if(button)button.disabled=false;
+    }
   }
   async function boot(){
     const params=new URLSearchParams(location.search);const code=params.get('code')||'';
