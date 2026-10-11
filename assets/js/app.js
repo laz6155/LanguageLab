@@ -62,6 +62,53 @@
     document.getElementById('program-count').textContent = misc('count')(visible.length);
   }
 
+  // Public catalogue availability only. Student profiles and private lessons are never queried.
+  const PUBLIC_CATALOG_SLUGS=Object.freeze({
+    starter:'speaking-starter',
+    online:'online-speaking',
+    career:'english-at-work',
+    advanced:'advanced-discussion'
+  });
+  async function syncCatalogStatuses(){
+    const cfg=window.ESC_SUPABASE_CONFIG;
+    if(!cfg?.url||!cfg?.anonKey)return;
+    try{
+      const url=new URL('/rest/v1/academy_courses',cfg.url);
+      url.searchParams.set('select','slug,status');
+      url.searchParams.set('slug','in.('+Object.values(PUBLIC_CATALOG_SLUGS).join(',')+')');
+      const response=await fetch(url.toString(),{
+        headers:{apikey:cfg.anonKey,Accept:'application/json'},
+        cache:'no-store'
+      });
+      if(!response.ok)throw new Error('Public catalogue unavailable');
+      const data=await response.json();
+      if(!Array.isArray(data))return;
+      const statuses=new Map(data.filter(item=>item&&typeof item.slug==='string'&&['open','waitlist'].includes(item.status)).map(item=>[item.slug,item.status]));
+      for(const program of source.programs){
+        const slug=PUBLIC_CATALOG_SLUGS[program.id];
+        if(!slug)continue;
+        const state=statuses.get(slug)||'hidden';
+        program.status=state==='open'?'active':'planned';
+        if(program.id==='starter'){
+          if(state!=='open')program.statusText={tr:'Şu anda erişime kapalı',en:'Not currently available'};
+          continue;
+        }
+        if(state==='open'){
+          program.href='./platform/';
+          program.statusText={tr:'Kayıt talepleri açık',en:'Enrollment requests open'};
+        }else{
+          delete program.href;
+          program.statusText=state==='waitlist'
+            ?{tr:'Ön talep açık',en:'Waitlist / early interest'}
+            :{tr:'Henüz açılmadı',en:'Not currently available'};
+        }
+      }
+      renderPrograms();
+    }catch(_){
+      // Keep the complete static catalogue when the public database is unreachable.
+    }
+  }
+
   function renderProgramChoices() {
     const select = document.getElementById('program');
     const selected = select.value;
@@ -219,4 +266,5 @@
 
   renderLanguage(language);
   setRole('student');
+  void syncCatalogStatuses();
 })();
