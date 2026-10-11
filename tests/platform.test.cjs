@@ -148,3 +148,42 @@ test('async course loading ignores stale responses and signs out safely',()=>{
   assert.match(manager,/elem\('#content-course'\)\.value!==id/);
   assert.match(js,/courseLoadSequence\+\+;adminContentLoadSequence\+\+;/);
 });
+
+
+test('profile edits survive unrelated rerenders and account switches reset drafts',()=>{
+  assert.match(html,/id="profile-draft-status"/);
+  assert.match(css,/\.profile-draft-status/);
+  assert.match(js,/addEventListener\('input',markProfileDirty\)/);
+  assert.match(js,/addEventListener\('change',markProfileDirty\)/);
+  assert.match(js,/profileDirty=true;profileRevision\+\+/);
+  assert.match(js,/if\(profileDirty\)\{status\.hidden=false;/);
+  assert.match(js,/if\(revision===profileRevision\)profileDirty=false/);
+  assert.match(js,/if\(changed\)\{profileDirty=false;profileRevision=0;profile=null;staff=null;elem\('#profile-form'\)\.reset\(\)/);
+  assert.match(js,/user=null;staff=null;profile=null;profileDirty=false;profileRevision=0;/);
+  assert.match(js,/if\(!user\|\|user\.id!==uid\)return;/);
+});
+
+test('profile draft rendering preserves unsaved values while repainting language',()=>{
+  const m=js.match(/  function markProfileDirty\(\)\{[\s\S]*?(?=  async function handleProfileSave\()/);
+  assert.ok(m,'Profile helpers missing');
+  const fields={
+    '#profile-name':{value:''},
+    '#profile-level':{value:''},
+    '#profile-goal':{value:''},
+    '#profile-draft-status':{hidden:true,textContent:''}
+  };
+  const sandbox={user:{id:'learner-a'},profile:{full_name:'Previous',target_level:'A1-A2',learning_goal:'Original'},profileDirty:false,profileRevision:0,
+    elem:(key)=>fields[key],tr:(key)=>key==='profileDraftPending'?'Unsaved changes':key};
+  vm.runInNewContext(m[0]+';globalThis.exercise={markProfileDirty,renderProfile};',sandbox,{timeout:1500});
+  sandbox.exercise.renderProfile();
+  assert.equal(fields['#profile-goal'].value,'Original');
+  fields['#profile-goal'].value='New goal not saved yet';
+  sandbox.exercise.markProfileDirty();
+  sandbox.exercise.renderProfile();
+  assert.equal(fields['#profile-goal'].value,'New goal not saved yet');
+  assert.equal(fields['#profile-draft-status'].hidden,false);
+  sandbox.profileDirty=false;sandbox.profile={full_name:'Saved',target_level:'B1-B2',learning_goal:'Persisted'};
+  sandbox.exercise.renderProfile();
+  assert.equal(fields['#profile-goal'].value,'Persisted');
+  assert.equal(fields['#profile-draft-status'].hidden,true);
+});
