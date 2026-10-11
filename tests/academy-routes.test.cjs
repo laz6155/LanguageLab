@@ -109,3 +109,37 @@ test('advanced teacher assistant is Academy-specific and honest about builder B2
   assert.match(edge,/"C2"/);
   assert.doesNotMatch(edge,/OPENAI_API_KEY|ANTHROPIC_API_KEY/);
 });
+
+
+test('classroom does not silently claim an unsuccessful student result was submitted',async()=>{
+  const script=read('join/join.js');
+  const html=read('join/index.html');
+  const css=read('join/join.css');
+  assert.match(html,/id="classroomMessage" role="status" aria-live="polite"/);
+  assert.match(script,/function showClassroomMessage\(/);
+  assert.match(script,/if\(accepted!==true\)throw new Error\('RESULT_NOT_SAVED'\)/);
+  assert.match(script,/Assignment was not submitted/);
+  assert.match(css,/\.classroom-message\.is-error/);
+  const a=script.indexOf('  async function result(');
+  const b=script.indexOf('  async function boot(',a);
+  assert.ok(a>=0&&b>a);
+  const button={disabled:false,textContent:'Participated'};
+  const messages=[];
+  const ctx={
+    token:'session-token',state:{session:{id:'session-a',current_stage:'speaking',current_payload:{prompt:'Hello'}}},
+    window:{ESCSupabase:{submitStudentResult:async()=>false}},
+    document:{querySelector:()=>button},
+    tx:(tr,en)=>en,
+    showClassroomMessage:(text,error)=>messages.push({text,error}),
+    setTimeout:()=>{}
+  };
+  vm.runInNewContext(script.slice(a,b)+';globalThis.sendResult=result;',ctx,{timeout:2000});
+  await ctx.sendResult('participated');
+  assert.equal(button.disabled,false);
+  assert.equal(messages.at(-1).error,true);
+  assert.match(messages.at(-1).text,/not saved/);
+  ctx.window.ESCSupabase.submitStudentResult=async()=>true;
+  await ctx.sendResult('participated');
+  assert.equal(messages.at(-1).error,false);
+  assert.equal(button.disabled,false);
+});
