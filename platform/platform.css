@@ -24,3 +24,6 @@
 .skill-check-form>button{justify-self:start}
 .skill-check-card .skill-check-note{white-space:pre-wrap;margin-top:8px}
 @media(max-width:680px){.skill-check-form{grid-template-columns:1fr}.skill-check-form .wide{grid-column:auto}}
+
+/* Warn only when learner profile edits are still unsaved. */
+.profile-draft-status{grid-column:1 / -1;margin:0;padding:11px 14px;border-radius:10px;border:1px solid #ecd7a0;background:#fff9e8;color:#795414;font-size:.83rem;line-height:1.5}
