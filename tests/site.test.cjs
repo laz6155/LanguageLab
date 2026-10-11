@@ -104,3 +104,13 @@ test('logo and navy-coral design are applied to academy chrome', () => {
   assert.ok((html.match(/src="\.\/assets\/icons\/brand-icon\.svg"/g) || []).length >= 3);
   assert.doesNotMatch(html, /brand-logo\.png/);
 });
+
+test('staged interest form stays email-only until privacy and consent approval',()=>{
+  assert.match(app,/const INQUIRY_CRM_ENABLED = false/);
+  assert.match(app,/if \(INQUIRY_CRM_ENABLED\)/);
+  assert.match(app,/contact_consent:consentInput\.checked/);
+  assert.match(app,/response\.ok/);
+  assert.match(html,/id="lead-consent"/);
+  assert.match(html,/id="lead-website"/);
+  assert.match(app,/mailto:/);
+});
