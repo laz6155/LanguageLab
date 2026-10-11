@@ -18,7 +18,7 @@
   let lang='tr';try{lang=localStorage.getItem(LANGUAGE_KEY)==='en'?'en':'tr';}catch{}
   let authMode='signin';let db=null;let user=null;let staff=null;let currentView='overview';let currentAdminTab='enrollments';let selectedCourseId=null;let selectedLessonId=null;let editCourseId=null;let editModuleId=null;let editLessonId=null;
   let publishedCourses=[],allCourses=[],enrollments=[],profile=null,progress=[],tasks=[],skillChecks=[],announcements=[],sessions=[],adminEnrollments=[],profileMap={},learnerModules=[],learnerLessons=[],adminModules=[],adminLessons=[];
-  let courseLoadSequence=0,adminContentLoadSequence=0;
+  let courseLoadSequence=0,adminContentLoadSequence=0,managerLoadSequence=0;
   let loadingSession=false;let sessionRefreshQueued=false;let recoveryMode=false;let profileDirty=false;let profileRevision=0;
   const pendingLessonWrites=new Set(),pendingEnrollments=new Set();let taskCreatePending=false;
   function localDateKey(date=new Date()){return [date.getFullYear(),String(date.getMonth()+1).padStart(2,'0'),String(date.getDate()).padStart(2,'0')].join('-');}
@@ -139,7 +139,7 @@
         return;
       }
       const changed=user?.id!==fresh.id;
-      if(changed){profileDirty=false;profileRevision=0;profile=null;staff=null;elem('#profile-form').reset();elem('#task-form').reset();elem('#skill-check-form').reset();}
+      if(changed){managerLoadSequence++;profileDirty=false;profileRevision=0;profile=null;staff=null;elem('#profile-form').reset();elem('#task-form').reset();elem('#skill-check-form').reset();}
       user=fresh;
       if(recoveryMode){showRecovery();return;}
       elem('#password-recovery-panel').hidden=true;
@@ -155,7 +155,7 @@
   function showUnauthed(){
     user=null;staff=null;profile=null;profileDirty=false;profileRevision=0;elem('#profile-form').reset();elem('#task-form').reset();elem('#skill-check-form').reset();elem('#profile-draft-status').hidden=true;enrollments=[];progress=[];tasks=[];skillChecks=[];announcements=[];sessions=[];
     allCourses=[];adminEnrollments=[];profileMap={};learnerModules=[];learnerLessons=[];adminModules=[];adminLessons=[];
-    courseLoadSequence++;adminContentLoadSequence++;
+    courseLoadSequence++;adminContentLoadSequence++;managerLoadSequence++;
     selectedCourseId=null;selectedLessonId=null;editCourseId=null;editModuleId=null;editLessonId=null;
     currentView='overview';currentAdminTab='enrollments';
     elem('#course-detail').hidden=true;elem('#password-recovery-panel').hidden=true;
@@ -177,8 +177,13 @@
     ]);
     if(!user||user.id!==uid)return;
     profile=pr;staff=st;enrollments=en||[];progress=pg||[];tasks=ts||[];skillChecks=sc||[];announcements=an||[];sessions=ss||[];
-    if(!profile){profile=await run(db.from('academy_profiles').insert({user_id:uid,full_name:'',target_level:'Not sure',language:lang}).select('*').single());}
-    if(isManager()) await loadManagerData();
+    if(!profile){
+      const created=await run(db.from('academy_profiles').insert({user_id:uid,full_name:'',target_level:'Not sure',language:lang}).select('*').single());
+      if(!user||user.id!==uid)return;
+      profile=created;
+    }
+    if(isManager())await loadManagerData();
+    if(!user||user.id!==uid)return;
     renderDashboard();renderCatalog();
   }
   function isManager(){return !!staff&&['owner','manager'].includes(staff.role);}
@@ -362,10 +367,21 @@
     if(!filtered.length){empty(target,tr('notFound'));return;}for(const c of filtered){const card=node('article','course-card');const top=node('div','course-card-top');top.append(node('span','course-icon',c.category==='private'?'◎':c.category==='educator'?'✦':c.category==='professional'?'↗':'◌'),statPill(c.status));card.append(top,node('h3','',localized(c)),node('p','',localized(c,'description')));const meta=node('div','course-meta');meta.append(node('span','tag',c.level_group==='ALL'?tr('levelAll'):c.level_group),node('span','tag',tr(({online:'formatOnline',in_person:'formatPerson',hybrid:'formatHybrid',self_paced:'formatSelf'})[c.delivery_format])));card.append(meta);
       const existing=enrollmentFor(c.id);const label=existing?existing.status==='active'?tr('alreadyActive'):tr(existing.status):c.access_mode==='self_enroll'?tr('freeJoin'):tr('request');const btn=button(label,()=>joinCourse(c),'button '+(existing&&existing.status!=='active'?'outlined':'primary'));if(existing&&existing.status!=='active')btn.disabled=true;card.append(btn);target.append(card);}
   }
-  async function loadManagerData(){if(!isManager())return;const [courses,e]=await Promise.all([
-    run(db.from('academy_courses').select('*').order('position')),
-    run(db.from('academy_enrollments').select('id,user_id,course_id,status,created_at').order('created_at',{ascending:false}).limit(300))
-  ]);allCourses=courses||[];adminEnrollments=e||[];profileMap={};const ids=[...new Set(adminEnrollments.map(x=>x.user_id))];if(ids.length){const people=await run(db.from('academy_profiles').select('user_id,full_name').in('user_id',ids));for(const p of people||[])profileMap[p.user_id]=p.full_name;}}
+  async function loadManagerData(){
+    if(!user||!isManager())return;
+    const uid=user.id,requestId=++managerLoadSequence;
+    const [courses,enrollmentRows]=await Promise.all([
+      run(db.from('academy_courses').select('*').order('position')),
+      run(db.from('academy_enrollments').select('id,user_id,course_id,status,created_at').order('created_at',{ascending:false}).limit(300))
+    ]);
+    if(!user||user.id!==uid||!isManager()||requestId!==managerLoadSequence)return;
+    const ids=[...new Set((enrollmentRows||[]).map(row=>row.user_id))];
+    const people=ids.length?await run(db.from('academy_profiles').select('user_id,full_name').in('user_id',ids)):[];
+    if(!user||user.id!==uid||!isManager()||requestId!==managerLoadSequence)return;
+    const names={};
+    for(const person of people||[])names[person.user_id]=person.full_name;
+    allCourses=courses||[];adminEnrollments=enrollmentRows||[];profileMap=names;
+  }
   function renderManager(){const summary=elem('#admin-summary');clear(summary);summary.append(metric(tr('managerCourses'),allCourses.length),metric(tr('managerPending'),adminEnrollments.filter(x=>x.status==='pending').length),metric(tr('managerActive'),adminEnrollments.filter(x=>x.status==='active').length));setAdminTab(currentAdminTab,false);renderAdminRequests();renderAdminCourses();populateAdminSelects();}
   function setAdminTab(tab,clearForms=false){currentAdminTab=tab;$$('[data-admin-tab]').forEach(b=>b.classList.toggle('active',b.dataset.adminTab===tab));$$('.admin-panel').forEach(p=>p.hidden=p.id!=='admin-'+tab);if(tab==='content'&&clearForms)loadAdminContent(true);}
   function renderAdminRequests(){const target=elem('#admin-request-list');clear(target);if(!adminEnrollments.length){empty(target,tr('nothingRequests'));return;}for(const e of adminEnrollments){const card=node('article','data-card');const top=node('div','row');top.append(node('h4','',profileMap[e.user_id]||'Learner'),statPill(e.status));card.append(top,node('p','',`${localized(courseOf(e.course_id))} · ${formatDate(e.created_at)}`));const actions=node('div','actions');if(e.status==='pending'||e.status==='rejected'){actions.append(button(tr('approve'),()=>setEnrollmentStatus(e,'active'),'small-btn primary'));if(e.status==='pending')actions.append(button(tr('reject'),()=>setEnrollmentStatus(e,'rejected'),'small-btn danger'));}if(e.status==='active')actions.append(button(tr('completed'),()=>setEnrollmentStatus(e,'completed')));card.append(actions);target.append(card);}}
