@@ -385,3 +385,36 @@ test('manager editor rejects stale cross-course items before any database write'
   assert.equal(writes,0);
   assert.deepEqual(notifications,['editorSelectionChanged','editorSelectionChanged']);
 });
+
+
+test('manager confirms access removal and rejects stale enrollment updates',async()=>{
+  assert.match(js,/confirmComplete:'Bu programı tamamlandı olarak işaretlersen/);
+  assert.match(js,/confirmComplete:'Marking this programme completed/);
+  const a=js.indexOf('  const pendingEnrollmentUpdates=new Set();');
+  const b=js.indexOf('  function clearCourseForm(',a);
+  assert.ok(a>0&&b>a);
+  const lines=js.slice(a,b);
+  assert.match(lines,/pendingEnrollmentUpdates\.has\(key\)/);
+  assert.match(lines,/\.eq\('status',enrollment\.status\)/);
+  assert.match(lines,/\.select\('id,status'\)\.maybeSingle\(\)/);
+  let confirmed=false,writes=0,rejected=false;
+  const ctx={
+    user:{id:'manager-1'},
+    pendingEnrollmentUpdates:undefined,
+    isManager:()=>true,
+    confirm:()=>confirmed,
+    tr:(name)=>name,
+    notify:()=>{},
+    loadManagerData:async()=>{},
+    renderManager:()=>{},
+    attempt:async(fn)=>fn(),
+    db:{from:()=>({update:()=>({eq(){return this;},select(){return this;},maybeSingle:async()=>{writes++;return {id:'e-1',status:'completed'};}})})},
+    run:async(q)=>q
+  };
+  vm.runInNewContext(lines+';globalThis.setEnrollmentStatus=setEnrollmentStatus;',ctx,{timeout:2000});
+  await ctx.setEnrollmentStatus({id:'e-1',status:'active'},'completed');
+  assert.equal(writes,0,'Completion requires explicit confirmation');
+  confirmed=true;
+  await ctx.setEnrollmentStatus({id:'e-1',status:'active'},'completed');
+  assert.equal(writes,1);
+});
