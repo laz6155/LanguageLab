@@ -71,7 +71,7 @@ test('password recovery has an accessible form and prevents cross-user stale das
   assert.match(js,/password!==elem\('#confirm-password'\)\.value/);
   assert.match(js,/if\(!user\|\|user\.id!==uid\)return/);
   assert.match(js,/if\(loadingSession\)\{sessionRefreshQueued=true;return;\}/);
-  assert.match(js,/allCourses=\[\];adminEnrollments=\[\];profileMap=\{\}/);
+  assert.match(js,/allCourses=\[\];adminEnrollments=\[\];(?:adminLeads=\[\];)?profileMap=\{\}/);
 });
 
 test('student task reminders are sorted by date and cancelled sessions are marked',()=>{
