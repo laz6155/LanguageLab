@@ -391,9 +391,11 @@
       }catch{
         if(version!==classSessionVersion)return;
         leave(false);
+        $('#joinView').hidden=false;$('#classroomView').hidden=true;
+        return;
       }
     }
-    if(version!==classSessionVersion&&token)return;
+    if(version!==classSessionVersion)return;
     $('#joinView').hidden=false;$('#classroomView').hidden=true;
   }
   document.querySelectorAll('[data-join-lang]').forEach(b=>b.addEventListener('click',()=>applyLanguage(b.dataset.joinLang)));
