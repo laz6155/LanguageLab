@@ -379,7 +379,7 @@
     const client = await getClient();
     const session = await getSession();
     if (!client || !session) throw new Error('Teacher login required.');
-    const { data, error } = await client.functions.invoke('educator-assistant', { body:payload });
+    const { data, error } = await client.functions.invoke('academy-lesson-assistant', { body:payload });
     if (error) throw error;
     if (!data?.ok || !data?.pack) throw new Error(data?.error || 'Assistant could not generate a lesson pack.');
 
