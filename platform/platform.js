@@ -27,7 +27,7 @@
   const node=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=String(text);return e;};
   const elem=(sel)=>$(sel);
   const clear=el=>{if(el)el.replaceChildren();};
-  const formatDate=(value,withTime=false)=>{if(!value)return '';try{return new Intl.DateTimeFormat(lang==='tr'?'tr-TR':'en-GB',withTime?{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}:{day:'numeric',month:'short',year:'numeric'}).format(new Date(value));}catch{return String(value);}};
+  const formatDate=(value,withTime=false)=>{if(!value)return '';try{const raw=String(value);const date=/^\d{4}-\d{2}-\d{2}$/.test(raw)?new Date(raw+'T12:00:00'):new Date(value);return new Intl.DateTimeFormat(lang==='tr'?'tr-TR':'en-GB',withTime?{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}:{day:'numeric',month:'short',year:'numeric'}).format(date);}catch{return String(value);}};
   function notify(message,error=false){const el=elem('#notification');el.textContent=message;el.classList.toggle('error',Boolean(error));el.hidden=false;clearTimeout(notify.timer);notify.timer=setTimeout(()=>{el.hidden=true;},6500);}
   async function run(query){const r=await query;if(r.error)throw r.error;return r.data;}
   async function attempt(operation){try{return await operation();}catch(e){console.error('LanguageLab action failed',e);notify(e?.message||tr('actionFailed'),true);return null;}}

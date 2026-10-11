@@ -240,3 +240,17 @@ test('manager async loading never leaks a previous account into the next dashboa
   assert.equal(ctx.adminEnrollments.length,1);
   assert.equal(ctx.profileMap['student-1'],'Sample Learner');
 });
+
+
+test('date-only due dates respect local calendar day across timezones',()=>{
+  const a=js.indexOf('  const formatDate=');
+  const b=js.indexOf('\n  function notify(',a);
+  assert.ok(a>0&&b>a);
+  const code=js.slice(a,b);
+  const sandbox={lang:'en',Intl:{DateTimeFormat:function(locale,options){return new Intl.DateTimeFormat(locale,{...options,timeZone:'America/Los_Angeles'});}}};
+  vm.runInNewContext(code+';globalThis.displayDate=formatDate;',sandbox,{timeout:1500});
+  assert.equal(sandbox.displayDate('2026-10-11'),'11 Oct 2026');
+  assert.equal(sandbox.displayDate('2026-10-11T00:00:00Z'),'10 Oct 2026');
+  assert.match(html,/platform\.js\?v=20261011-qa3/);
+  assert.match(html,/platform\.css\?v=20261011-qa3/);
+});
