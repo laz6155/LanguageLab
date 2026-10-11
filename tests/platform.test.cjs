@@ -254,3 +254,59 @@ test('date-only due dates respect local calendar day across timezones',()=>{
   assert.match(html,/platform\.js\?v=20261011-qa3/);
   assert.match(html,/platform\.css\?v=20261011-qa3/);
 });
+
+
+test('learner progress meter uses only published lessons, even for managers',()=>{
+  const start=js.indexOf('  async function openCourse(');
+  const end=js.indexOf('  function renderCourseDetail(',start);
+  const load=js.slice(start,end);
+  assert.equal((load.match(/\.eq\('is_published',true\)/g)||[]).length,2);
+  assert.match(js,/node\('progress','course-progress-meter'\)/);
+  assert.match(js,/const doneIds=new Set\(progress\.map\(p=>p\.lesson_id\)\)/);
+  assert.match(js,/continueLesson:'Kaldığım yerden devam et'/);
+  assert.match(js,/continueLesson:'Continue with next lesson'/);
+  assert.match(css,/\.course-progress-meter/);
+});
+
+test('course progress meter counts only lessons in selected course',()=>{
+  const start=js.indexOf('  function renderCourseDetail(');
+  const end=js.indexOf('  async function toggleLessonDone(',start);
+  const code=js.slice(start,end);
+  assert.ok(start>=0&&end>start);
+  const make=(tag,cls,text)=>({
+    tag,cls,text,children:[],attrs:{},
+    append(...items){this.children.push(...items);},
+    setAttribute(key,value){this.attrs[key]=value;},
+    scrollIntoView(){}
+  });
+  const detail=make('section','detail');
+  const ctx={
+    selectedCourseId:'course-a',selectedLessonId:null,
+    learnerModules:[{id:'module-a',title_en:'Unit A'}],
+    learnerLessons:[
+      {id:'lesson-a1',module_id:'module-a',title_en:'One',estimated_minutes:10},
+      {id:'lesson-a2',module_id:'module-a',title_en:'Two',estimated_minutes:10}
+    ],
+    progress:[{lesson_id:'lesson-a1'},{lesson_id:'unrelated-course-lesson'}],
+    elem:()=>detail,
+    clear:(el)=>{el.children=[];},
+    node:make,
+    tr:(key)=>key,
+    localized:(obj,field='title')=>obj?.[field+'_en']||'',
+    courseOf:()=>({title_en:'Course A'}),
+    button:(title,action)=>({...make('button','',title),action})
+  };
+  vm.runInNewContext(code+';globalThis.renderCourseDetail=renderCourseDetail;',ctx,{timeout:2000});
+  ctx.renderCourseDetail();
+  const collect=(item)=>[item,...(item.children||[]).flatMap(collect)];
+  const first=collect(detail);
+  const meter=first.find(x=>x.tag==='progress');
+  assert.equal(meter.max,2);
+  assert.equal(meter.value,1);
+  assert.ok(first.some(x=>x.tag==='button'&&x.text.includes('continueLesson')));
+  ctx.progress=[{lesson_id:'lesson-a1'},{lesson_id:'lesson-a2'}];
+  ctx.renderCourseDetail();
+  const finished=collect(detail);
+  assert.equal(finished.find(x=>x.tag==='progress').value,2);
+  assert.ok(finished.some(x=>x.cls==='course-progress-finished'));
+});
