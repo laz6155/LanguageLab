@@ -144,3 +144,81 @@ test('classroom does not silently claim an unsuccessful student result was submi
   assert.equal(messages.at(-1).error,false);
   assert.equal(button.disabled,false);
 });
+
+
+test('classroom works without persistent browser storage',()=>{
+  const s=read('join/join.js');
+  const a=s.indexOf('  function safeStorageGet('),b=s.indexOf('  function randomToken(',a);
+  assert.ok(a>0&&b>a);
+  const storage={
+    getItem(){throw Error('Storage denied');},
+    setItem(){throw Error('Storage denied');},
+    removeItem(){throw Error('Storage denied');}
+  };
+  const ctx={localStorage:storage};
+  vm.runInNewContext(s.slice(a,b)+
+    ';globalThis.storage={get:safeStorageGet,set:safeStorageSet,remove:safeStorageRemove};',ctx,{timeout:1500});
+  assert.equal(ctx.storage.get('student-token'),'');
+  assert.doesNotThrow(()=>ctx.storage.set('student-token','placeholder'));
+  assert.doesNotThrow(()=>ctx.storage.remove('student-token'));
+  assert.match(hardToReadButSafe(s),/safeStorageGet\(TOKEN_KEY\)/);
+  assert.doesNotMatch(s.slice(b),/localStorage\.(getItem|setItem|removeItem)/);
+});
+
+function hardToReadButSafe(source){return source;}
+
+test('classroom polling discards stale responses after class switch',async()=>{
+  const source=read('join/join.js'),a=source.indexOf('  async function refresh('),
+    b=source.indexOf('  async function join(',a);
+  assert.ok(a>0&&b>a);
+  let release,painted=0,connected=0;
+  const ctx={
+    token:'old-session',classSessionVersion:5,refreshInFlight:false,
+    lastSignature:'',document:{hidden:false},navigator:{onLine:true},
+    window:{ESCSupabase:{getStudentState:()=>new Promise(resolve=>{release=resolve;})}},
+    setConnected:()=>{connected++;},signature:()=> 'old-state',
+    paint:()=>{painted++;},leave:()=>{throw Error('Must not leave new class');}
+  };
+  vm.runInNewContext(source.slice(a,b)+';globalThis.refresh=refresh;',ctx,{timeout:1500});
+  const pending=ctx.refresh();
+  assert.equal(ctx.refreshInFlight,true);
+  ctx.token='new-session';ctx.classSessionVersion++;ctx.refreshInFlight=false;
+  release({student:{display_name:'Old class'}});
+  await pending;
+  assert.equal(painted,0);
+  assert.equal(connected,0);
+  assert.equal(ctx.lastSignature,'');
+  ctx.window.ESCSupabase.getStudentState=async()=>({student:{display_name:'New class'}});
+  await ctx.refresh();
+  assert.equal(painted,1);
+  assert.equal(ctx.lastSignature,'old-state');
+});
+
+test('classroom keeps the visible page when previous join finishes after leaving',async()=>{
+  const source=read('join/join.js'),a=source.indexOf('  async function join('),
+    b=source.indexOf('  function startPolling(',a);
+  assert.ok(a>0&&b>a);
+  let accept,painted=0;
+  const controls={
+    '#joinCode':{value:'A1B2C3'},'#joinName':{value:'Guest'},
+    '#joinButton':{disabled:false}
+  };
+  const ctx={
+    token:'',classSessionVersion:1,refreshInFlight:false,
+    TOKEN_KEY:'token',NAME_KEY:'name',CLASS_CODE_KEY:'class',
+    $:key=>controls[key],tx:(tr,en)=>en,showMessage:()=>{},
+    safeStorageGet:()=>'',safeStorageSet:()=>{},randomToken:()=> 'session-token',
+    window:{ESCSupabase:{joinEducatorClass:()=>new Promise(resolve=>{accept=resolve;}),
+      getStudentState:async()=>({student:{display_name:'Guest'}})}},
+    paint:()=>{painted++;},signature:()=>'',startPolling:()=>{}
+  };
+  vm.runInNewContext(source.slice(a,b)+';globalThis.join=join;',ctx,{timeout:1500});
+  const pending=ctx.join({preventDefault(){}});
+  assert.equal(controls['#joinButton'].disabled,true);
+  ctx.classSessionVersion++;
+  accept({student:{display_name:'Guest'}});
+  await pending;
+  assert.equal(painted,0);
+  assert.equal(controls['#joinButton'].disabled,false);
+  assert.match(read('join/index.html'),/join\.js\?v=20261011-session/);
+});
