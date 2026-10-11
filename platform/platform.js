@@ -264,6 +264,12 @@
       tasks=tasks.filter(x=>x.id!==id);renderDashboard();
     });
   }
+  function markProfileDirty(){
+    if(!user)return;
+    profileDirty=true;profileRevision++;
+    const status=elem('#profile-draft-status');
+    status.hidden=false;status.textContent=tr('profileDraftPending');
+  }
   function renderProfile(){
     const status=elem('#profile-draft-status');
     if(profileDirty){status.hidden=false;status.textContent=tr('profileDraftPending');return;}
