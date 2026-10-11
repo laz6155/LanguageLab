@@ -99,3 +99,9 @@ Both queries are **read-only**. They should be rerun after each planned publicat
 Do not switch the staged public inquiry API on before KVKK/privacy approval, abuse controls and role isolation checks. The independent Academy Auth migration, SMTP sender and payments require owner action. See [RELEASE_GATE.md](RELEASE_GATE.md) and [PILOT_CURRICULUM.md](PILOT_CURRICULUM.md).
 
 **Next technical targets:** bugfix for unsaved profile form drafts, live browser registration tests, independently scoped Academy/classroom learner identity mapping, and content-editor draft versioning. None is certified by this document.
+
+## Follow-up: private editorial drafts staged after this baseline
+
+Later on 2026-10-11 the team inserted **four additional expanded Foundation drafts** into an **unpublished** module for the starter course. The baseline 28-row figures above remain a historical audit, not the current total. Post-insertion verification yielded **32 total lesson records**: 12 published and 20 unpublished. Existing published texts and lessons IDs were not overwritten. See [STARTER_EDITORIAL_REVIEW_20261011.md](STARTER_EDITORIAL_REVIEW_20261011.md).
+
+The previously identified unsaved-profile-input bug was resolved in [PR #20](https://github.com/laz6155/LanguageLab/pull/20); user-bound dashboard response checks were hardened in [PR #21](https://github.com/laz6155/LanguageLab/pull/21), and timezone-safe due dates/cache versioning landed in [PR #22](https://github.com/laz6155/LanguageLab/pull/22). CI passed, but real signed-in browser tests and owner SMTP/KVKK decisions remain outstanding.
