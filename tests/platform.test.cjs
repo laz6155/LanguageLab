@@ -110,3 +110,14 @@ test('learner CEFR self-checks have private ownership policies and no anonymous 
   assert.match(html,/id="skill-check-list"/);
   assert.match(js,/skillChecks=\[\]/);
 });
+
+
+test('signup has stronger password minimum without blocking legacy eight-character sign-ins',()=>{
+  assert.match(js,/elem\('#auth-password'\)\.minLength=mode==='signup'\?10:8/);
+  assert.match(js,/function authErrorMessage\(error\)/);
+  assert.match(js,/authEmailRestricted/);
+  assert.match(js,/email_address_not_authorized/);
+  assert.match(js,/authRateLimited/);
+  assert.match(js,/authInvalid/);
+  assert.match(js,/authConfirm/);
+});
