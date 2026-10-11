@@ -6,9 +6,14 @@
   const CLASS_CODE_KEY='esc-edu-student-class-code-v1';
   const LANG_KEY='esc-student-lang-v1';
   let token='', state=null, poll=null, lastSignature='', lang='tr', assignmentHashHandled=false;
+  let classSessionVersion=0,refreshInFlight=false;
   const tx=(tr,en)=>lang==='en'?en:tr;
   const esc=(v='')=>String(v).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[ch]));
 
+  // Storage may be blocked (e.g. Safari privacy settings). The class session still works in memory.
+  function safeStorageGet(key){try{return localStorage.getItem(key)||'';}catch{return '';}}
+  function safeStorageSet(key,value){try{localStorage.setItem(key,value);}catch{}}
+  function safeStorageRemove(key){try{localStorage.removeItem(key);}catch{}}
   function randomToken(){
     const a=new Uint8Array(32);crypto.getRandomValues(a);
     return [...a].map(x=>x.toString(16).padStart(2,'0')).join('');
@@ -40,7 +45,7 @@
     document.title=tx('Sınıfa Katıl · LanguageLab Öğrenci Paneli','Join Class · LanguageLab Öğrenci Paneli');
     const meta=document.querySelector('meta[name="description"]');
     if(meta)meta.setAttribute('content',tx('Öğretmeninin verdiği sınıf koduyla derse ve ödevlere katıl.','Join lessons and assignments with the class code from your teacher.'));
-    try{localStorage.setItem(LANG_KEY,lang);}catch{}
+    try{safeStorageSet(LANG_KEY,lang);}catch{}
     document.querySelectorAll('[data-join-lang]').forEach(b=>b.classList.toggle('active',b.dataset.joinLang===lang));
     const set=(sel,tr,en)=>{const el=$(sel);if(el)el.textContent=tx(tr,en);};
     const setLabel=(sel,tr,en)=>{const el=$(sel);if(el?.firstChild)el.firstChild.nodeValue=tx(tr,en)+' ';};
@@ -262,7 +267,7 @@
   function paint(d){
     state=d;
     $('#joinView').hidden=true;$('#classroomView').hidden=false;
-    const n=d.student?.display_name||localStorage.getItem(NAME_KEY)||'Student';
+    const n=d.student?.display_name||safeStorageGet(NAME_KEY)||'Student';
     $('#studentDisplayName').textContent=n;$('#studentAvatar').textContent=n.trim().charAt(0).toUpperCase()||'?';
     $('#classroomName').textContent=d.class?.name||'English Class';
     $('#classroomMeta').textContent=`${d.class?.age_group||''} · ${d.class?.level||''} · CODE ${d.class?.join_code||''}`;
@@ -292,39 +297,49 @@
     }
   }
   async function refresh(){
-    if(!token||document.hidden)return;
+    if(!token||document.hidden||refreshInFlight)return;
     if(!navigator.onLine){setConnected(false);return;}
+    const requestedToken=token,version=classSessionVersion;
+    refreshInFlight=true;
     try{
-      const data=await window.ESCSupabase.getStudentState(token);
+      const data=await window.ESCSupabase.getStudentState(requestedToken);
+      if(version!==classSessionVersion||requestedToken!==token)return;
       setConnected(true);
       const sig=signature(data);
       if(sig!==lastSignature){lastSignature=sig;paint(data);}
     }catch(err){
+      if(version!==classSessionVersion||requestedToken!==token)return;
       setConnected(false);
       const reason=String(err?.message||'');
-      if(reason.includes('STUDENT_SESSION_NOT_FOUND')||reason.includes('CLASS_NOT_AVAILABLE')) leave(true);
+      if(reason.includes('STUDENT_SESSION_NOT_FOUND')||reason.includes('CLASS_NOT_AVAILABLE'))leave(true);
+    }finally{
+      if(version===classSessionVersion)refreshInFlight=false;
     }
   }
   async function join(e){
     e.preventDefault();
-    const code=$('#joinCode').value.trim().toUpperCase(), name=$('#joinName').value.trim();
-    const b=$('#joinButton');b.disabled=true;showMessage(tx('Sınıfa bağlanılıyor…','Joining class…'));
+    const code=$('#joinCode').value.trim().toUpperCase(),name=$('#joinName').value.trim();
+    const submit=$('#joinButton');submit.disabled=true;
+    const version=++classSessionVersion;refreshInFlight=false;
+    const candidate=safeStorageGet(TOKEN_KEY)||randomToken();
+    showMessage(tx('Sınıfa bağlanılıyor…','Joining class…'));
     try{
-      token=localStorage.getItem(TOKEN_KEY)||randomToken();
-      const data=await window.ESCSupabase.joinEducatorClass(code,name,token);
-      localStorage.setItem(TOKEN_KEY,token);localStorage.setItem(NAME_KEY,name);localStorage.setItem(CLASS_CODE_KEY,code);
-      showMessage('',true);
+      const joined=await window.ESCSupabase.joinEducatorClass(code,name,candidate);
+      if(version!==classSessionVersion)return;
+      token=candidate;
+      safeStorageSet(TOKEN_KEY,token);safeStorageSet(NAME_KEY,name);safeStorageSet(CLASS_CODE_KEY,code);
       let fullState=null;
-      try{fullState=await window.ESCSupabase.getStudentState(token);}catch{}
-      const painted=fullState||{student:{display_name:name},...data};
-      paint(painted);
-      lastSignature=signature(painted);
-      startPolling();
-    }catch(err){showMessage(friendly(err));}
-    finally{b.disabled=false;}
+      try{fullState=await window.ESCSupabase.getStudentState(candidate);}catch{}
+      if(version!==classSessionVersion||token!==candidate)return;
+      showMessage('',true);
+      const visible=fullState||{student:{display_name:name},...joined};
+      paint(visible);lastSignature=signature(visible);startPolling();
+    }catch(err){
+      if(version===classSessionVersion)showMessage(friendly(err));
+    }finally{submit.disabled=false;}
   }
   function startPolling(){if(poll)clearInterval(poll);poll=setInterval(refresh,3500);}
-  function leave(reload=true){if(poll)clearInterval(poll);poll=null;token='';state=null;lastSignature='';localStorage.removeItem(TOKEN_KEY);localStorage.removeItem(CLASS_CODE_KEY);if(reload)location.href='./';}
+  function leave(reload=true){classSessionVersion++;refreshInFlight=false;if(poll)clearInterval(poll);poll=null;token='';state=null;lastSignature='';safeStorageRemove(TOKEN_KEY);safeStorageRemove(CLASS_CODE_KEY);if(reload)location.href='./';}
   async function result(kind){
     if(!token||!state?.session?.id)return;
     const button=document.querySelector(`[data-result="${kind}"]`);
@@ -354,26 +369,31 @@
     }
   }
   async function boot(){
-    const params=new URLSearchParams(location.search);const code=params.get('code')||'';
-    let savedLang='';try{savedLang=localStorage.getItem(LANG_KEY)||'';}catch{}
-    const queryLang=params.get('lang');
+    const version=++classSessionVersion;
+    refreshInFlight=false;
+    const params=new URLSearchParams(location.search),code=params.get('code')||'';
+    const savedLang=safeStorageGet(LANG_KEY),queryLang=params.get('lang');
     applyLanguage(queryLang==='en'||queryLang==='tr'?queryLang:(savedLang==='en'||savedLang==='tr'?savedLang:((navigator.language||'').toLowerCase().startsWith('tr')?'tr':'en')));
     if(code)$('#joinCode').value=code.toUpperCase();
-    const savedName=localStorage.getItem(NAME_KEY)||'';if(savedName)$('#joinName').value=savedName;
-    const savedClassCode=(localStorage.getItem(CLASS_CODE_KEY)||'').toUpperCase();
-    token=localStorage.getItem(TOKEN_KEY)||'';
-    if(code && token && (!savedClassCode || savedClassCode!==code.toUpperCase())){
-      localStorage.removeItem(TOKEN_KEY);
-      localStorage.removeItem(CLASS_CODE_KEY);
-      token='';
+    const savedName=safeStorageGet(NAME_KEY);if(savedName)$('#joinName').value=savedName;
+    const savedClassCode=safeStorageGet(CLASS_CODE_KEY).toUpperCase();
+    token=safeStorageGet(TOKEN_KEY);
+    if(code&&token&&(!savedClassCode||savedClassCode!==code.toUpperCase())){
+      safeStorageRemove(TOKEN_KEY);safeStorageRemove(CLASS_CODE_KEY);token='';
     }
     if(token){
+      const previousToken=token;
       try{
-        const data=await window.ESCSupabase.getStudentState(token);
-        if(data?.class?.join_code)localStorage.setItem(CLASS_CODE_KEY,String(data.class.join_code).toUpperCase());
+        const data=await window.ESCSupabase.getStudentState(previousToken);
+        if(version!==classSessionVersion||previousToken!==token)return;
+        if(data?.class?.join_code)safeStorageSet(CLASS_CODE_KEY,String(data.class.join_code).toUpperCase());
         paint(data);lastSignature=signature(data);startPolling();return;
-      }catch{leave(false);}
+      }catch{
+        if(version!==classSessionVersion)return;
+        leave(false);
+      }
     }
+    if(version!==classSessionVersion&&token)return;
     $('#joinView').hidden=false;$('#classroomView').hidden=true;
   }
   document.querySelectorAll('[data-join-lang]').forEach(b=>b.addEventListener('click',()=>applyLanguage(b.dataset.joinLang)));
