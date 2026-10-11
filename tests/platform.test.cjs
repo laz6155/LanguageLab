@@ -121,3 +121,30 @@ test('signup has stronger password minimum without blocking legacy eight-charact
   assert.match(js,/authInvalid/);
   assert.match(js,/authConfirm/);
 });
+
+
+test('learner lesson view and manager editor use different data stores',()=>{
+  const start=(name)=>js.indexOf('  '+name);
+  const learner=js.slice(start('function renderCourseDetail('),start('async function toggleLessonDone('));
+  const manager=js.slice(start('function renderAdminContent('),start('async function handleModuleSave('));
+  assert.match(js,/learnerModules=\[\],learnerLessons=\[\],adminModules=\[\],adminLessons=\[\]/);
+  assert.match(learner,/\blearnerModules\b/);
+  assert.match(learner,/\blearnerLessons\b/);
+  assert.doesNotMatch(learner,/\badminModules\b|\badminLessons\b/);
+  assert.match(manager,/\badminModules\b/);
+  assert.match(manager,/\badminLessons\b/);
+  assert.doesNotMatch(manager,/\blearnerModules\b|\blearnerLessons\b/);
+});
+
+test('async course loading ignores stale responses and signs out safely',()=>{
+  const learner=js.slice(js.indexOf('  async function openCourse('),js.indexOf('  function renderCourseDetail('));
+  const manager=js.slice(js.indexOf('  async function loadAdminContent('),js.indexOf('  function renderAdminContent('));
+  assert.match(learner,/requestId=\+\+courseLoadSequence/);
+  assert.match(learner,/requestId!==courseLoadSequence/);
+  assert.match(learner,/user\.id!==requestingUser/);
+  assert.match(learner,/enrollmentFor\(courseId\)\?\.status!=='active'/);
+  assert.match(manager,/requestId=\+\+adminContentLoadSequence/);
+  assert.match(manager,/requestId!==adminContentLoadSequence/);
+  assert.match(manager,/elem\('#content-course'\)\.value!==id/);
+  assert.match(js,/courseLoadSequence\+\+;adminContentLoadSequence\+\+;/);
+});
