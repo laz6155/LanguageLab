@@ -71,7 +71,7 @@ test('password recovery has an accessible form and prevents cross-user stale das
   assert.match(js,/password!==elem\('#confirm-password'\)\.value/);
   assert.match(js,/if\(!user\|\|user\.id!==uid\)return/);
   assert.match(js,/if\(loadingSession\)\{sessionRefreshQueued=true;return;\}/);
-  assert.match(js,/allCourses=\[\];adminEnrollments=\[\];profileMap=\{\}/);
+  assert.match(js,/allCourses=\[\];adminEnrollments=\[\];(?:adminLeads=\[\];)?profileMap=\{\}/);
 });
 
 test('student task reminders are sorted by date and cancelled sessions are marked',()=>{
@@ -109,4 +109,17 @@ test('learner CEFR self-checks have private ownership policies and no anonymous 
   assert.match(html,/id="skill-check-form"/);
   assert.match(html,/id="skill-check-list"/);
   assert.match(js,/skillChecks=\[\]/);
+});
+
+
+test('staged CRM panel uses manager-only queries and renders strings as text nodes',()=>{
+  const sql=fs.readFileSync(path.join(root,'database/academy_inquiries_STAGING.sql'),'utf8');
+  assert.match(sql,/enable row level security/);
+  assert.match(sql,/revoke all on public\.academy_inquiries from anon, authenticated/);
+  assert.match(sql,/No grants or INSERT policy for browsers/);
+  assert.match(sql,/academy_inquiries_manager_read/);
+  assert.match(html,/id="admin-leads"/);
+  assert.match(js,/function renderAdminLeads/);
+  assert.match(js,/db\.from\('academy_inquiries'\)/);
+  assert.doesNotMatch(js,/innerHTML\s*=\s*lead\./);
 });

@@ -5,6 +5,14 @@
   if (!source) return;
 
   const contactEmail = 'eryamanspeakingclub@gmail.com';
+  // Deliberately disabled until legal notice, external email sender and
+  // international data handling have been reviewed by the owner.
+  const INQUIRY_CRM_ENABLED = false;
+  const INQUIRY_API = 'https://bshzakigvtyjilolsfjp.supabase.co/functions/v1/academy-inquiry';
+  const inquiryMessages = {
+    tr:{sending:'Başvurun kaydediliyor…',success:'Başvurun kaydedildi. En kısa zamanda sana dönüş yapacağız.',error:'Başvurun kaydedilemedi. Lütfen daha sonra dene veya bize e-posta gönder.',rate:'Çok sık başvuru yapıldı. Lütfen daha sonra tekrar dene.'},
+    en:{sending:'Submitting your interest…',success:'Your inquiry was recorded. We will follow up with you.',error:'Your inquiry could not be saved. Try again later or contact us by email.',rate:'Too many requests. Please try again later.'}
+  };
   let language = 'tr';
   try {
     if (localStorage.getItem('languagelab-language') === 'en') language = 'en';
@@ -180,7 +188,15 @@
   window.addEventListener('resize', () => { if (window.innerWidth > 960) closeMenu(); });
   document.getElementById('current-year').textContent = String(new Date().getFullYear());
 
-  document.getElementById('interest-form').addEventListener('submit', (event) => {
+  const consentRow = document.getElementById('lead-consent-row');
+  const consentInput = document.getElementById('lead-consent');
+  if (INQUIRY_CRM_ENABLED) {
+    consentRow.hidden=false;
+    consentInput.disabled=false;
+    consentInput.required=true;
+    document.getElementById('copy-email').hidden=true;
+  }
+  document.getElementById('interest-form').addEventListener('submit', async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
     if (!form.reportValidity()) return;
@@ -200,6 +216,36 @@
       lines.push([misc('formSpecialty'), document.getElementById('specialty').value]);
     }
     if (message) lines.push([misc('formMessage'), message]);
+    if (INQUIRY_CRM_ENABLED) {
+      const button=form.querySelector('button[type="submit"]');
+      button.disabled=true;
+      showFeedback(true,inquiryMessages[language].sending);
+      try {
+        const payload={
+          request_type:role,
+          full_name:name,
+          email,
+          message,
+          level_group:role==='student'?document.getElementById('level').value:null,
+          programme:role==='student'?document.getElementById('program').value:null,
+          specialty:role==='educator'?document.getElementById('specialty').value:null,
+          website:document.getElementById('lead-website').value,
+          contact_consent:consentInput.checked
+        };
+        const response=await fetch(INQUIRY_API,{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify(payload)
+        });
+        const result=await response.json().catch(()=>({ok:false}));
+        if(!response.ok||!result.ok)throw new Error(response.status===429?'RATE_LIMIT':'SERVICE_UNAVAILABLE');
+        form.reset();setRole('student');
+        showFeedback(true,inquiryMessages[language].success);
+      }catch(e){
+        showFeedback(true,inquiryMessages[language][e.message==='RATE_LIMIT'?'rate':'error']);
+      }finally{button.disabled=false;}
+      return;
+    }
     emailDraft = lines.map(([label, value]) => `${label}: ${value}`).join('\n');
     const subject = misc(role === 'student' ? 'emailSubjectStudent' : 'emailSubjectEducator');
     showFeedback(true, misc('emailDraft'));

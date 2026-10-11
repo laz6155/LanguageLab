@@ -114,6 +114,8 @@ window.LanguageLabTranslations = {
     'form.message': 'Hedeflerin hakk\u0131nda k\u0131saca (iste\u011fe ba\u011fl\u0131)',
     'form.messagePlaceholder': 'Ne yapmak istedi\u011fini bizimle payla\u015f...',
     'form.submit': 'E-posta ile devam et \u2197',
+    'form.contactConsent': 'Bu başvuru hakkında benimle iletişime geçilmesini kabul ediyorum. Form açılmadan önce kişisel veri aydınlatma metni onaylanmalıdır.',
+    'form.contactConsent': 'I agree to be contacted about this inquiry. The personal data notice must be reviewed before this form is enabled.',
     'form.privacy': 'Bu form bilgilerini sitede saklamaz. E-posta tasla\u011f\u0131 haz\u0131rlar; g\u00f6nderimi e-posta uygulamanda sen tamamlamal\u0131s\u0131n.',
     'form.copy': 'E-posta metnini kopyala',
     'faq.kicker': 'MERAK ETT\u0130KLER\u0130N',
