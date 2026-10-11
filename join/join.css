@@ -135,3 +135,7 @@
   .student-history-card{grid-template-columns:1fr}
   .student-history-metrics{justify-content:flex-start}
 }
+
+/* Confirmation and errors remain visible inside the active classroom, not behind the join form. */
+.classroom-message{margin:12px 18px 8px;padding:13px 16px;border-radius:12px;background:#e9f7f1;border:1px solid #b5e3cd;color:#256348;font-size:13px;line-height:1.55;font-weight:700}
+.classroom-message.is-error{background:#fff1f1;border-color:#f4c8c8;color:#9d3642}
